@@ -30,6 +30,24 @@ when@test:
             use_savepoints: true
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
+when@dev:
+    doctrine:
+        dbal:
+            dbname: '%env(MYSQL_TEST_DBNAME)%'
+            host: '%env(MYSQL_TEST_HOST)%'
+            user: '%env(MYSQL_TEST_USER)%'
+            password: '%env(MYSQL_TEST_PASSWORD)%'
+            driver: pdo_mysql
+        orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                id: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                id: doctrine.result_cache_pool
+
 when@prod:
     doctrine:
         orm:
@@ -37,10 +55,10 @@ when@prod:
             proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
             query_cache_driver:
                 type: pool
-                pool: doctrine.system_cache_pool
+                id: doctrine.system_cache_pool
             result_cache_driver:
                 type: pool
-                pool: doctrine.result_cache_pool
+                id: doctrine.result_cache_pool
 
     framework:
         cache:
