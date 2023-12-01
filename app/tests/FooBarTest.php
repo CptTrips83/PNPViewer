@@ -5,7 +5,6 @@ use App\Tools\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use const App\Repository\TestRepository;
 
 class FooBarTest extends KernelTestCase
 {
