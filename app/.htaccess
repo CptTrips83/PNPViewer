@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /
+RewriteBase /pnp
 
-RewriteCond %{THE_REQUEST} /app/public/([^\s?]*) [NC]
+RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
 RewriteRule ^ %1 [L,NE,R=302]
-RewriteRule ^(.*)$ app/public/index.php?$1 [L,QSA]
+RewriteRule ^(.*)$ public/index.php?$1 [L,QSA]
