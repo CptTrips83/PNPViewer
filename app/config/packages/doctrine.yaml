@@ -50,6 +50,12 @@ when@dev:
 
 when@prod:
     doctrine:
+        dbal:
+            dbname: '%env(MYSQL_DBNAME)%'
+            host: '%env(MYSQL_HOST)%'
+            user: '%env(MYSQL_USER)%'
+            password: '%env(MYSQL_PASSWORD)%'
+            driver: pdo_mysql
         orm:
             auto_generate_proxy_classes: false
             proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'

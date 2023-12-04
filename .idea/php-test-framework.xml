@@ -5,6 +5,7 @@
       <tool tool_name="PHPUnit">
         <cache>
           <versions>
+            <info id="LocalC:\xampp\htdocs\PHPStorm\SymfonyBase\app\bin\phpunit" version="9.6.15" />
             <info id="LocalC:\xampp\htdocs\PHPStorm\Template\app\bin\phpunit" version="9.6.15" />
           </versions>
         </cache>
