@@ -2,16 +2,68 @@
 
 namespace App\Tests\Tools;
 
+use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatsCategory;
 use App\Entity\RuleSet;
 use App\Tests\base\KernelTestSetup;
-use App\Tools\CharacterCreation\CyberpunkRed\CharacterCreationCyberpunkRed;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tools\Character\CyberpunkRed\CharacterCreationCyberpunkRed;
 
 class CharacterCreationTest extends KernelTestSetup
 {
     public function testGetStats()
+    {
+        $data = $this->getStats();
+
+        $this->assertEquals("1", $data["Stats"]["Intelligence"]["id"]);
+        $this->assertEquals("2", $data["Stats"]["Reflex"]["id"]);
+        $this->assertEquals("3", $data["Skills"]["Hacking"]["id"]);
+    }
+
+    public function testCreateCharacter()
+    {
+        $ruleSet = new RuleSet();
+        $ruleSet->setName("Cyberpunk RED");
+        $this->_entityManager->persist($ruleSet);
+        $this->_entityManager->flush();
+
+        $data = $this->generateCreationArray($this->getStats());
+
+        $creator = new CharacterCreationCyberpunkRed(
+            $this->_entityManager,
+            $ruleSet
+        );
+
+        $creator->create($data);
+
+        $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
+        $character = $repoCharacter->findOneBy(["name" => "Darius"]);
+
+        $this->assertIsObject($character);
+        $this->assertEquals("1", $data["Stats"]["Intelligence"]["value"]);
+        $this->assertEquals("1", $data["Stats"]["Reflex"]["value"]);
+        $this->assertEquals("1", $data["Skills"]["Hacking"]["value"]);
+    }
+
+    private function generateCreationArray(array $data) : array
+    {
+        $data["CharacterData"]["name"] = "Darius";
+
+        foreach ($data as $key1 => $value)
+        {
+            foreach ($value as $key2 => $item)
+            {
+                if(isset($item["value"])) $data[$key1][$key2]["value"] = 1;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    private function getStats(): array
     {
         $ruleSet = new RuleSet();
         $ruleSet->setName("Cyberpunk RED");
@@ -51,11 +103,10 @@ class CharacterCreationTest extends KernelTestSetup
         $this->_entityManager->persist($stat);
         $this->_entityManager->flush();
 
-        $creator = new CharacterCreationCyberpunkRed($this->_entityManager);
+        $creator = new CharacterCreationCyberpunkRed(
+            $this->_entityManager,
+            $ruleSet);
         $data = $creator->getStats($ruleSet);
-
-        $this->assertEquals("1", $data["Stats"]["Intelligence"]["id"]);
-        $this->assertEquals("2", $data["Stats"]["Reflex"]["id"]);
-        $this->assertEquals("3", $data["Skills"]["Hacking"]["id"]);
+        return $data;
     }
 }
