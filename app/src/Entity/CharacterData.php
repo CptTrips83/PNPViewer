@@ -20,15 +20,19 @@ class CharacterData
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'characterData', targetEntity: CharacterStatValue::class)]
-    private Collection $characterStatValue;
+    private Collection $statValue;
 
     #[ORM\ManyToOne(inversedBy: 'characterData')]
     #[ORM\JoinColumn(nullable: false)]
     private ?RuleSet $ruleSet = null;
 
+    #[ORM\OneToMany(mappedBy: 'characterData', targetEntity: CharacterClassValue::class)]
+    private Collection $classValue;
+
     public function __construct()
     {
-        $this->characterStatValue = new ArrayCollection();
+        $this->statValue = new ArrayCollection();
+        $this->classValue = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,24 +55,24 @@ class CharacterData
     /**
      * @return Collection<int, CharacterStatValue>
      */
-    public function getCharacterStatValue(): Collection
+    public function getStatValue(): Collection
     {
-        return $this->characterStatValue;
+        return $this->statValue;
     }
 
-    public function addCharacterStatValue(CharacterStatValue $characterStatValue): static
+    public function addStatValue(CharacterStatValue $characterStatValue): static
     {
-        if (!$this->characterStatValue->contains($characterStatValue)) {
-            $this->characterStatValue->add($characterStatValue);
+        if (!$this->statValue->contains($characterStatValue)) {
+            $this->statValue->add($characterStatValue);
             $characterStatValue->setCharacterData($this);
         }
 
         return $this;
     }
 
-    public function removeCharacterStatValue(CharacterStatValue $characterStatValue): static
+    public function removeStatValue(CharacterStatValue $characterStatValue): static
     {
-        if ($this->characterStatValue->removeElement($characterStatValue)) {
+        if ($this->statValue->removeElement($characterStatValue)) {
             // set the owning side to null (unless already changed)
             if ($characterStatValue->getCharacterData() === $this) {
                 $characterStatValue->setCharacterData(null);
@@ -86,6 +90,36 @@ class CharacterData
     public function setRuleSet(?RuleSet $ruleSet): static
     {
         $this->ruleSet = $ruleSet;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CharacterClassValue>
+     */
+    public function getClassValue(): Collection
+    {
+        return $this->classValue;
+    }
+
+    public function addClassValue(CharacterClassValue $classValue): static
+    {
+        if (!$this->classValue->contains($classValue)) {
+            $this->classValue->add($classValue);
+            $classValue->setCharacterData($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClassValue(CharacterClassValue $classValue): static
+    {
+        if ($this->classValue->removeElement($classValue)) {
+            // set the owning side to null (unless already changed)
+            if ($classValue->getCharacterData() === $this) {
+                $classValue->setCharacterData(null);
+            }
+        }
 
         return $this;
     }

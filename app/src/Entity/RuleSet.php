@@ -24,10 +24,14 @@ class RuleSet
     #[ORM\OneToMany(mappedBy: 'ruleSet', targetEntity: CharacterStatsCategory::class, orphanRemoval: true)]
     private Collection $characterStatsCategories;
 
+    #[ORM\OneToMany(mappedBy: 'ruleSet', targetEntity: RuleSetClass::class)]
+    private Collection $class;
+
     public function __construct()
     {
         $this->characterData = new ArrayCollection();
         $this->characterStatsCategories = new ArrayCollection();
+        $this->class = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +105,36 @@ class RuleSet
             // set the owning side to null (unless already changed)
             if ($characterStatsCategory->getRuleSet() === $this) {
                 $characterStatsCategory->setRuleSet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RuleSetClass>
+     */
+    public function getClass(): Collection
+    {
+        return $this->class;
+    }
+
+    public function addClass(RuleSetClass $class): static
+    {
+        if (!$this->class->contains($class)) {
+            $this->class->add($class);
+            $class->setRuleSet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClass(RuleSetClass $class): static
+    {
+        if ($this->class->removeElement($class)) {
+            // set the owning side to null (unless already changed)
+            if ($class->getRuleSet() === $this) {
+                $class->setRuleSet(null);
             }
         }
 

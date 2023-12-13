@@ -12,6 +12,6 @@ interface CharacterCreationInterface
      * @return array Gibt ein Array zurück, dass die Stats enthält. Gruppiert nach Kategorie
      * ID, Name, Description
      */
-    public function getStats() : array;
+    public function getBlankData() : array;
 
 }

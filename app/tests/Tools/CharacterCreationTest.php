@@ -48,6 +48,8 @@ class CharacterCreationTest extends KernelTestSetup
     private function generateCreationArray(array $data) : array
     {
         $data["CharacterData"]["name"] = "Darius";
+        $data["CharacterData"]["class"]["name"] = "Solo";
+        $data["CharacterData"]["class"]["value"] = 1;
 
         foreach ($data as $key1 => $value)
         {
@@ -106,7 +108,6 @@ class CharacterCreationTest extends KernelTestSetup
         $creator = new CharacterCreationCyberpunkRed(
             $this->_entityManager,
             $ruleSet);
-        $data = $creator->getStats($ruleSet);
-        return $data;
+        return $creator->getBlankData();
     }
 }

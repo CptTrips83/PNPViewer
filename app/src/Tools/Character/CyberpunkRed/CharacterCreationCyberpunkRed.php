@@ -2,13 +2,16 @@
 
 namespace App\Tools\Character\CyberpunkRed;
 
+use App\Entity\CharacterClassValue;
 use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatsCategory;
 use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
+use App\Entity\RuleSetClass;
 use App\Tools\Character\Interfaces\CharacterCreationInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class CharacterCreationCyberpunkRed implements CharacterCreationInterface
 {
@@ -29,10 +32,29 @@ class CharacterCreationCyberpunkRed implements CharacterCreationInterface
         $character = new CharacterData();
 
         $character->setName($data["CharacterData"]["name"]);
+
+
+
         $character->setRuleSet($this->_ruleSet);
+
+        $className = $data["CharacterData"]["class"]["name"];
 
         $repoStatCategories = $this->_entityManager->getRepository(CharacterStatsCategory::class);
         $repoStat = $this->_entityManager->getRepository(CharacterStat::class);
+        $repoClass = $this->_entityManager->getRepository(RuleSetClass::class);
+
+        // Klasse abrufen
+        $class = $repoClass->findOneBy([
+            "name" => $className,
+            "ruleSet" => $this->_ruleSet
+        ]);
+
+        // Klasse einfügen
+        $classValue = new CharacterClassValue();
+        $classValue->setRuleSetClass($class);
+        $classValue->setValue(1);
+        $character->addClassValue($classValue);
+        $this->_entityManager->persist(($classValue));
 
         // Kategorien abrufen
         $categories = $repoStatCategories->findBy(["ruleSet" => $this->_ruleSet]);
@@ -49,7 +71,7 @@ class CharacterCreationCyberpunkRed implements CharacterCreationInterface
                     $skillValue = new CharacterStatValue();
                     $skillValue->setCharacterStat($stat);
                     $skillValue->setValue($statData["value"]);
-                    $character->addCharacterStatValue($skillValue);
+                    $character->addStatValue($skillValue);
                     $this->_entityManager->persist($skillValue);
 
                 } catch (\Exception $exception) {
@@ -64,9 +86,12 @@ class CharacterCreationCyberpunkRed implements CharacterCreationInterface
     /**
      * @inheritDoc
      */
-    public function getStats(): array
+    public function getBlankData(): array
     {
         $result = array();
+
+        $result["CharacterData"]["name"] = "";
+        $result["CharacterData"]["class"] = array();
 
         $repoStatCategories = $this->_entityManager->getRepository(CharacterStatsCategory::class);
         $repoStat = $this->_entityManager->getRepository(CharacterStat::class);

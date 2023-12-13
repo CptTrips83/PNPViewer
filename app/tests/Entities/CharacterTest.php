@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Tests\Entities;
+use App\Entity\CharacterClassValue;
 use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatsCategory;
 use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
+use App\Entity\RuleSetClass;
 use App\Tests\base\KernelTestSetup;
 use App\Tools\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,40 +15,58 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CharacterTest extends KernelTestSetup
 {
-    public function testCharacterCreation()
+    public static function createData(EntityManagerInterface $entityManager) : void
     {
         $ruleSet = new RuleSet();
         $ruleSet->setName("Cyberpunk RED");
-        $this->_entityManager->persist($ruleSet);
-        $this->_entityManager->flush();
+        $entityManager->persist($ruleSet);
+        $entityManager->flush();
+
+        $ruleSetClass = new RuleSetClass();
+        $ruleSetClass->setName("Solo");
+        $entityManager->persist($ruleSetClass);
+        $entityManager->flush();
 
         $categoryStats = new CharacterStatsCategory();
         $categoryStats->setName("Stats");
         $categoryStats->setRuleSet($ruleSet);
-        $this->_entityManager->persist($categoryStats);
-        $this->_entityManager->flush();
+        $entityManager->persist($categoryStats);
+        $entityManager->flush();
 
         $stat = new CharacterStat();
         $stat->setCategory($categoryStats);
         $stat->setName("Intelligence");
 
-        $this->_entityManager->persist($stat);
-        $this->_entityManager->flush();
+        $entityManager->persist($stat);
+        $entityManager->flush();
 
         $statValue = new CharacterStatValue();
         $statValue->setCharacterStat($stat);
         $statValue->setValue(1);
 
-        $this->_entityManager->persist($statValue);
-        $this->_entityManager->flush();
+        $entityManager->persist($statValue);
+        $entityManager->flush();
+
+        $classValue = new CharacterClassValue();
+        $classValue->setRuleSetClass($ruleSetClass);
+        $classValue->setValue(1);
+
+        $entityManager->persist($classValue);
+        $entityManager->flush();
 
         $characterData = new CharacterData();
         $characterData->setName("Darius");
+        $characterData->addClassValue($classValue);
         $characterData->setRuleSet($ruleSet);
-        $characterData->addCharacterStatValue($statValue);
+        $characterData->addStatValue($statValue);
 
-        $this->_entityManager->persist($characterData);
-        $this->_entityManager->flush();
+        $entityManager->persist($characterData);
+        $entityManager->flush();
+    }
+
+    public function testCharacterCreation()
+    {
+        self::createData($this->_entityManager);
 
         $repo = $this->_entityManager->getRepository(CharacterData::class);
 
@@ -56,10 +76,12 @@ class CharacterTest extends KernelTestSetup
 
         $stats = $repo->findAll();
 
-        $this->assertEquals("Stats", $data->getCharacterStatValue()[0]->getCharacterStat()->getCategory()->getName());
-        $this->assertEquals("Intelligence", $data->getCharacterStatValue()[0]->getCharacterStat()->getName());
-        $this->assertEquals(1, $data->getCharacterStatValue()[0]->getValue());
+        $this->assertEquals("Stats", $data->getStatValue()[0]->getCharacterStat()->getCategory()->getName());
+        $this->assertEquals("Intelligence", $data->getStatValue()[0]->getCharacterStat()->getName());
+        $this->assertEquals(1, $data->getStatValue()[0]->getValue());
         $this->assertEquals("Darius", $data->getName());
+        $this->assertEquals(1, $data->getClassValue()[0]->getValue());
+        $this->assertEquals("Solo", $data->getClassValue()[0]->getRuleSetClass()->getName());
         $this->assertCount(1, $stats);
     }
 }
