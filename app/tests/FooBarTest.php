@@ -1,21 +1,17 @@
 <?php
 
 use App\Entity\Test;
+use App\Tools\Tests\AbstractKernelTest;
 use App\Tools\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FooBarTest extends KernelTestCase
+class FooBarTest extends AbstractKernelTest
 {
-    private EntityManagerInterface $_entityManager;
-
     protected function setUp(): void
     {
-        $kernel = self::bootKernel();
-        DatabasePrimer::prime($kernel);
-
-        $this->_entityManager = $kernel->getContainer()->get('doctrine', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)->getManager();
+        $this->Initialize();
     }
 
     public function testSomething()
