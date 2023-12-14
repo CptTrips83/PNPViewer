@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterStatCategoryController!{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container">
+        <h3>Charakter-Klasse</h3>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {{ form(form) }}
+    </div>
+{% endblock %}

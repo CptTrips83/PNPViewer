@@ -102,8 +102,10 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/twig/extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/twig/twig" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/validator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bootstrap" level="application" />
   </component>
 </module>
