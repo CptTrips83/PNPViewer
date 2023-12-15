@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CharacterStat;
+use App\Entity\CharacterStatCategory;
+use App\Entity\RuleSet;
 use App\Form\CharacterStatType;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +19,7 @@ class CharacterStatController extends AbstractController
     use ControllerForm;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/character/stat/create', name: 'app_character_stat_create')]
+    #[Route('/create/character/stat', name: 'app_character_stat_create')]
     public function createCharacterStat(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->_entityManager = $entityManager;
@@ -28,13 +30,21 @@ class CharacterStatController extends AbstractController
             CharacterStatType::class
         );
 
-        return $this->render('character_stat/form.html.twig', [
-            'controller_name' => 'CharacterStatCategoryController',
-            'form' => $form->createView()
-        ]);
+        $redirectResponse = $this->redirectOnFormCompletion($form,
+            'app_character_stat_list',
+            ['ruleSetId' => '1']);
+
+        if($redirectResponse != null) {
+            return $redirectResponse;
+        } else {
+            return $this->render('character_stat/form.html.twig', [
+                'controller_name' => 'CharacterStatCategoryController',
+                'form' => $form->createView()
+            ]);
+        }
     }
 
-    #[Route('/character/stat/edit/{id}', name: 'app_character_stat_edit')]
+    #[Route('/edit/character/stat/{id}', name: 'app_character_stat_edit')]
     public function editCharacterStat(Request $request, int $id, EntityManagerInterface $entityManager) : Response
     {
         $this->_entityManager = $entityManager;
@@ -46,9 +56,45 @@ class CharacterStatController extends AbstractController
             $id
         );
 
-        return $this->render('character_stat/form.html.twig', [
-            'controller_name' => 'CharacterStatCategoryController',
-            'form' => $form->createView()
+        $stat = $form->getData();
+
+        $redirectResponse = $this->redirectOnFormCompletion($form,
+            'app_character_stat_list',
+            ['ruleSetId' => '1']);
+
+        if($redirectResponse != null) {
+            return $redirectResponse;
+        } else {
+            return $this->render('character_stat/form.html.twig', [
+                'controller_name' => 'CharacterStatCategoryController',
+                'form' => $form->createView()
+            ]);
+        }
+    }
+
+    #[Route('/list/character/stat/{ruleSetId}', name: 'app_character_stat_list')]
+    public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
+    {
+        $this->_entityManager = $entityManager;
+
+        $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
+        $repoCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
+
+        $ruleSet = $repoRuleSet->find($ruleSetId);
+
+        $categories = [];
+
+        if($ruleSet) {
+
+            $categories = $repoCategory->findBy([
+                'ruleSet' => $ruleSet
+            ]);
+        }
+
+        return $this->render('character_stat/list.html.twig', [
+            'controller_name' => 'CharacterClassController',
+            'categories' => $categories,
+            'ruleSet' => $ruleSet
         ]);
     }
 
