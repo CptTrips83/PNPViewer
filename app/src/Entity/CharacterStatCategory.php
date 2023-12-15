@@ -31,6 +31,12 @@ class CharacterStatCategory
     #[ORM\JoinColumn(nullable: false)]
     private ?RuleSet $ruleSet = null;
 
+    #[ORM\Column]
+    private ?int $statsRequired = null;
+
+    #[ORM\ManyToOne]
+    private ?CharacterClass $classNeeded = null;
+
     public function __construct()
     {
         $this->characterStats = new ArrayCollection();
@@ -103,6 +109,30 @@ class CharacterStatCategory
     public function setRuleSet(?RuleSet $ruleSet): static
     {
         $this->ruleSet = $ruleSet;
+
+        return $this;
+    }
+
+    public function getStatsRequired(): ?int
+    {
+        return $this->statsRequired;
+    }
+
+    public function setStatsRequired(int $statsRequired): static
+    {
+        $this->statsRequired = $statsRequired;
+
+        return $this;
+    }
+
+    public function getClassNeeded(): ?CharacterClass
+    {
+        return $this->classNeeded;
+    }
+
+    public function setClassNeeded(?CharacterClass $classNeeded): static
+    {
+        $this->classNeeded = $classNeeded;
 
         return $this;
     }
