@@ -15,7 +15,17 @@
             </div>
         {% endfor %}
         <a href="{{ path('app_character_stat_create')  }}">Charakter-Wert erstellen</a>
-        <table class="table">
+        <br>
+        <label>
+            Kategorie Filtern
+            <select id="statTableFilter" onchange="filterTable('statTableFilter', 'statTable', 1);">
+                <option value="">Alle Kategorien</option>
+                {% for category in categories %}
+                    <option value="{{ category.getName }}">{{ category.getName }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <table id="statTable" class="table">
             <thead>
                 <tr>
                     <th scope="col">Name</th>

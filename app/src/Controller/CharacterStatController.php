@@ -56,7 +56,9 @@ class CharacterStatController extends AbstractController
             $id
         );
 
-        $stat = $form->getData();
+        $repoCategories = $this->_entityManager->getRepository(CharacterStatCategory::class);
+
+        $categories = $repoCategories->findAll();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
             'app_character_stat_list',
@@ -67,7 +69,8 @@ class CharacterStatController extends AbstractController
         } else {
             return $this->render('character_stat/form.html.twig', [
                 'controller_name' => 'CharacterStatCategoryController',
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'categories' => $categories
             ]);
         }
     }

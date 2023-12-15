@@ -18,6 +18,10 @@ framework:
     php_errors:
         log: true
 
+    assets:
+        packages:
+            javascript:
+                base_path: js
 when@test:
     framework:
         test: true
