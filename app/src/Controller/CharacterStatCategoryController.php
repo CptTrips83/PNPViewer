@@ -33,8 +33,8 @@ class CharacterStatCategoryController extends AbstractController
         $category = $form->getData();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_stat_category_edit',
-            ['id' => $category->getId()]);
+            'app_character_stat_category_list',
+            ['ruleSetId' => '1']);
 
         if($redirectResponse != null) {
             return $redirectResponse;
@@ -58,10 +58,17 @@ class CharacterStatCategoryController extends AbstractController
             $id
         );
 
-        return $this->render('character_stat_category/form.html.twig', [
-            'controller_name' => 'CharacterStatCategoryController',
-            'form' => $form->createView()
-        ]);
+        $redirectResponse = $this->redirectOnFormCompletion($form,
+            'app_character_stat_category_list',
+            ['ruleSetId' => '1']);
+        if($redirectResponse != null) {
+            return $redirectResponse;
+        } else {
+            return $this->render('character_stat_category/form.html.twig', [
+                'controller_name' => 'CharacterStatCategoryController',
+                'form' => $form->createView()
+            ]);
+        }
     }
 
     #[Route('/list/character/stat/category/{ruleSetId}', name: 'app_character_stat_category_list')]
