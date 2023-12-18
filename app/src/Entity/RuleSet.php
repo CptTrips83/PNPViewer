@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @property $getCharacterClassName
+ */
 #[ORM\Entity(repositoryClass: RuleSetRepository::class)]
 class RuleSet
 {
@@ -36,6 +39,12 @@ class RuleSet
 
     #[ORM\OneToMany(mappedBy: 'ruleSet', targetEntity: PNPGroup::class, orphanRemoval: true)]
     private Collection $pnpGroups;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $characterClassName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $CharacterBuilderName = null;
 
     public function __construct()
     {
@@ -202,6 +211,30 @@ class RuleSet
                 $pnpGroup->setRuleSet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCharacterClassName(): ?string
+    {
+        return $this->characterClassName;
+    }
+
+    public function setCharacterClassName(?string $characterClassName): static
+    {
+        $this->characterClassName = $characterClassName;
+
+        return $this;
+    }
+
+    public function getCharacterBuilderName(): ?string
+    {
+        return $this->CharacterBuilderName;
+    }
+
+    public function setCharacterBuilderName(?string $CharacterBuilderName): static
+    {
+        $this->CharacterBuilderName = $CharacterBuilderName;
 
         return $this;
     }
