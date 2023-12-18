@@ -28,6 +28,9 @@ class CharacterData
     #[ORM\JoinColumn(nullable: false)]
     private ?RuleSet $ruleSet = null;
 
+    #[ORM\ManyToOne(inversedBy: 'characters')]
+    private ?PNPGroup $pnpGroup = null;
+
     public function __construct()
     {
         $this->characterStatValues = new ArrayCollection();
@@ -119,6 +122,18 @@ class CharacterData
     public function setRuleSet(?RuleSet $ruleSet): static
     {
         $this->ruleSet = $ruleSet;
+
+        return $this;
+    }
+
+    public function getPnpGroup(): ?PNPGroup
+    {
+        return $this->pnpGroup;
+    }
+
+    public function setPnpGroup(?PNPGroup $pnpGroup): static
+    {
+        $this->pnpGroup = $pnpGroup;
 
         return $this;
     }

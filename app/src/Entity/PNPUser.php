@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PNPUserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,6 +28,14 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'gameMaster', targetEntity: PNPGroup::class)]
+    private Collection $gameMasterGroups;
+
+    public function __construct()
+    {
+        $this->gameMasterGroups = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -95,5 +105,35 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, PNPGroup>
+     */
+    public function getGameMasterGroups(): Collection
+    {
+        return $this->gameMasterGroups;
+    }
+
+    public function addGameMasterGroup(PNPGroup $gameMasterGroup): static
+    {
+        if (!$this->gameMasterGroups->contains($gameMasterGroup)) {
+            $this->gameMasterGroups->add($gameMasterGroup);
+            $gameMasterGroup->setGameMaster($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGameMasterGroup(PNPGroup $gameMasterGroup): static
+    {
+        if ($this->gameMasterGroups->removeElement($gameMasterGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($gameMasterGroup->getGameMaster() === $this) {
+                $gameMasterGroup->setGameMaster(null);
+            }
+        }
+
+        return $this;
     }
 }

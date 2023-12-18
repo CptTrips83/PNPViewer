@@ -34,11 +34,15 @@ class RuleSet
     #[ORM\OneToMany(mappedBy: 'ruleSet', targetEntity: CharacterClass::class, orphanRemoval: true)]
     private Collection $characterClasses;
 
+    #[ORM\OneToMany(mappedBy: 'ruleSet', targetEntity: PNPGroup::class, orphanRemoval: true)]
+    private Collection $pnpGroups;
+
     public function __construct()
     {
         $this->characterStatCategories = new ArrayCollection();
         $this->characterData = new ArrayCollection();
         $this->characterClasses = new ArrayCollection();
+        $this->pnpGroups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +170,36 @@ class RuleSet
             // set the owning side to null (unless already changed)
             if ($characterClass->getRuleSet() === $this) {
                 $characterClass->setRuleSet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PNPGroup>
+     */
+    public function getPnpGroups(): Collection
+    {
+        return $this->pnpGroups;
+    }
+
+    public function addPnpGroup(PNPGroup $pnpGroup): static
+    {
+        if (!$this->pnpGroups->contains($pnpGroup)) {
+            $this->pnpGroups->add($pnpGroup);
+            $pnpGroup->setRuleSet($this);
+        }
+
+        return $this;
+    }
+
+    public function removePnpGroup(PNPGroup $pnpGroup): static
+    {
+        if ($this->pnpGroups->removeElement($pnpGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($pnpGroup->getRuleSet() === $this) {
+                $pnpGroup->setRuleSet(null);
             }
         }
 
