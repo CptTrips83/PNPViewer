@@ -81,7 +81,21 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     public function addStat(CharacterStat $stat, int $value): CharacterBuilderInterface
     {
         $statValue = new CharacterStatValue();
-        $stat->addCharacterStatValue($statValue);
+
+        if($stat->getCategory()->getStatsRequired() == 1) {
+            $repo = $this->_entityManager->getRepository(CharacterStatValue::class);
+
+            $statValueTemp = $repo->findOneBy([
+                'characterData' => $this->_character,
+                'characterStat' => $stat
+            ]);
+
+            if($statValueTemp != null) $statValue = $statValueTemp;
+        }
+        if($statValue->getValue() == null) {
+            $stat->addCharacterStatValue($statValue);
+        }
+
         $statValue->setValue($value);
         $this->_character->addCharacterStatValue($statValue);
 

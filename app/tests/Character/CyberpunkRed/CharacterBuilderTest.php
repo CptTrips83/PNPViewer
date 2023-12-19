@@ -55,7 +55,12 @@ class CharacterBuilderTest extends AbstractKernelTest
             "App\Tools\Character\CyberpunkRed\CyberpunkCharacterBuilder"
         );
 
-        $builder = CharacterBuilderFactory::get(
+        $builder1 = CharacterBuilderFactory::get(
+            $this->_entityManager,
+            $ruleSet
+        );
+
+        $builder2 = CharacterBuilderFactory::get(
             $this->_entityManager,
             $ruleSet
         );
@@ -71,26 +76,52 @@ class CharacterBuilderTest extends AbstractKernelTest
         $characterStatCategory->setStatsRequired(-1);
         $characterStatCategory->setRuleSet($ruleSet);
 
+        $characterStatCategory2 = new CharacterStatCategory();
+        $characterStatCategory2->setName("Test");
+        $characterStatCategory2->setStatsRequired(1);
+        $characterStatCategory2->setRuleSet($ruleSet);
+
         $this->_entityManager->persist($characterStatCategory);
+        $this->_entityManager->persist($characterStatCategory2);
         $this->_entityManager->persist($characterClass);
 
-        $characterStat = new CharacterStat();
-        $characterStat->setName("Stärke");
-        $characterStat->setMinValue(1);
-        $characterStat->setHighestValue(1);
-        $characterStatCategory->addCharacterStat($characterStat);
+        $characterStat1 = new CharacterStat();
+        $characterStat1->setName("Stärke");
+        $characterStat1->setMinValue(1);
+        $characterStat1->setHighestValue(1);
+        $characterStatCategory->addCharacterStat($characterStat1);
 
-        $this->_entityManager->persist($characterStat);
+        $characterStat2 = new CharacterStat();
+        $characterStat2->setName("Int");
+        $characterStat2->setMinValue(1);
+        $characterStat2->setHighestValue(1);
+        $characterStatCategory->addCharacterStat($characterStat2);
+
+        $characterStat3 = new CharacterStat();
+        $characterStat3->setName("Test");
+        $characterStat3->setMinValue(1);
+        $characterStat3->setHighestValue(1);
+        $characterStatCategory2->addCharacterStat($characterStat3);
+
+        $this->_entityManager->persist($characterStat1);
+        $this->_entityManager->persist($characterStat2);
+        $this->_entityManager->persist($characterStat3);
         $this->_entityManager->flush();
 
-        $character = $builder->setName("Darius")
+        $character = $builder1->set("name", "Darius")
             ->addClass($characterClass, 1)
-            ->addStat($characterStat, 1)
+            ->addStat($characterStat1, 1)
+            ->addStat($characterStat3, 1)
+            ->buildCharacter();
+
+        $character = $builder2->setCharacter($character)
+            ->addStat($characterStat2, 1)
+            ->addStat($characterStat3, 1)
             ->buildCharacter();
 
         $this->assertInstanceOf(CharacterData::class, $character);
         $this->assertEquals("Darius", $character->getName());
         $this->assertCount(1, $character->getCharacterClassLevels());
-        $this->assertCount(1, $character->getCharacterStatValues());
+        $this->assertCount(3, $character->getCharacterStatValues());
     }
 }
