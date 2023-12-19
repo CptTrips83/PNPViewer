@@ -29,10 +29,30 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $this->_entityManager->persist($this->_character);
     }
 
-    /**
-     * Speichert den Namen des Characters
-     * @param string $name Name des Characters
-     * @return CharacterBuilderInterface
+    /*
+     * @inheritdoc
+     */
+    public function setCharacter(CharacterData $character): CharacterBuilderInterface
+    {
+        $this->_character = $character;
+
+        return $this;
+    }
+
+    public function set(string $property, mixed $value) : CharacterBuilderInterface
+    {
+        $setter = "set".ucfirst($property);
+
+        if(method_exists($this->_character, $setter))
+        {
+            $this->_character->$setter($value);
+        }
+
+        return $this;
+    }
+
+    /*
+     * @inheritdoc
      */
     public function setName(string $name): CharacterBuilderInterface
     {
@@ -40,11 +60,8 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /**
-     * Fügt eine Klasse mit dem angegebenen Level ein
-     * @param CharacterClass $class Die Klasse die eingefügt werden soll
-     * @param int $level Der Level den die Klasse hat
-     * @return CharacterBuilderInterface
+    /*
+     * @inheritdoc
      */
     public function addClass(CharacterClass $class, int $level): CharacterBuilderInterface
     {
@@ -58,11 +75,8 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /**
-     * Fügt einen Stat mit dem angegebenen Value ein
-     * @param CharacterStat $stat Der Stat der eingefügt werden soll
-     * @param int $value Der Value den der Stat haben soll
-     * @return CharacterBuilderInterface
+    /*
+     * @inheritdoc
      */
     public function addStat(CharacterStat $stat, int $value): CharacterBuilderInterface
     {
@@ -77,9 +91,8 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /**
-     * Generiert den Character
-     * @return CharacterData Der fertige Character
+    /*
+     * @inheritdoc
      */
     public function buildCharacter(): CharacterData
     {
