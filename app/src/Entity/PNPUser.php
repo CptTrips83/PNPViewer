@@ -32,9 +32,13 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'gameMaster', targetEntity: PNPGroup::class)]
     private Collection $gameMasterGroups;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CharacterData::class)]
+    private Collection $characters;
+
     public function __construct()
     {
         $this->gameMasterGroups = new ArrayCollection();
+        $this->characters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +135,36 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($gameMasterGroup->getGameMaster() === $this) {
                 $gameMasterGroup->setGameMaster(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CharacterData>
+     */
+    public function getCharacters(): Collection
+    {
+        return $this->characters;
+    }
+
+    public function addCharacter(CharacterData $character): static
+    {
+        if (!$this->characters->contains($character)) {
+            $this->characters->add($character);
+            $character->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCharacter(CharacterData $character): static
+    {
+        if ($this->characters->removeElement($character)) {
+            // set the owning side to null (unless already changed)
+            if ($character->getUser() === $this) {
+                $character->setUser(null);
             }
         }
 

@@ -31,6 +31,12 @@ class CharacterData
     #[ORM\ManyToOne(inversedBy: 'characters')]
     private ?PNPGroup $pnpGroup = null;
 
+    #[ORM\ManyToOne(inversedBy: 'characters')]
+    private ?PNPUser $user = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nickname = null;
+
     public function __construct()
     {
         $this->characterStatValues = new ArrayCollection();
@@ -134,6 +140,30 @@ class CharacterData
     public function setPnpGroup(?PNPGroup $pnpGroup): static
     {
         $this->pnpGroup = $pnpGroup;
+
+        return $this;
+    }
+
+    public function getUser(): ?PNPUser
+    {
+        return $this->user;
+    }
+
+    public function setUser(?PNPUser $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(?string $nickname): static
+    {
+        $this->nickname = $nickname;
 
         return $this;
     }
