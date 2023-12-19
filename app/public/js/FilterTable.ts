@@ -1,11 +1,14 @@
-function filterTable(inputFieldId, tableId, tableFilterIndex) {
-    var input;
-    var filter;
-    var table;
-    var tr;
-    var td;
-    var i;
-    input = document.getElementById(inputFieldId);
+function filterTable(inputFieldId : string,
+                     tableId : string,
+                     tableFilterIndex : number) : void {
+    let input : HTMLSelectElement;
+    let filter : string;
+    let table : HTMLElement;
+    let tr : HTMLCollectionOf<HTMLTableRowElement>;
+    let td : HTMLElement;
+    let i : number;
+
+    input = document.getElementById(inputFieldId) as HTMLSelectElement;
     filter = input.options[input.selectedIndex].value.toUpperCase();
     table = document.getElementById(tableId);
     tr = table.getElementsByTagName("tr");
@@ -14,8 +17,7 @@ function filterTable(inputFieldId, tableId, tableFilterIndex) {
         if (td) {
             if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
-            }
-            else {
+            } else {
                 tr[i].style.display = "none";
             }
         }
