@@ -11,6 +11,7 @@ use App\Tools\Character\Factory\CharacterBuilderFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -242,10 +243,13 @@ class CharacterCreationController extends AbstractController
     ) : FormBuilderInterface
     {
 
-        return $form->add($stat->getName(), NumberType::class, [
+        return $form->add($stat->getName(), IntegerType::class, [
             'label' => $stat->getDescription(),
-            'scale' => 0,
-            'data' => 5
+            'data' => 5,
+            'attr' => [
+                'min' => $stat->getMinValue(),
+                'max' => $stat->getHighestValue()
+            ]
         ]);
 
     }
