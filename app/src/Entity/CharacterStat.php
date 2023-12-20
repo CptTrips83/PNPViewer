@@ -35,9 +35,17 @@ class CharacterStat
     #[ORM\OneToMany(mappedBy: 'characterStat', targetEntity: CharacterStatValue::class, orphanRemoval: true)]
     private Collection $characterStatValues;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $longDescription = null;
+
     public function __construct()
     {
         $this->characterStatValues = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDescription();
     }
 
     public function getId(): ?int
@@ -131,6 +139,18 @@ class CharacterStat
                 $characterStatValue->setCharacterStat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLongDescription(): ?string
+    {
+        return $this->longDescription;
+    }
+
+    public function setLongDescription(?string $longDescription): static
+    {
+        $this->longDescription = $longDescription;
 
         return $this;
     }

@@ -23,16 +23,18 @@ class CharacterStatType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
-                'label' => 'Beschreibung'
+                'label' => 'Anzeige'
+            ])
+            ->add('longDescription', TextareaType::class, [
+                'required' => false,
+                'label' => 'Lange Beschreibung'
             ])
             ->add('minValue', NumberType::class, [
                 'label' => 'Niedrigster Wert',
-                'data' => '1',
                 'scale' => 0
             ])
             ->add('highestValue', NumberType::class, [
                 'label' => 'Höchster Wert',
-                'data' => '1',
                 'scale' => 0
             ])
             ->add('category', EntityType::class, [

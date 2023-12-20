@@ -23,12 +23,15 @@ class CharacterStatCategoryType extends AbstractType
                 'label' => 'Name'
             ])
             ->add('description', TextareaType::class , [
-                'label' => 'Beschreibung',
+                'label' => 'Anzeige',
                 'required' => false
+            ])
+            ->add('longDescription', TextareaType::class, [
+                'required' => false,
+                'label' => 'Lange Beschreibung'
             ])
             ->add('statsRequired', NumberType::class, [
                 'label' => 'Anzahl erforderlicher Stats aus dieser Kategorie (-1 = alle Stats werden benötigt)',
-                'data' => '1',
                 'scale' => 0,
             ])
             ->add('ruleSet', EntityType::class, [

@@ -35,9 +35,17 @@ class CharacterClass
     #[ORM\JoinColumn(nullable: false)]
     private ?RuleSet $ruleSet = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $longDescription = null;
+
     public function __construct()
     {
         $this->characterClassLevels = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getDescription();
     }
 
     public function getId(): ?int
@@ -131,6 +139,18 @@ class CharacterClass
     public function setRuleSet(?RuleSet $ruleSet): static
     {
         $this->ruleSet = $ruleSet;
+
+        return $this;
+    }
+
+    public function getLongDescription(): ?string
+    {
+        return $this->longDescription;
+    }
+
+    public function setLongDescription(?string $longDescription): static
+    {
+        $this->longDescription = $longDescription;
 
         return $this;
     }

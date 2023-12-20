@@ -17,7 +17,7 @@ class CharacterStatCategory
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT, length: 255)]
     #[Assert\NotBlank]
     private ?string $name = null;
 
@@ -36,6 +36,9 @@ class CharacterStatCategory
 
     #[ORM\ManyToOne]
     private ?CharacterClass $classNeeded = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $longDescription = null;
 
     public function __construct()
     {
@@ -133,6 +136,18 @@ class CharacterStatCategory
     public function setClassNeeded(?CharacterClass $classNeeded): static
     {
         $this->classNeeded = $classNeeded;
+
+        return $this;
+    }
+
+    public function getLongDescription(): ?string
+    {
+        return $this->longDescription;
+    }
+
+    public function setLongDescription(?string $longDescription): static
+    {
+        $this->longDescription = $longDescription;
 
         return $this;
     }

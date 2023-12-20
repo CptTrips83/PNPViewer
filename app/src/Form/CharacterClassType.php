@@ -23,16 +23,18 @@ class CharacterClassType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
-                'label' => 'Beschreibung'
+                'label' => 'Anzeige'
+            ])
+            ->add('longDescription', TextareaType::class, [
+                'required' => false,
+                'label' => 'Lange Beschreibung'
             ])
             ->add('minLevel', NumberType::class, [
                 'label' => 'Niedrigster Level',
-                'data' => '1',
                 'scale' => 0
             ])
             ->add('highestLevel', NumberType::class, [
                 'label' => 'Höchster Level',
-                'data' => '1',
                 'scale' => 0
             ])
             ->add('ruleSet', EntityType::class, [
