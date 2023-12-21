@@ -7,7 +7,9 @@ use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
 use App\Entity\RuleSet;
+use App\Repository\CharacterStatRepository;
 use App\Tools\Character\Factory\CharacterBuilderFactory;
+use App\Tools\Character\Interfaces\CharacterBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -179,8 +182,6 @@ class CharacterCreationController extends AbstractController
             'name' => 'skills'
         ]);
 
-
-
         $stats = $repoStats->findBy([
             'category' => $category
         ]);
@@ -201,35 +202,87 @@ class CharacterCreationController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid())
         {
-            $data = $form->getData();
-
             $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
                 ->setCharacter($character);
 
-            foreach ($data as $name => $value)
-            {
+            $character = $this->buildCharacterStats($form,
+                $characterBuilder,
+                $repoStats
+            );
 
-                $characterStat = $repoStats->findOneBy([
-                    'name' => $name,
-                    'category' => $category
-                ]);
-
-                $characterBuilder = $characterBuilder
-                    ->addStat($characterStat, $value);
-
-            }
-
-            $character = $characterBuilder->buildCharacter();
-
-            return $this->redirectToRoute('app_character_creation_skills', [
+            return $this->redirectToRoute('app_character_creation_perks', [
                 'characterId' => $character->getId()
             ]);
         }
 
         $route = 'character_creation/skills.html.twig';
+
+        return $this->render($route, [
+            'controller_name' => 'CharacterCreationController',
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/character/creation/perks/{characterId}', name: 'app_character_creation_perks')]
+    public function perks(Request $request,
+                           int $characterId,
+                           EntityManagerInterface $entityManager
+    ) : Response
+    {
+        $this->_entityManager = $entityManager;
+
+        $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
+        $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
+        $repoStats = $this->_entityManager->getRepository(CharacterStat::class);
+
+        $character = $repoCharacter->find($characterId);
+        $ruleSet = $character->getRuleSet();
+        $categories = $repoStatCategory->findBy([
+            'statsRequired' => '-1'
+        ]);
+
+        $form = $this->createFormBuilder();
+
+        foreach ($categories as $category) {
+            if(str_contains($category->getName(), 'perks')){
+                $stats = $repoStats->findBy([
+                    'category' => $category
+                ]);
+
+                foreach ($stats as $stat)
+                {
+                    $form = $this->GenerateFormPartFromStat(
+                        $form,
+                        $stat
+                    );
+                }
+            }
+        }
+        $form = $form->add('speichern', SubmitType::class, [
+            'label' => 'Fortfahren'
+        ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+                ->setCharacter($character)
+                ->finishCreation();
+
+            $character = $this->buildCharacterStats($form,
+                $characterBuilder,
+                $repoStats
+            );
+
+            return $this->redirectToRoute('app_character_show_details', [
+                'characterId' => $character->getId()
+            ]);
+        }
+
+        $route = 'character_creation/perks.html.twig';
 
         return $this->render($route, [
             'controller_name' => 'CharacterCreationController',
@@ -245,7 +298,7 @@ class CharacterCreationController extends AbstractController
 
         return $form->add($stat->getName(), IntegerType::class, [
             'label' => $stat->getDescription(),
-            'data' => 5,
+            'data' => $stat->getMinValue(),
             'attr' => [
                 'min' => $stat->getMinValue(),
                 'max' => $stat->getHighestValue()
@@ -273,5 +326,31 @@ class CharacterCreationController extends AbstractController
             'placeholder' => 'Bitte auswählen',
             'empty_data' => null,
         ]);
+    }
+
+
+    /**
+     * @param FormInterface $form
+     * @param CharacterBuilderInterface $characterBuilder
+     * @param CharacterStatRepository $repoStats
+     * @return CharacterData
+     */
+    public function buildCharacterStats(
+        FormInterface $form,
+        CharacterBuilderInterface $characterBuilder,
+        CharacterStatRepository $repoStats): CharacterData
+    {
+        $data = $form->getData();
+
+        foreach ($data as $name => $value) {
+            $characterStat = $repoStats->findOneBy([
+                'name' => $name
+            ]);
+
+            $characterBuilder = $characterBuilder
+                ->addStat($characterStat, $value);
+        }
+
+        return $characterBuilder->buildCharacter();
     }
 }

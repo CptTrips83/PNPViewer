@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CharacterDataRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CharacterDataRepository::class)]
@@ -36,6 +37,12 @@ class CharacterData
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nickname = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $creationStart = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $creationEnd = null;
 
     public function __construct()
     {
@@ -164,6 +171,30 @@ class CharacterData
     public function setNickname(?string $nickname): static
     {
         $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function getCreationStart(): ?\DateTimeInterface
+    {
+        return $this->creationStart;
+    }
+
+    public function setCreationStart(?\DateTimeInterface $creationStart): static
+    {
+        $this->creationStart = $creationStart;
+
+        return $this;
+    }
+
+    public function getCreationEnd(): ?\DateTimeInterface
+    {
+        return $this->creationEnd;
+    }
+
+    public function setCreationEnd(?\DateTimeInterface $creationEnd): static
+    {
+        $this->creationEnd = $creationEnd;
 
         return $this;
     }

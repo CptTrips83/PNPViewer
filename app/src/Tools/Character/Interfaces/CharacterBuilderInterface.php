@@ -49,4 +49,11 @@ interface CharacterBuilderInterface
      * @return CharacterData Der fertige Character
      */
     public function buildCharacter() : CharacterData;
+
+
+    /**
+     * Setzt das Datum für das Ende der Character Creation ind der DB
+     * @return CharacterBuilderInterface
+     */
+    public function finishCreation() : CharacterBuilderInterface;
 }

@@ -10,6 +10,7 @@ use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
 use App\Tools\Character\Factory\CharacterFactory;
 use App\Tools\Character\Interfaces\CharacterBuilderInterface;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CyberpunkCharacterBuilder implements CharacterBuilderInterface
@@ -24,6 +25,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     {
         $this->_entityManager = $entityManager;
         $this->_character = CharacterFactory::get();
+        $this->_character->setCreationStart(new DateTime());
         $this->_character->setRuleSet($ruleSet);
         $this->_character->setName("");
         $this->_entityManager->persist($this->_character);
@@ -82,7 +84,8 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     {
         $statValue = new CharacterStatValue();
 
-        if($stat->getCategory()->getStatsRequired() == 1) {
+        if($stat->getCategory()->getStatsRequired() == 1 ||
+            $stat->getCategory()->getStatsRequired() == -1) {
             $repo = $this->_entityManager->getRepository(CharacterStatValue::class);
 
             $statValueTemp = $repo->findOneBy([
@@ -114,5 +117,14 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $this->_entityManager->flush();
 
         return $this->_character;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function finishCreation(): CharacterBuilderInterface
+    {
+        $this->_character->setCreationEnd(new DateTime());
+        return $this;
     }
 }
