@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\CharacterStatValueRepository;
+use App\Traits\JsonSerializer;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CharacterStatValueRepository::class)]
-class CharacterStatValue
+class CharacterStatValue implements \JsonSerializable
 {
+    use JsonSerializer;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\CharacterData;
+use App\Tools\Character\Factory\CharacterJSONFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,8 +28,14 @@ class CharacterController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        return $this->render('character/show.html.twig', [
-            'controller_name' => 'CharacterController',
-        ]);
+        $repoCharacter = $entityManager->getRepository(CharacterData::class);
+
+        $character = $repoCharacter->find($characterId);
+
+        $characterJSON = CharacterJSONFactory::get($character->getRuleSet());
+
+        $json = $characterJSON->generateJSON($character);
+
+        return new JsonResponse($json);
     }
 }

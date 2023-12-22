@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RuleSetRepository;
+use App\Traits\JsonSerializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -12,8 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @property $getCharacterClassName
  */
 #[ORM\Entity(repositoryClass: RuleSetRepository::class)]
-class RuleSet
+class RuleSet  implements \JsonSerializable
 {
+    use JsonSerializer;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -41,7 +44,7 @@ class RuleSet
     private Collection $pnpGroups;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $characterClassName = null;
+    private ?string $characterJSONName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $CharacterBuilderName = null;
@@ -215,14 +218,14 @@ class RuleSet
         return $this;
     }
 
-    public function getCharacterClassName(): ?string
+    public function getCharacterJSONName(): ?string
     {
-        return $this->characterClassName;
+        return $this->characterJSONName;
     }
 
-    public function setCharacterClassName(?string $characterClassName): static
+    public function setCharacterJSONName(?string $characterJSONName): static
     {
-        $this->characterClassName = $characterClassName;
+        $this->characterJSONName = $characterJSONName;
 
         return $this;
     }

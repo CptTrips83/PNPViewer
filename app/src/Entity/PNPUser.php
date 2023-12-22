@@ -3,15 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\PNPUserRepository;
+use App\Traits\JsonSerializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PNPUserRepository::class)]
-class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface
+class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, JsonSerializable
 {
+    use JsonSerializer;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
