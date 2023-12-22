@@ -16,14 +16,13 @@ use Doctrine\ORM\EntityManagerInterface;
 class CyberpunkCharacterBuilder implements CharacterBuilderInterface
 {
     private CharacterData $_character;
-    private EntityManagerInterface $_entityManager;
+
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface $_entityManager,
         RuleSet $ruleSet
     )
     {
-        $this->_entityManager = $entityManager;
         $this->_character = CharacterFactory::get();
         $this->_character->setCreationStart(new DateTime());
         $this->_character->setRuleSet($ruleSet);
