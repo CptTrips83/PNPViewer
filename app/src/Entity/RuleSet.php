@@ -44,7 +44,7 @@ class RuleSet  implements \JsonSerializable
     private Collection $pnpGroups;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $characterJSONName = null;
+    private ?string $characterArrayStrategyName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $CharacterBuilderName = null;
@@ -218,14 +218,14 @@ class RuleSet  implements \JsonSerializable
         return $this;
     }
 
-    public function getCharacterJSONName(): ?string
+    public function getCharacterArrayName(): ?string
     {
-        return $this->characterJSONName;
+        return $this->characterArrayStrategyName;
     }
 
-    public function setCharacterJSONName(?string $characterJSONName): static
+    public function setCharacterArrayName(?string $characterArrayName): static
     {
-        $this->characterJSONName = $characterJSONName;
+        $this->characterArrayStrategyName = $characterArrayName;
 
         return $this;
     }

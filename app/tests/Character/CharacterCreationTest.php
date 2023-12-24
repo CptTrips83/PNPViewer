@@ -9,6 +9,7 @@ use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
 use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
+use App\Tools\Character\Factory\CharacterArrayFactory;
 use App\Tools\Tests\AbstractKernelTest;
 
 class CharacterCreationTest extends AbstractKernelTest
@@ -77,5 +78,20 @@ class CharacterCreationTest extends AbstractKernelTest
 
             $this->assertTrue($result);
         }
+    }
+
+    public function testCharacterJSON()
+    {
+        $ruleSet = $this->ruleSetCreation('App\Tools\Character\CyberpunkRed\CyberpunkCharacterArrayStrategy',
+            'App\Tools\Character\CyberpunkRed\CyberpunkCharacterBuilder'
+        );
+        $this->characterCreation($ruleSet);
+        $character = $this->getCharacterFromDB();
+
+        $characterJSON = CharacterArrayFactory::get($ruleSet);
+        $json = $characterJSON->generateJSON($character);
+
+        $this->assertIsArray($json);
+        $this->assertEquals('1', $json['data']['ruleSet']->getId());
     }
 }

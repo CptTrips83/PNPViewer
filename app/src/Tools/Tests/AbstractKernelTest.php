@@ -26,14 +26,14 @@ class AbstractKernelTest extends KernelTestCase
     }
 
     protected function ruleSetCreation(
-        string $characterClassName = "",
+        string $characterJSONName = "",
         string $characterBuilderName = ""
     ) : RuleSet
     {
         $ruleset = new RuleSet();
         $ruleset->setName("Cyberpunk Red");
         $ruleset->setVersion("1.0");
-        $ruleset->setCharacterClassName($characterClassName);
+        $ruleset->setCharacterArrayName($characterJSONName);
         $ruleset->setCharacterBuilderName($characterBuilderName);
 
         $this->_entityManager->persist($ruleset);
