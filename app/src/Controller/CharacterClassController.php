@@ -7,6 +7,7 @@ use App\Entity\CharacterStat;
 use App\Entity\RuleSet;
 use App\Form\CharacterClassType;
 use App\Form\CharacterStatType;
+use App\Traits\ControllerEntityManager;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,12 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class CharacterClassController extends AbstractController
 {
     use ControllerForm;
+    use ControllerEntityManager;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/create/character/class', name: 'app_character_class_create')]
+    #[Route('/character/create/class', name: 'app_character_class_create')]
     public function createCharacterClass(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -46,10 +48,10 @@ class CharacterClassController extends AbstractController
         }
     }
 
-    #[Route('/edit/character/class/{id}', name: 'app_character_class_edit')]
+    #[Route('/character/edit/class/{id}', name: 'app_character_class_edit')]
     public function editCharacterClass(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -60,13 +62,13 @@ class CharacterClassController extends AbstractController
 
         return $this->render('character_class/form.html.twig', [
             'controller_name' => 'CharacterClassController',
-            'form' => $form
+            'form' => $form->createView()
         ]);
     }
-    #[Route('/list/character/class/{ruleSetId}', name: 'app_character_class_list')]
+    #[Route('/character/list/class/{ruleSetId}', name: 'app_character_class_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoClass = $this->_entityManager->getRepository(CharacterClass::class);

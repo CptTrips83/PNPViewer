@@ -6,6 +6,7 @@ use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
 use App\Entity\RuleSet;
 use App\Form\CharacterStatType;
+use App\Traits\ControllerEntityManager;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,13 +16,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CharacterStatController extends AbstractController
 {
+    use ControllerEntityManager;
     use ControllerForm;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/create/character/stat', name: 'app_character_stat_create')]
+    #[Route('/character/create/stat', name: 'app_character_stat_create')]
     public function createCharacterStat(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -43,10 +45,10 @@ class CharacterStatController extends AbstractController
         }
     }
 
-    #[Route('/edit/character/stat/{id}', name: 'app_character_stat_edit')]
+    #[Route('/character/edit/stat/{id}', name: 'app_character_stat_edit')]
     public function editCharacterStat(Request $request, int $id, EntityManagerInterface $entityManager) : Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -74,10 +76,10 @@ class CharacterStatController extends AbstractController
         }
     }
 
-    #[Route('/list/character/stat/{ruleSetId}', name: 'app_character_stat_list')]
+    #[Route('/character/list/stat/{ruleSetId}', name: 'app_character_stat_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
-        $this->_entityManager = $entityManager;
+        $this->loadEntityManager($entityManager);
 
         $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);

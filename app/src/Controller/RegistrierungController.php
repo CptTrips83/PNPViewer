@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\PNPUser;
+use App\Traits\ControllerEntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,12 +17,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrierungController extends AbstractController
 {
+    use ControllerEntityManager;
+
     #[Route('/register', name: 'app_register')]
     public function register(Request $request,
                              UserPasswordHasherInterface $passwordHasher,
                              EntityManagerInterface $entityManager
     ): Response
     {
+        $this->loadEntityManager($entityManager);
+
         $regForm = $this->createFormBuilder()
             ->add('username', TextType::class, [
                 'label' => 'Mitarbeiter'
