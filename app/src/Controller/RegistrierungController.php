@@ -29,7 +29,7 @@ class RegistrierungController extends AbstractController
 
         $regForm = $this->createFormBuilder()
             ->add('username', TextType::class, [
-                'label' => 'Mitarbeiter'
+                'label' => 'Spieler'
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
