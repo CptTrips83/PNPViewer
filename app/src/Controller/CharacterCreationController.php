@@ -61,7 +61,7 @@ class CharacterCreationController extends AbstractController
             ])
             ->add('speichern', SubmitType::class, [
             'label' => 'Fortfahren'
-        ])
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -72,6 +72,7 @@ class CharacterCreationController extends AbstractController
 
             $character = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
                 ->set("name", $data["name"])
+                ->set("user", $this->getUser())
                 ->set("nickname", $data["handle"])
                 ->addClass($data["characterClass"], 1)
                 ->buildCharacter();
