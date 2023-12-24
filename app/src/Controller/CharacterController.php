@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\CharacterData;
-use App\Tools\Character\CyberpunkRed\CyberpunkCharacterArrayStrategy;
+use App\Entity\PNPGroup;
+use App\Entity\PNPUser;
 use App\Tools\Character\Factory\CharacterArrayFactory;
 use App\Traits\ControllerEntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +27,11 @@ class CharacterController extends AbstractController
     {
         $this->loadEntityManager($entityManager);
 
-        return $this->render('character/show.html.twig', [
+        $characters = $this->getAvailableCharacters();
+
+        return $this->render('character/list.html.twig', [
             'controller_name' => 'CharacterController',
+            'characters' => $characters
         ]);
     }
 
@@ -47,8 +52,11 @@ class CharacterController extends AbstractController
 
         $json = $characterJSON->generateJSON($character);
 
+        $isCharacterEditable = $this->isCharacterEditable($character);
+
         return $this->render('character/details.html.twig', [
             'data' => $json,
+            'isCharacterEditable' => $isCharacterEditable
         ]);
     }
 
@@ -70,5 +78,46 @@ class CharacterController extends AbstractController
         $json = $characterJSON->generateJSON($character);
 
         return new JsonResponse($json);
+    }
+
+    private function isCharacterEditable(CharacterData $character) : bool
+    {
+        $repoUser = $this->_entityManager->getRepository(PNPUser::class);
+
+        $user = $repoUser->findOneBy([
+            'username' => $this->getUser()->getUserIdentifier()
+        ]);
+
+        $pnpGroup = $character->getPnpGroup();
+
+        try {
+            if ($user == $character->getUser()) return true;
+            if ($pnpGroup) {
+                if ($user == $pnpGroup->getGameMaster()) return true;
+            }
+        } catch(Exception $e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private function getAvailableCharacters() : array
+    {
+        $repoUser = $this->_entityManager->getRepository(PNPUser::class);
+
+        $user = $repoUser->findOneBy([
+            'username' => $this->getUser()->getUserIdentifier()
+        ]);
+
+        $result = $user->getCharacters()->toArray();
+
+        $gameMasterGroups = $user->getGameMasterGroups();
+
+        foreach ($gameMasterGroups as $gameMasterGroup) {
+            $result = array_merge($result, $gameMasterGroup->getCharacters()->toArray());
+        }
+
+        return  $result;
     }
 }

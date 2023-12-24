@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h3>Verfügbare Charaktere</h3>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <a href="{{ path('app_character_creation_basics', {'ruleSetId' : 1})  }}">Neuen Charakter erstellen</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Gruppe</th>
+                <th scope="col">Besitzer</th>
+                <th scope="col">Regelwerk</th>
+                <th scope="col">Optionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for character in characters %}
+            <tr>
+                <th scope="row">
+                    {{ character.name }}
+                </th>
+                <td>
+                    {% if character.pnpGroup == null %} Keine Gruppe
+                    {% else %} {{ character.pnpGroup.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ character.user.username }}
+                </td>
+                <td>
+                    {{ character.ruleSet.name }} {{ character.ruleSet.version }}
+                </td>
+                <td>
+                    <a href="{{ path('app_character_show_details', {'characterId': character.id}) }}">Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -45,6 +45,11 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
         $this->characters = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
