@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CharacterData;
-use App\Tools\Character\Factory\CharacterJSONFactory;
+use App\Tools\Character\CyberpunkRed\CyberpunkCharacterArrayStrategy;
+use App\Tools\Character\Factory\CharacterArrayFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +33,27 @@ class CharacterController extends AbstractController
 
         $character = $repoCharacter->find($characterId);
 
-        $characterJSON = CharacterJSONFactory::get($character->getRuleSet());
+        $characterJSON = CharacterArrayFactory::get($character->getRuleSet());
+
+        $json = $characterJSON->generateJSON($character);
+
+        return $this->render('character/details.html.twig', [
+            'data' => $json,
+        ]);
+    }
+
+    #[Route('/show/character/details/JSON/{characterId}', name: 'app_character_show_json')]
+    public function jsonData(
+        Request $request,
+        int $characterId,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $repoCharacter = $entityManager->getRepository(CharacterData::class);
+
+        $character = $repoCharacter->find($characterId);
+
+        $characterJSON = CharacterArrayFactory::get($character->getRuleSet());
 
         $json = $characterJSON->generateJSON($character);
 

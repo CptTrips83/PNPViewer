@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterController!{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="characterDataBasics" class="card bg-default">
+                    <h5 class="card-header">
+                        Charakterdaten
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <label>Name</label>
+                            <br>
+                            <span class="mx-3">{{ data['data'].name }}</span>
+                        </p>
+                        <p class="card-text">
+                            <label>Handle</label>
+                            <br>
+                            <span class="mx-3">{{ data['data'].handle }}</span>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataClasses" class="card">
+                    <h5 class="card-header">
+                        Klassen
+                    </h5>
+                    <div class="card-body">
+                        {% for class in data['classes'] %}
+                            <p class="card-text">
+                                <label>{{ class.classData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ class.level }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataDetails" class="card">
+                    <h5 class="card-header">
+                        Details
+                    </h5>
+                    <div class="card-body">
+                        {% for detail in data['details'] %}
+                            <p class="card-text">
+                                <label>{{ detail.category.description }}</label>
+                                <br>
+                                <span class="mx-3">{{ detail.statData.description }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Attribute
+                    </h5>
+                    <div class="card-body">
+                        {% for skill in data['skills'] %}
+                            <p class="card-text">
+                                <label>{{ skill.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ skill.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Cool
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksCool'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Dexterity
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksDexterity'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Empathy
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksEmpathy'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Intelligence
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksIntelligence'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Reflexes
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksReflexes'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Technique
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksTechnique'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div id="characterDataSkills" class="card">
+                    <h5 class="card-header">
+                        Fertigkeiten Willpower
+                    </h5>
+                    <div class="card-body">
+                        {% for perk in data['perks']['perksWillpower'] %}
+                            <p class="card-text">
+                                <label>{{ perk.statData.description }}</label>
+                                <br>
+                                <span class="mx-3">Level: {{ perk.value }}</span>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
