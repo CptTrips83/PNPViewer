@@ -49,6 +49,9 @@ class RuleSet  implements \JsonSerializable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $CharacterBuilderName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $CharacterEditorName = null;
+
     public function __construct()
     {
         $this->characterStatCategories = new ArrayCollection();
@@ -243,6 +246,18 @@ class RuleSet  implements \JsonSerializable
     public function setCharacterBuilderName(?string $CharacterBuilderName): static
     {
         $this->CharacterBuilderName = $CharacterBuilderName;
+
+        return $this;
+    }
+
+    public function getCharacterEditorName(): ?string
+    {
+        return $this->CharacterEditorName;
+    }
+
+    public function setCharacterEditorName(?string $CharacterEditorName): static
+    {
+        $this->CharacterEditorName = $CharacterEditorName;
 
         return $this;
     }

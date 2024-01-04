@@ -27,7 +27,8 @@ class AbstractKernelTest extends KernelTestCase
 
     protected function ruleSetCreation(
         string $characterJSONName = "",
-        string $characterBuilderName = ""
+        string $characterBuilderName = "",
+        string $characterEditorName = ""
     ) : RuleSet
     {
         $ruleset = new RuleSet();
@@ -35,6 +36,7 @@ class AbstractKernelTest extends KernelTestCase
         $ruleset->setVersion("1.0");
         $ruleset->setCharacterArrayName($characterJSONName);
         $ruleset->setCharacterBuilderName($characterBuilderName);
+        $ruleset->setCharacterEditorName($characterEditorName);
 
         $this->_entityManager->persist($ruleset);
         $this->_entityManager->flush();
