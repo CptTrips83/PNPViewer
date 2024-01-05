@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * @extends ServiceEntityRepository<PNPUser>
 * @implements PasswordUpgraderInterface<PNPUser>
  *
  * @method PNPUser|null find($id, $lockMode = null, $lockVersion = null)

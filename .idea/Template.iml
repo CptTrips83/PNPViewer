@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/app/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/dama/doctrine-test-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/doctrine/annotations" />
@@ -113,6 +114,11 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/security-http" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/tattali/mobile-detect-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/serializer" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/form" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/options-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-intl-icu" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/property-access" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/property-info" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -22,7 +22,7 @@ class AbstractKernelTest extends KernelTestCase
         $kernel = self::bootKernel();
         DatabasePrimer::prime($kernel);
 
-        $this->_entityManager = $kernel->getContainer()->get('doctrine', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)->getManager();
+        $this->_entityManager = $kernel->getContainer()->get('doctrine')->getManager();
     }
 
     protected function ruleSetCreation(

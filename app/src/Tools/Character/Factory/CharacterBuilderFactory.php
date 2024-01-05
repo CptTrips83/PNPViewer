@@ -5,6 +5,7 @@ namespace App\Tools\Character\Factory;
 use App\Entity\RuleSet;
 use App\Tools\Character\Interfaces\CharacterBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class CharacterBuilderFactory
 {
@@ -20,7 +21,7 @@ class CharacterBuilderFactory
                 $entityManager,
                 $ruleSet
             );
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
 
         }
         return $result;

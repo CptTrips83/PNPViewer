@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Repository\CharacterClassLevelRepository;
 use App\Traits\JsonSerializer;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: CharacterClassLevelRepository::class)]
-class CharacterClassLevel implements \JsonSerializable
+class CharacterClassLevel implements JsonSerializable
 {
     use JsonSerializer;
 

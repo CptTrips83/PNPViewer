@@ -7,7 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<PNPGroup>
  *
  * @method PNPGroup|null find($id, $lockMode = null, $lockVersion = null)
  * @method PNPGroup|null findOneBy(array $criteria, array $orderBy = null)
