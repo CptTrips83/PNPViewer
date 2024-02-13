@@ -8,7 +8,7 @@ trait ControllerEntityManager
 {
     private EntityManagerInterface $_entityManager;
 
-    private function loadEntityManager(EntityManagerInterface $entityManager) : void
+    private function setEntityManager(EntityManagerInterface $entityManager) : void
     {
         $this->_entityManager = $entityManager;
     }

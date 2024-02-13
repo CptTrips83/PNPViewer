@@ -36,7 +36,7 @@ class PNPGroupController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,

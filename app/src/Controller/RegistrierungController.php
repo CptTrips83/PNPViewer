@@ -25,7 +25,7 @@ class RegistrierungController extends AbstractController
                              EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $regForm = $this->createFormBuilder()
             ->add('username', TextType::class, [

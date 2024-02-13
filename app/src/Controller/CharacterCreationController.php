@@ -34,7 +34,7 @@ class CharacterCreationController extends AbstractController
                            EntityManagerInterface $entityManager
     ) : Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoCharacterClass = $this->_entityManager->getRepository(CharacterClass::class);
@@ -100,7 +100,7 @@ class CharacterCreationController extends AbstractController
                           EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
@@ -173,7 +173,7 @@ class CharacterCreationController extends AbstractController
                            EntityManagerInterface $entityManager
     ) : Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
         $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
@@ -234,7 +234,7 @@ class CharacterCreationController extends AbstractController
                            EntityManagerInterface $entityManager
     ) : Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
         $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);

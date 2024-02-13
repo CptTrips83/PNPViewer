@@ -25,7 +25,7 @@ class CharacterController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $characters = $this->getAvailableCharacters();
 
@@ -42,7 +42,7 @@ class CharacterController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoCharacter = $entityManager->getRepository(CharacterData::class);
 
@@ -67,7 +67,7 @@ class CharacterController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoCharacter = $entityManager->getRepository(CharacterData::class);
 

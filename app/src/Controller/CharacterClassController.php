@@ -24,7 +24,7 @@ class CharacterClassController extends AbstractController
     #[Route('/character/create/class', name: 'app_character_class_create')]
     public function createCharacterClass(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -51,7 +51,7 @@ class CharacterClassController extends AbstractController
     #[Route('/character/edit/class/{id}', name: 'app_character_class_edit')]
     public function editCharacterClass(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -68,7 +68,7 @@ class CharacterClassController extends AbstractController
     #[Route('/character/list/class/{ruleSetId}', name: 'app_character_class_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
-        $this->loadEntityManager($entityManager);
+        $this->setEntityManager($entityManager);
 
         $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoClass = $this->_entityManager->getRepository(CharacterClass::class);
