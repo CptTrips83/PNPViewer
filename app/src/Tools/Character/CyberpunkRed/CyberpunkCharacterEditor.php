@@ -14,11 +14,22 @@ use App\Tools\Character\Interfaces\CharacterEditorInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class CyberpunkCharacterEditor
+ *
+ * This class implements the CharacterEditorInterface and provides methods to edit a cyberpunk character.
+ */
 class CyberpunkCharacterEditor implements CharacterEditorInterface
 {
     private CharacterData $_character;
 
 
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param EntityManagerInterface $_entityManager The entity manager interface.
+     * @param RuleSet $ruleSet The rule set object.
+     */
     public function __construct(
         private readonly EntityManagerInterface $_entityManager,
         RuleSet $ruleSet
@@ -30,8 +41,12 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
         $this->_character->setName("");
         $this->_entityManager->persist($this->_character);
     }
-    /*
-     * @inheritdoc
+
+    /**
+     * Sets the character for the editor.
+     *
+     * @param CharacterData $character The character object to set.
+     * @return CharacterEditorInterface Returns the instance of the character editor interface.
      */
     public function setCharacter(CharacterData $character): CharacterEditorInterface
     {
@@ -39,8 +54,12 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Sets a property of the character object.
+     *
+     * @param string $property The name of the property to be set.
+     * @param mixed $value The value to be set for the property.
+     * @return CharacterEditorInterface Returns the CharacterEditorInterface object.
      */
     public function set(string $property, mixed $value) : CharacterEditorInterface
     {
@@ -54,8 +73,12 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Sets the level of a character class for the given character.
+     *
+     * @param CharacterClass $class The character class to set the level for.
+     * @param int $level The level to set for the character class.
+     * @return CharacterEditorInterface The instance of the CharacterEditorInterface.
      */
     public function setClassLevel(CharacterClass $class, int $level): CharacterEditorInterface
     {
@@ -79,8 +102,12 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Sets the value of a character stat for the given character.
+     *
+     * @param CharacterStat $stat The character stat to set the value for.
+     * @param int $value The value to set for the character stat.
+     * @return CharacterEditorInterface The instance of the CharacterEditorInterface.
      */
     public function setStatValue(CharacterStat $stat, int $value): CharacterEditorInterface
     {
@@ -101,8 +128,11 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+
+    /**
+     * Save the character data to the database.
+     *
+     * @return CharacterData The updated character data.
      */
     public function saveCharacter(): CharacterData
     {

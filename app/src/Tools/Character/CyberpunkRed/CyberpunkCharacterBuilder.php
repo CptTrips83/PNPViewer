@@ -13,11 +13,22 @@ use App\Tools\Character\Interfaces\CharacterBuilderInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class CyberpunkCharacterBuilder
+ *
+ * This class is responsible for building a Cyberpunk character. It implements the CharacterBuilderInterface interface.
+ */
 class CyberpunkCharacterBuilder implements CharacterBuilderInterface
 {
     private CharacterData $_character;
 
 
+    /**
+     * Constructor for the class.
+     *
+     * @param EntityManagerInterface $_entityManager The entity manager interface.
+     * @param RuleSet $ruleSet The rule set object.
+     */
     public function __construct(
         private readonly EntityManagerInterface $_entityManager,
         RuleSet $ruleSet
@@ -30,8 +41,11 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $this->_entityManager->persist($this->_character);
     }
 
-    /*
-     * @inheritdoc
+     /**
+     * Setter method for setting the character data.
+     *
+     * @param CharacterData $character The character data that needs to be set.
+     * @return CharacterBuilderInterface Returns an instance of the CharacterBuilderInterface.
      */
     public function setCharacter(CharacterData $character): CharacterBuilderInterface
     {
@@ -40,6 +54,13 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
+    /**
+     * Set a property value for the character object.
+     *
+     * @param string $property The name of the property to be set.
+     * @param mixed $value The value to set for the property.
+     * @return CharacterBuilderInterface Returns the instance of the CharacterBuilderInterface.
+     */
     public function set(string $property, mixed $value) : CharacterBuilderInterface
     {
         $setter = "set".ucfirst($property);
@@ -52,8 +73,11 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Sets the name of the character.
+     *
+     * @param string $name The name of the character.
+     * @return CharacterBuilderInterface Returns the character builder interface object.
      */
     public function setName(string $name): CharacterBuilderInterface
     {
@@ -61,8 +85,12 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Assigns a character class to the character builder.
+     *
+     * @param CharacterClass $class The character class object to be assigned.
+     * @param int $level The level at which the character class is assigned.
+     * @return CharacterBuilderInterface Returns the current instance of CharacterBuilderInterface.
      */
     public function addClass(CharacterClass $class, int $level): CharacterBuilderInterface
     {
@@ -76,8 +104,12 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Adds a new character stat to the character.
+     *
+     * @param CharacterStat $stat The character stat object.
+     * @param int $value The value of the character stat.
+     * @return CharacterBuilderInterface The character builder interface.
      */
     public function addStat(CharacterStat $stat, int $value): CharacterBuilderInterface
     {
@@ -107,8 +139,10 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         return $this;
     }
 
-    /*
-     * @inheritdoc
+    /**
+     * Build the character and persist it in the database.
+     *
+     * @return CharacterData The built character.
      */
     public function buildCharacter(): CharacterData
     {
@@ -119,7 +153,9 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     }
 
     /**
-     * @inheritdoc
+     * Finish the creation process.
+     *
+     * @return CharacterBuilderInterface The character builder interface.
      */
     public function finishCreation(): CharacterBuilderInterface
     {
