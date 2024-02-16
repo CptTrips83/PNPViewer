@@ -5,6 +5,8 @@ let lastPage : number;
 
 let pages : NodeListOf<Element>;
 
+document.addEventListener("DOMContentLoaded", PageManagerOnLoadPage);
+
 function PageManagerOnLoadPage() : void {
     pages = document.querySelectorAll(".details-page");
 

@@ -2,6 +2,7 @@ var currentPage;
 var firstPage;
 var lastPage;
 var pages;
+document.addEventListener("DOMContentLoaded", PageManagerOnLoadPage);
 function PageManagerOnLoadPage() {
     pages = document.querySelectorAll(".details-page");
     for (var i = 0; i < pages.length; i++) {
