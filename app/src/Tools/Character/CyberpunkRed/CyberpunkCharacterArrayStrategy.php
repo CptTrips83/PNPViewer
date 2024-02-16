@@ -14,7 +14,7 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
     {
 
     }
-
+    // TODO Min/Max Values in Json einfügen
     public function generateJSON(CharacterData $character): array
     {
         $result = array();
