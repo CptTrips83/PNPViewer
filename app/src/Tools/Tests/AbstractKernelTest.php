@@ -65,17 +65,17 @@ class AbstractKernelTest extends KernelTestCase
 
         $stat1 = new CharacterStat();
         $stat1->setName("Stärke");
-        $stat1->setMinValue(0);
+        $stat1->setLowestValue(0);
         $stat1->setHighestValue(10);
 
         $stat2 = new CharacterStat();
         $stat2->setName("Geschick");
-        $stat2->setMinValue(0);
+        $stat2->setLowestValue(0);
         $stat2->setHighestValue(10);
 
         $stat3 = new CharacterStat();
         $stat3->setName("Kraft");
-        $stat3->setMinValue(0);
+        $stat3->setLowestValue(0);
         $stat3->setHighestValue(10);
 
         $statCategory->addCharacterStat($stat1);

@@ -81,12 +81,12 @@ class CharacterStat implements JsonSerializable
         return $this;
     }
 
-    public function getMinValue(): ?int
+    public function getLowestValue(): ?int
     {
         return $this->minValue;
     }
 
-    public function setMinValue(int $minValue): static
+    public function setLowestValue(int $minValue): static
     {
         $this->minValue = $minValue;
 

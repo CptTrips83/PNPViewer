@@ -56,7 +56,7 @@ class CharacterCreationTest extends AbstractKernelTest
 
         foreach ($character->getCharacterStatValues() as $statValue)
         {
-            $result = ($statValue->getValue() >= $statValue->getCharacterStat()->getMinValue()
+            $result = ($statValue->getValue() >= $statValue->getCharacterStat()->getLowestValue()
                     && $statValue->getValue() <= $statValue->getCharacterStat()->getHighestValue());
 
             $this->assertTrue($result);

@@ -301,9 +301,9 @@ class CharacterCreationController extends AbstractController
 
         return $form->add($stat->getName(), IntegerType::class, [
             'label' => $stat->getDescription(),
-            'data' => $stat->getMinValue(),
+            'data' => $stat->getLowestValue(),
             'attr' => [
-                'min' => $stat->getMinValue(),
+                'min' => $stat->getLowestValue(),
                 'max' => $stat->getHighestValue()
             ]
         ]);

@@ -79,19 +79,19 @@ class CharacterEditorTest extends AbstractKernelTest
 
         $characterStat1 = new CharacterStat();
         $characterStat1->setName("Stärke");
-        $characterStat1->setMinValue(1);
+        $characterStat1->setLowestValue(1);
         $characterStat1->setHighestValue(5);
         $characterStatCategory->addCharacterStat($characterStat1);
 
         $characterStat2 = new CharacterStat();
         $characterStat2->setName("Int");
-        $characterStat2->setMinValue(1);
+        $characterStat2->setLowestValue(1);
         $characterStat2->setHighestValue(5);
         $characterStatCategory->addCharacterStat($characterStat2);
 
         $characterStat3 = new CharacterStat();
         $characterStat3->setName("Test");
-        $characterStat3->setMinValue(1);
+        $characterStat3->setLowestValue(1);
         $characterStat3->setHighestValue(5);
         $characterStatCategory2->addCharacterStat($characterStat3);
 
