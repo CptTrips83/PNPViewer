@@ -48,6 +48,12 @@ class CharacterController extends AbstractController
 
         $character = $repoCharacter->find($characterId);
 
+        if($character->getCreationEnd() == null) {
+            return $this->redirectToRoute('app_character_creation_details', [
+                'characterId' => $character->getId()
+            ]);
+        }
+
         $characterJSON = CharacterArrayFactory::get($character->getRuleSet());
 
         $json = $characterJSON->generateJSON($character);
