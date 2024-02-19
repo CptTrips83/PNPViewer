@@ -64,6 +64,7 @@ function processRequest(url, type = 'POST', data) {
     let xhr = new XMLHttpRequest();
     xhr.open(type, url + getData, true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.send(postData);
     return xhr;
 }

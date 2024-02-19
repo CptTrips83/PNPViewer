@@ -20,7 +20,9 @@ class CharacterEditController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager): Response
     {
-        //if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        if(!$request->isXmlHttpRequest()) return new Response("", "400");
+
+        $request->
 
         $valueId = $request->request->get("valueId");
         $newValue = $request->request->get("newValue");
@@ -47,7 +49,7 @@ class CharacterEditController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager): Response
     {
-        //if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        if(!$request->isXmlHttpRequest()) return new Response("", "400");
 
         $classLevelId = $request->request->get("valueId");
         $newValue = $request->request->get("newValue");
