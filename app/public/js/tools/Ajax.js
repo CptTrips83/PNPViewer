@@ -35,13 +35,13 @@ function processRequest(url, type = 'POST', data) {
     let xhr = new XMLHttpRequest();
     xhr.open(type, url + getData, true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    xhr.send(postData); // TODO JSON umwandeln für transfer
+    xhr.send(postData);
     return xhr;
 }
 function generateDataString(data) {
     let json = JSON.parse(data);
     let arr1 = [];
-    let result = "";
+    let result;
     for (const data in json) {
         arr1.push(data + "=" + json[data]);
     }
