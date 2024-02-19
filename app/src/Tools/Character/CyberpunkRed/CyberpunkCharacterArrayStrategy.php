@@ -3,10 +3,7 @@
 namespace App\Tools\Character\CyberpunkRed;
 
 use App\Entity\CharacterData;
-use App\Entity\CharacterStatCategory;
 use App\Tools\Character\Interfaces\CharacterArrayStrategyInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
 {
@@ -14,7 +11,10 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
     {
 
     }
-    // TODO Min/Max Values in Json einfügen
+
+    /**
+     * @inheritDoc
+     */
     public function generateJSON(CharacterData $character): array
     {
         $result = array();
