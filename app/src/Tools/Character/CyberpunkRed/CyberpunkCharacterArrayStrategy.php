@@ -3,18 +3,24 @@
 namespace App\Tools\Character\CyberpunkRed;
 
 use App\Entity\CharacterData;
-use App\Entity\CharacterStatCategory;
 use App\Tools\Character\Interfaces\CharacterArrayStrategyInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Class CyberpunkCharacterArrayStrategy
+ *
+ * This class implements the CharacterArrayStrategyInterface and provides a method to generate JSON representation
+ * of a Cyberpunk character.
+ */
 class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
 {
     public function __construct()
     {
 
     }
-    // TODO Min/Max Values in Json einfügen
+
+    /**
+     * @inheritDoc
+     */
     public function generateJSON(CharacterData $character): array
     {
         $result = array();
