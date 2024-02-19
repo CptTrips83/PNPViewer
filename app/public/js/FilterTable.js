@@ -1,10 +1,11 @@
+"use strict";
 function filterTable(inputFieldId, tableId, tableFilterIndex) {
-    var input;
-    var filter;
-    var table;
-    var tr;
-    var td;
-    var i;
+    let input;
+    let filter;
+    let table;
+    let tr;
+    let td;
+    let i;
     input = document.getElementById(inputFieldId);
     filter = input.options[input.selectedIndex].value.toUpperCase();
     table = document.getElementById(tableId);

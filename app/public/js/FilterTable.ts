@@ -10,7 +10,7 @@ function filterTable(inputFieldId : string,
 
     input = document.getElementById(inputFieldId) as HTMLSelectElement;
     filter = input.options[input.selectedIndex].value.toUpperCase();
-    table = document.getElementById(tableId);
+    table = document.getElementById(tableId) as HTMLElement;
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[tableFilterIndex];
