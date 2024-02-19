@@ -36,6 +36,9 @@ class PNPGroup implements JsonSerializable
     #[ORM\ManyToOne(inversedBy: 'gameMasterGroups')]
     private ?PNPUser $gameMaster = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $maxCharacterCount = null;
+
     public function __construct()
     {
         $this->characters = new ArrayCollection();
@@ -120,6 +123,18 @@ class PNPGroup implements JsonSerializable
     public function setGameMaster(?PNPUser $gameMaster): static
     {
         $this->gameMaster = $gameMaster;
+
+        return $this;
+    }
+
+    public function getMaxCharacterCount(): ?int
+    {
+        return $this->maxCharacterCount;
+    }
+
+    public function setMaxCharacterCount(?int $maxCharacterCount): static
+    {
+        $this->maxCharacterCount = $maxCharacterCount;
 
         return $this;
     }
