@@ -22,10 +22,8 @@ class CharacterEditController extends AbstractController
     {
         if(!$request->isXmlHttpRequest()) return new Response("", "400");
 
-        $request->
-
-        $valueId = $request->request->get("valueId");
-        $newValue = $request->request->get("newValue");
+        $valueId = $request->get("valueId");
+        $newValue = $request->get("newValue");
 
         $repoCharacterStatValue = $entityManager->getRepository(CharacterStatValue::class);
 
