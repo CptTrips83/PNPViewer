@@ -27,6 +27,9 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
 
         foreach ($character->getCharacterClassLevels() as $classLevel)
         {
+            $result['classes'][$classLevel->getCharacterClass()->getName()]['valueId'] = $classLevel->getId();
+            $result['classes'][$classLevel->getCharacterClass()->getName()]['lowestLevel'] = $classLevel->getCharacterClass()->getLowestLevel();
+            $result['classes'][$classLevel->getCharacterClass()->getName()]['highestLevel'] = $classLevel->getCharacterClass()->getHighestLevel();
             $result['classes'][$classLevel->getCharacterClass()->getName()]['classData'] = $classLevel->getCharacterClass();
             $result['classes'][$classLevel->getCharacterClass()->getName()]['level'] = $classLevel->getLevel();
         }
@@ -39,6 +42,15 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
         {
             if($statValue->getCharacterStat()->getCategory()->getStatsRequired() == 1) {
 
+                $arrayDetails
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    ['valueId'] = $statValue->getId();
+                $arrayDetails
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    ['lowestValue'] = $statValue->getCharacterStat()->getLowestValue();
+                $arrayDetails
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    ['highestValue'] = $statValue->getCharacterStat()->getHighestValue();
                 $arrayDetails
                     [$statValue->getCharacterStat()->getCategory()->getName()]
                     ['category'] = $statValue->getCharacterStat()->getCategory();
@@ -54,23 +66,50 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
                 $statValue->getCharacterStat()->getCategory()->getName() == "skills") {
 
                 $arraySkills
-                    [$statValue->getCharacterStat()->getName()]['category'] = $statValue->getCharacterStat()->getCategory();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['valueId'] = $statValue->getId();
                 $arraySkills
-                    [$statValue->getCharacterStat()->getName()]['statData'] = $statValue->getCharacterStat();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['lowestValue'] = $statValue->getCharacterStat()->getLowestValue();
                 $arraySkills
-                    [$statValue->getCharacterStat()->getName()]['value'] = $statValue->getValue();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['highestValue'] = $statValue->getCharacterStat()->getHighestValue();
+                $arraySkills
+                    [$statValue->getCharacterStat()->getName()]
+                    ['category'] = $statValue->getCharacterStat()->getCategory();
+                $arraySkills
+                    [$statValue->getCharacterStat()->getName()]
+                    ['statData'] = $statValue->getCharacterStat();
+                $arraySkills
+                    [$statValue->getCharacterStat()->getName()]
+                    ['value'] = $statValue->getValue();
             } else if($statValue->getCharacterStat()->getCategory()->getStatsRequired() == -1 &&
                 $statValue->getCharacterStat()->getCategory()->getName() != "skills") {
 
                 $arrayPerks
                     [$statValue->getCharacterStat()->getCategory()->getName()]
-                    [$statValue->getCharacterStat()->getName()]['category'] = $statValue->getCharacterStat()->getCategory();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['valueId'] = $statValue->getId();
                 $arrayPerks
                     [$statValue->getCharacterStat()->getCategory()->getName()]
-                    [$statValue->getCharacterStat()->getName()]['statData'] = $statValue->getCharacterStat();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['lowestValue'] = $statValue->getCharacterStat()->getLowestValue();
                 $arrayPerks
                     [$statValue->getCharacterStat()->getCategory()->getName()]
-                    [$statValue->getCharacterStat()->getName()]['value'] = $statValue->getValue();
+                    [$statValue->getCharacterStat()->getName()]
+                    ['highestValue'] = $statValue->getCharacterStat()->getHighestValue();
+                $arrayPerks
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    [$statValue->getCharacterStat()->getName()]
+                    ['category'] = $statValue->getCharacterStat()->getCategory();
+                $arrayPerks
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    [$statValue->getCharacterStat()->getName()]
+                    ['statData'] = $statValue->getCharacterStat();
+                $arrayPerks
+                    [$statValue->getCharacterStat()->getCategory()->getName()]
+                    [$statValue->getCharacterStat()->getName()]
+                    ['value'] = $statValue->getValue();
             }
         }
 
