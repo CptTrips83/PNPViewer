@@ -80,12 +80,12 @@ class CharacterClass implements \JsonSerializable
         return $this;
     }
 
-    public function getMinLevel(): ?int
+    public function getLowestLevel(): ?int
     {
         return $this->minLevel;
     }
 
-    public function setMinLevel(int $minLevel): static
+    public function setLowestLevel(int $minLevel): static
     {
         $this->minLevel = $minLevel;
 

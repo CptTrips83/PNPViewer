@@ -73,7 +73,7 @@ class CharacterCreationTest extends AbstractKernelTest
 
         foreach ($character->getCharacterClassLevels() as $classLevel)
         {
-            $result = ($classLevel->getLevel() >= $classLevel->getCharacterClass()->getMinLevel()
+            $result = ($classLevel->getLevel() >= $classLevel->getCharacterClass()->getLowestLevel()
                 && $classLevel->getLevel() <= $classLevel->getCharacterClass()->getHighestLevel());
 
             $this->assertTrue($result);

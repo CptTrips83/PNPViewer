@@ -60,7 +60,7 @@ class CharacterEditorTest extends AbstractKernelTest
         $characterClass = new CharacterClass();
         $characterClass->setRuleSet($ruleSet);
         $characterClass->setName("Solo");
-        $characterClass->setMinLevel(1);
+        $characterClass->setLowestLevel(1);
         $characterClass->setHighestLevel(2);
 
         $characterStatCategory = new CharacterStatCategory();

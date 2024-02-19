@@ -64,7 +64,7 @@ class CharacterClassLevel implements JsonSerializable
 
     public function setLevel(int $level): static
     {
-        $level = max($this->getCharacterClass()->getMinLevel(), min($this->getCharacterClass()->getHighestLevel(), $level));
+        $level = max($this->getCharacterClass()->getLowestLevel(), min($this->getCharacterClass()->getHighestLevel(), $level));
 
         $this->level = $level;
 
