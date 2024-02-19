@@ -32,9 +32,20 @@
                     <div class="card-body">
                         {% for class in data['classes'] %}
                             <p class="card-text">
-                                <label>{{ class.classData.description }}</label>
+                                <label for="class-{{ class.valueId }}">{{ class.classData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ class.level }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="class-{{ class.valueId }}"
+                                           data-path="{{ path('app_character_edit.class') }}"
+                                           type="number"
+                                           min="{{ class.classData.lowestLevel }}"
+                                           max="{{ class.classData.highestLevel }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ class.level }}" />
+                                {% else %}
+                                    <span id="class-{{ class.valueId }}" class="mx-3">Level: {{ class.level }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -62,9 +73,20 @@
                     <div class="card-body">
                         {% for skill in data['skills'] %}
                             <p class="card-text">
-                                <label>{{ skill.statData.description }}</label>
+                                <label for="stat-{{ skill.valueId }}">{{ skill.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ skill.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ skill.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ skill.statData.lowestValue }}"
+                                           max="{{ skill.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ skill.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ skill.valueId }}" class="mx-3">Level: {{ skill.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -77,9 +99,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksCool'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -92,9 +125,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksDexterity'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -107,9 +151,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksEmpathy'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -122,9 +177,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksIntelligence'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -137,9 +203,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksReflexes'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -152,9 +229,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksTechnique'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
@@ -167,9 +255,20 @@
                     <div class="card-body">
                         {% for perk in data['perks']['perksWillpower'] %}
                             <p class="card-text">
-                                <label>{{ perk.statData.description }}</label>
+                                <label for="stat-{{ perk.valueId }}">{{ perk.statData.description }}</label>
                                 <br>
-                                <span class="mx-3">Level: {{ perk.value }}</span>
+                                {% if isCharacterEditable %}
+                                    Level:
+                                    <input id="stat-{{ perk.valueId }}"
+                                           data-path="{{ path('app_character_edit.stat') }}"
+                                           type="number"
+                                           min="{{ perk.statData.lowestValue }}"
+                                           max="{{ perk.statData.highestValue }}"
+                                           class="mx-3 input_edit_character"
+                                           value="{{ perk.value }}" />
+                                {% else %}
+                                    <span id="stat-{{ perk.valueId }}" class="mx-3">Level: {{ perk.value }}</span>
+                                {% endif %}
                             </p>
                         {% endfor %}
                     </div>
