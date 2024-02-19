@@ -1,29 +1,79 @@
-import SuccessCallback = JQuery.Ajax.SuccessCallback;
-import Callback = JQuery.Deferred.Callback;
 
 /**
- * Sends an Ajax request to the specified URL.
+ * Sends an AJAX request to the specified URL using the specified HTTP method.
  *
- * @param {string} url - The URL to send the request to.
- * @param {string} [type="POST"] - The type of request to send. Defaults to "POST".
- * @param {SuccessCallback<any>} onSuccess - The function to be executed if the request is successful.
- * @param {Callback<any>} onError - The function to be executed if an error occurs during the request.
+ * @param {string} url - The URL to send the AJAX request to.
+ * @param {string} [type="POST"] - The HTTP method to use for the request. Default is "POST".
+ * @param {string} data - The data to send along with the request.
+ * @param {Function} onSuccess - The success callback function to handle the response.
+ * @param {Function} onError - The error callback function to handle any errors.
+ * @return {void} - This method does not return a value.
  */
-function sendAjaxRequest(
+export function sendAjaxRequest(
     url : string,
-    type  : string = "POST",
-    onSuccess : SuccessCallback<any>,
-    onError : Callback<any>
-    )  {
-    $.ajax({
-        url:		url,
-        type:		type,
-        dataType:	'json',
-        async:		true,
-        success: onSuccess,
-        error: function (xhr, textStatus, errorThrown) {
-            if (onError) onError(xhr, textStatus, errorThrown);
-            else console.warn("No error Callback on Ajax-Function to URL " + url);
+    type : string = "POST",
+    data : string,
+    onSuccess : Function,
+    onError : Function
+) : void {
+    let xhr: XMLHttpRequest;
+    xhr = processRequest(
+        url,
+        type,
+        data
+    );
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status === 201) {
+                onSuccess(
+                    xhr,
+                    xhr.responseText
+                );
+            } else if (xhr.status === 400 ||
+                xhr.status === 500) {
+                onError(xhr);
+            }
         }
-    })
+    }
+}
+
+
+function processRequest(
+    url : string,
+    type : string = 'POST',
+    data : string
+    ) : XMLHttpRequest {
+
+    let dataString = generateDataString(data);
+
+    let postData : string = "";
+    let getData : string = "";
+
+    if (type == 'POST' ||
+        type =='PUT')
+        postData = dataString;
+    else
+        getData = "?" + dataString;
+
+    let xhr : XMLHttpRequest = new XMLHttpRequest()
+    xhr.open(type, url + getData, true)
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    xhr.send(postData);
+
+
+
+    return xhr;
+
+}
+
+function generateDataString(data : string) : string {
+    let json = JSON.parse(data)
+    let arr1 : any[] = [];
+    let result : string;
+    for (const data in json) {
+        arr1.push(data + "=" + json[data]);
+    }
+    result = [arr1].join('&').replace(',', '&');
+
+    return result;
 }
