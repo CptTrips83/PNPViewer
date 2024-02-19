@@ -29,14 +29,13 @@ export function sendAjaxRequest(
 
     xhr.onreadystatechange = function () {
         try {
-            if (xhr.readyState == 4) {
+            if (xhr.readyState === 4) {
                 if (xhr.status >= 200 &&
                     xhr.status <= 299) {
                     onSuccess(
                         xhr
                     );
-                } else if (xhr.status === 400 ||
-                    xhr.status === 500) {
+                } else {
                     onError(xhr);
                 }
             }
@@ -74,8 +73,8 @@ function processRequest(
     let postData : string = "";
     let getData : string = "";
 
-    if (type == 'POST' ||
-        type =='PUT')
+    if (type === 'POST' ||
+        type === 'PUT')
         postData = dataString;
     else
         getData = "?" + dataString;
