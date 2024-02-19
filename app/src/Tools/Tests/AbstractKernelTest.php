@@ -109,7 +109,7 @@ class AbstractKernelTest extends KernelTestCase
 
         $class = new CharacterClass();
         $class->setName("Solo");
-        $class->setMinLevel(1);
+        $class->setLowestLevel(1);
         $class->setHighestLevel(20);
         $ruleSet->addCharacterClass($class);
 

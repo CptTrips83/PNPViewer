@@ -71,7 +71,7 @@ class CharacterBuilderTest extends AbstractKernelTest
         $characterClass = new CharacterClass();
         $characterClass->setRuleSet($ruleSet);
         $characterClass->setName("Solo");
-        $characterClass->setMinLevel(1);
+        $characterClass->setLowestLevel(1);
         $characterClass->setHighestLevel(1);
 
         $characterStatCategory = new CharacterStatCategory();
