@@ -20,15 +20,15 @@ class CharacterEditController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager): Response
     {
-        if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        //if(!$request->isXmlHttpRequest()) return new Response("", "400");
 
-        $statValueId = $request->request->get("statValueId");
+        $valueId = $request->request->get("valueId");
         $newValue = $request->request->get("newValue");
 
         $repoCharacterStatValue = $entityManager->getRepository(CharacterStatValue::class);
 
         /** @var CharacterStatValue $characterStatValue */
-        $characterStatValue = $repoCharacterStatValue->find($statValueId);
+        $characterStatValue = $repoCharacterStatValue->find($valueId);
 
         /** @var CharacterData $character */
         $character = $characterStatValue->getCharacterData();
@@ -39,17 +39,17 @@ class CharacterEditController extends AbstractController
             ->setStatValue($characterStatValue->getCharacterStat(), $newValue)
             ->saveCharacter();
 
-        return new Response("", "200");
+        return new Response("", "201");
     }
 
-    #[Route('/stat', name: '.class')]
+    #[Route('/class', name: '.class')]
     public function editClassValue(
         Request $request,
         EntityManagerInterface $entityManager): Response
     {
-        if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        //if(!$request->isXmlHttpRequest()) return new Response("", "400");
 
-        $classLevelId = $request->request->get("classLevelId");
+        $classLevelId = $request->request->get("valueId");
         $newValue = $request->request->get("newValue");
 
         $repoCharacterClassLevel = $entityManager->getRepository(CharacterClassLevel::class);
@@ -66,6 +66,6 @@ class CharacterEditController extends AbstractController
             ->setClassLevel($characterClassLevel->getCharacterClass(), $newValue)
             ->saveCharacter();
 
-        return new Response("", "200");
+        return new Response("", "201");
     }
 }
