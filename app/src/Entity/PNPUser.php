@@ -39,10 +39,14 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CharacterData::class)]
     private Collection $characters;
 
+    #[ORM\OneToMany(mappedBy: 'invitedUser', targetEntity: PNPGroupInvite::class)]
+    private Collection $groupInvites;
+
     public function __construct()
     {
         $this->gameMasterGroups = new ArrayCollection();
         $this->characters = new ArrayCollection();
+        $this->groupInvites = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -174,6 +178,36 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
             // set the owning side to null (unless already changed)
             if ($character->getUser() === $this) {
                 $character->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PNPGroupInvite>
+     */
+    public function getGroupInvites(): Collection
+    {
+        return $this->groupInvites;
+    }
+
+    public function addGroupInvite(PNPGroupInvite $groupInvite): static
+    {
+        if (!$this->groupInvites->contains($groupInvite)) {
+            $this->groupInvites->add($groupInvite);
+            $groupInvite->setInvitedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupInvite(PNPGroupInvite $groupInvite): static
+    {
+        if ($this->groupInvites->removeElement($groupInvite)) {
+            // set the owning side to null (unless already changed)
+            if ($groupInvite->getInvitedUser() === $this) {
+                $groupInvite->setInvitedUser(null);
             }
         }
 

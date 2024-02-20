@@ -39,9 +39,13 @@ class PNPGroup implements JsonSerializable
     #[ORM\Column(nullable: true)]
     private ?int $maxCharacterCount = null;
 
+    #[ORM\OneToMany(mappedBy: 'inviteGroup', targetEntity: PNPGroupInvite::class)]
+    private Collection $invites;
+
     public function __construct()
     {
         $this->characters = new ArrayCollection();
+        $this->invites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +139,36 @@ class PNPGroup implements JsonSerializable
     public function setMaxCharacterCount(?int $maxCharacterCount): static
     {
         $this->maxCharacterCount = $maxCharacterCount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PNPGroupInvite>
+     */
+    public function getInvites(): Collection
+    {
+        return $this->invites;
+    }
+
+    public function addInvite(PNPGroupInvite $invite): static
+    {
+        if (!$this->invites->contains($invite)) {
+            $this->invites->add($invite);
+            $invite->setInviteGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvite(PNPGroupInvite $invite): static
+    {
+        if ($this->invites->removeElement($invite)) {
+            // set the owning side to null (unless already changed)
+            if ($invite->getInviteGroup() === $this) {
+                $invite->setInviteGroup(null);
+            }
+        }
 
         return $this;
     }
