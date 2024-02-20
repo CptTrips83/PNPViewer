@@ -32,11 +32,9 @@ function onChange(event : any) : void {
     if (url == null) return;
 
     let splitId : string[] = id.split('-');
-
     if (splitId.length <= 1) return;
 
     let valueId : string = splitId[1];
-
     if (valueId == "") return;
 
     let data : string = '{ "valueId" : "' + valueId + '" , "newValue" : "' + newValue + '" }';

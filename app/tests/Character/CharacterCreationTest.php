@@ -2,13 +2,7 @@
 
 namespace App\Tests\Character;
 
-use App\Entity\CharacterClass;
-use App\Entity\CharacterClassLevel;
 use App\Entity\CharacterData;
-use App\Entity\CharacterStat;
-use App\Entity\CharacterStatCategory;
-use App\Entity\CharacterStatValue;
-use App\Entity\RuleSet;
 use App\Tools\Character\Factory\CharacterArrayFactory;
 use App\Tools\Tests\AbstractKernelTest;
 
@@ -18,8 +12,6 @@ class CharacterCreationTest extends AbstractKernelTest
     {
         $this->Initialize();
     }
-
-
 
     public function getCharacterFromDB() : CharacterData
     {
