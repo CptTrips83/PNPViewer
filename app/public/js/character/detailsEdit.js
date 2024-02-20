@@ -23,13 +23,13 @@ function onChange(event) {
     let id = element.id;
     let newValue = element.value;
     let url = element.getAttribute('data-path');
+    if (url == null)
+        return;
     let splitId = id.split('-');
     if (splitId.length <= 1)
         return;
     let valueId = splitId[1];
     if (valueId == "")
-        return;
-    if (url == null)
         return;
     let data = '{ "valueId" : "' + valueId + '" , "newValue" : "' + newValue + '" }';
     sendAjaxRequest(url, "POST", data, onSuccess, onError);

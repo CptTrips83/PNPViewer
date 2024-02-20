@@ -23,25 +23,25 @@ function start() : void {
  * @return {void}
  */
 function onChange(event : any) : void {
-    let element = event.target as HTMLInputElement;
+    let element : HTMLInputElement = event.target;
 
-    let id = element.id;
-    let newValue = element.value;
-    let url = element.getAttribute('data-path');
+    let id : string = element.id;
+    let newValue : string = element.value;
+    let url : string | null = element.getAttribute('data-path');
 
-    let splitId = id.split('-');
+    if (url == null) return;
+
+    let splitId : string[] = id.split('-');
 
     if (splitId.length <= 1) return;
 
-    let valueId = splitId[1];
+    let valueId : string = splitId[1];
 
     if (valueId == "") return;
-    if (url == null) return;
 
-    let data = '{ "valueId" : "' + valueId + '" , "newValue" : "' + newValue + '" }';
+    let data : string = '{ "valueId" : "' + valueId + '" , "newValue" : "' + newValue + '" }';
 
     sendAjaxRequest(url, "POST", data, onSuccess, onError);
-
 }
 
 /**
