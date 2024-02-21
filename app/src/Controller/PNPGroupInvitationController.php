@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
+/**
+ * Class PNPGroupInvitationController
+ *
+ * This class is responsible for handling group invitation related operations.
+ */
 #[Route('group/invitation', name: 'app_pnp_group_invitation')]
 class PNPGroupInvitationController extends AbstractController
 {
@@ -25,6 +30,13 @@ class PNPGroupInvitationController extends AbstractController
 
     }
 
+    /**
+     * Retrieves a list of groups associated with the current user as a game master.
+     *
+     * @return Response The rendered HTML template containing the list of groups.
+     *
+     * @Route('/list/groups', name='.list_groups')
+     */
     #[Route('/list/groups', name: '.list_groups')]
     public function listInvitation(): Response
     {
@@ -39,6 +51,16 @@ class PNPGroupInvitationController extends AbstractController
             ]);
     }
 
+    /**
+     * Creates an invitation for a specific user to join a group.
+     *
+     * @param string $pnpGroupId The ID of the group to generate the invitation for.
+     * @param string $pnpUserId The ID of the user to generate the invitation for.
+     *
+     * @return Response The redirect response to the show invitation page if successful, or the error page otherwise.
+     *
+     * @Route('/generate/{pnpGroupId}/{pnpUserId}', name='.generate')
+     */
     #[Route('/generate/{pnpGroupId}/{pnpUserId}', name: '.generate')]
     public function createInvitation(
         string $pnpGroupId,
@@ -68,6 +90,15 @@ class PNPGroupInvitationController extends AbstractController
         );
     }
 
+    /**
+     * Retrieves the data for a specific invitation and renders the invitation details.
+     *
+     * @param string $invitationCode The code of the invitation to be displayed.
+     *
+     * @return Response The rendered HTML template containing the invitation details.
+     *
+     * @Route('/show/{invitationCode}', name='.show')
+     */
     #[Route('/show/{invitationCode}', name: '.show')]
     public function showInvitation(
         string $invitationCode
@@ -94,6 +125,14 @@ class PNPGroupInvitationController extends AbstractController
         ]);
     }
 
+    /**
+     * Redeems an invitation by retrieving and processing the invitation data.
+     *
+     * @param string $invitationCode The invitation code to redeem.
+     * @return Response The rendered HTML template containing the redemption form and available characters.
+     *
+     * @Route('/redeem/{invitationCode}', name='.redeem')
+     */
     #[Route('/redeem/{invitationCode}', name: '.redeem')]
     public function redeemInvitation(
         string $invitationCode
@@ -131,6 +170,15 @@ class PNPGroupInvitationController extends AbstractController
         ]);
     }
 
+    /**
+     * Redeems an invitation code and associates the character with the group.
+     *
+     * @param string $invitationCode The invitation code to redeem.
+     * @param string $characterId The ID of the character.
+     * @return Response A redirect response to the character list page.
+     *
+     * @Route('/join/{invitationCode}/{characterId}', name='.join')
+     */
     #[Route('/join/{invitationCode}/{characterId}', name: '.join')]
     public function join(
         string $invitationCode,
@@ -154,6 +202,15 @@ class PNPGroupInvitationController extends AbstractController
         return $this->redirectToRoute('app_character_list');
     }
 
+    /**
+     * Handles and displays an error page for a specific invitation code.
+     *
+     * @param string $invitationCode The code associated with the error.
+     *
+     * @return Response The rendered HTML template for the error page.
+     *
+     * @Route('/error/{invitationCode}', name='.error')
+     */
     #[Route('/error/{invitationCode}', name: '.error')]
     public function error(
         string $invitationCode
