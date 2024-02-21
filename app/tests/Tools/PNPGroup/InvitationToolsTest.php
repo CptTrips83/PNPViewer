@@ -106,6 +106,12 @@ class InvitationToolsTest extends AbstractKernelTest
         }
     }
 
+    /**
+     * Test the retrieval of invitation data based on a given invitation code.
+     *
+     * @return void
+     * @throws Throwable
+     */
     public function testGetInvitationData() : void
     {
         try {
@@ -264,6 +270,12 @@ class InvitationToolsTest extends AbstractKernelTest
         }
     }
 
+    /**
+     * Create mock PNPUser, PNPGroup, and RuleSet objects for testing purposes.
+     *
+     * @return void
+     * @throws Throwable
+     */
     private function createMocks() : void
     {
         // create mock PNPUser and PNPGroup
