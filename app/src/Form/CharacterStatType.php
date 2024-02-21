@@ -29,7 +29,7 @@ class CharacterStatType extends AbstractType
                 'required' => false,
                 'label' => 'Lange Beschreibung'
             ])
-            ->add('minValue', NumberType::class, [
+            ->add('lowestValue', NumberType::class, [
                 'label' => 'Niedrigster Wert',
                 'scale' => 0
             ])

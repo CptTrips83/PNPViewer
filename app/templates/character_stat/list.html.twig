@@ -42,7 +42,7 @@
                         <th scope="row">{{ stat.getName }}</th>
                         <td>{{ stat.getDescription }}</td>
                         <td>{{ category.getName }}</td>
-                        <td>{{ stat.getMinValue }}</td>
+                        <td>{{ stat.getLowestValue }}</td>
                         <td>{{ stat.getHighestValue }}</td>
                         <td>
                             <a href="{{ path('app_character_stat_edit', { 'id': stat.getId }) }}">Bearbeiten</a>

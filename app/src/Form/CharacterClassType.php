@@ -29,7 +29,7 @@ class CharacterClassType extends AbstractType
                 'required' => false,
                 'label' => 'Lange Beschreibung'
             ])
-            ->add('minLevel', NumberType::class, [
+            ->add('lowestLevel', NumberType::class, [
                 'label' => 'Niedrigster Level',
                 'scale' => 0
             ])
