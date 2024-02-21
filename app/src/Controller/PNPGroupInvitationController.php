@@ -6,7 +6,6 @@ use App\Entity\CharacterData;
 use App\Entity\PNPGroup;
 use App\Entity\PNPUser;
 use App\Tools\PNPGroup\InvitationTools;
-use App\Traits\ControllerEntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
