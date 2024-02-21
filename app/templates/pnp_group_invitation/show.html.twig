@@ -9,5 +9,9 @@
         <img alt="{{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}"
              src="https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=
             {{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}">
+        <br>
+        <a href="{{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}">
+            {{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}
+        </a>
     </div>
 {% endblock %}
