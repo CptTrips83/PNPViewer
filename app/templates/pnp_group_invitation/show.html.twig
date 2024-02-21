@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PNPGroupInvitationController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        Einladung zur Gruppe {{ groupName }}
+        <br/>
+        <img alt="{{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}"
+             src="https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=
+            {{ app.request.getSchemeAndHttpHost() }}{{ path('app_pnp_group_invitation.redeem', { 'invitationCode':invitationCode }) }}">
+    </div>
+{% endblock %}
