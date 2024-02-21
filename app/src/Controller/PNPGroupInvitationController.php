@@ -17,14 +17,17 @@ use Throwable;
 #[Route('group/invitation', name: 'app_pnp_group_invitation')]
 class PNPGroupInvitationController extends AbstractController
 {
-    use ControllerEntityManager;
+
+    public function __construct(
+         private readonly EntityManagerInterface $_entityManager
+    )
+    {
+
+    }
 
     #[Route('/list/groups', name: '.list_groups')]
-    public function listInvitation(
-        EntityManagerInterface $entityManager
-    ): Response
+    public function listInvitation(): Response
     {
-        $this->setEntityManager($entityManager);
 
         $groups = $this->_entityManager->getRepository(PNPGroup::class)
             ->findBy([
@@ -38,14 +41,11 @@ class PNPGroupInvitationController extends AbstractController
 
     #[Route('/generate/{pnpGroupId}/{pnpUserId}', name: '.generate')]
     public function createInvitation(
-        EntityManagerInterface $entityManager,
         string $pnpGroupId,
         string $pnpUserId
     ): Response
     {
         $invitationCode = "";
-
-        $this->setEntityManager($entityManager);
 
         $invitationTool = new InvitationTools($this->_entityManager);
 
@@ -70,12 +70,9 @@ class PNPGroupInvitationController extends AbstractController
 
     #[Route('/show/{invitationCode}', name: '.show')]
     public function showInvitation(
-        EntityManagerInterface $entityManager,
         string $invitationCode
     ): Response
     {
-        $this->setEntityManager($entityManager);
-
         $invitationTool = new InvitationTools($this->_entityManager);
         try {
             $invite = $invitationTool->getInvitationData($invitationCode);
@@ -99,16 +96,11 @@ class PNPGroupInvitationController extends AbstractController
 
     #[Route('/redeem/{invitationCode}', name: '.redeem')]
     public function redeemInvitation(
-        EntityManagerInterface $entityManager,
         string $invitationCode
     ): Response
     {
         $user = $this->getUser();
         if(!$user) return $this->redirectToRoute('app_login');
-
-        $this->setEntityManager($entityManager);
-
-        $invite = null;
 
         $invitationTool = new InvitationTools($this->_entityManager);
         try {
@@ -141,12 +133,10 @@ class PNPGroupInvitationController extends AbstractController
 
     #[Route('/join/{invitationCode}/{characterId}', name: '.join')]
     public function join(
-        EntityManagerInterface $entityManager,
         string $invitationCode,
         string $characterId
     ): Response
     {
-        $this->setEntityManager($entityManager);
 
         $character = $this->_entityManager->getRepository(CharacterData::class)->find($characterId);
 
@@ -166,7 +156,6 @@ class PNPGroupInvitationController extends AbstractController
 
     #[Route('/error/{invitationCode}', name: '.error')]
     public function error(
-        EntityManagerInterface $entityManager,
         string $invitationCode
     ): Response
     {
