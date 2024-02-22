@@ -44,7 +44,7 @@ readonly class InvitationTools
             ]);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            throw $exception;
+            throw new Exception("Can't find Invitation");
         }
     }
 
@@ -84,7 +84,7 @@ readonly class InvitationTools
         } catch(Exception $exception) {
             error_log($exception->getMessage());
             $this->_entityManager->getConnection()->rollBack();
-            throw $exception;
+            throw new Exception("Failed to Generate Invitation");
         }
 
         return $invitationCode;
@@ -121,7 +121,7 @@ readonly class InvitationTools
         } catch (Exception $exception) {
             error_log($exception->getMessage());
             $this->_entityManager->getConnection()->rollBack();
-            throw $exception;
+            throw new Exception($exception->getMessage());
         }
     }
 
@@ -168,7 +168,7 @@ readonly class InvitationTools
             return true;
         } catch (Exception | Throwable $exception) {
             error_log($exception->getMessage());
-            throw $exception;
+            throw new Exception("Invite Expired");
         }
     }
 
