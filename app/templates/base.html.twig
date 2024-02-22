@@ -38,7 +38,7 @@
                         <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
                             <li class="nav-item">
                                 <a href="{{ path('app_character_list')}}" class="nav-link px-sm-0 px-2">
-                                    <i class="fs-5 bi-people-fill"></i>
+                                    <i class="fs-5 bi-person-fill"></i>
                                     <span class="ms-1 d-none d-sm-inline">Charaktere</span>
                                 </a>
                             </li>
@@ -53,10 +53,11 @@
                                     <li><a class="dropdown-item" href="{{ path('app_character_stat_list', { 'ruleSetId': '1' }) }}">Werte</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a href="#" class="nav-link px-sm-0 px-2">
-                                    <i class="fs-5 bi-grid"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Platzhalter</span></a>
+                            <li class="nav-item">
+                                <a href="{{ path('app_pnp_group_invitation.list_groups')}}" class="nav-link px-sm-0 px-2">
+                                    <i class="fs-5 bi-people-fill"></i>
+                                    <span class="ms-1 d-none d-sm-inline">Gruppen</span>
+                                </a>
                             </li>
                             <li>
                                 <a href="#" class="nav-link px-sm-0 px-2">
