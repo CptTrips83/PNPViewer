@@ -10,6 +10,8 @@ use App\Entity\RuleSet;
 interface CharacterBuilderInterface
 {
 
+    public function createCharacter(RuleSet $ruleSet) : CharacterBuilderInterface;
+
     /**
      * Setzt einen bestehenden Character im Builder
      * @param CharacterData $character Der Character der gesetzt werden soll

@@ -100,7 +100,8 @@ class CharacterEditorTest extends AbstractKernelTest
         $this->_entityManager->persist($characterStat3);
         $this->_entityManager->flush();
 
-        $character = $builder->set("name", "Darius")
+        $character = $builder->createCharacter($ruleSet)
+            ->set("name", "Darius")
             ->addClass($characterClass, 1)
             ->addStat($characterStat1, 1)
             ->addStat($characterStat2, 1)

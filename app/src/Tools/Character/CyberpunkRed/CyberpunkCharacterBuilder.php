@@ -22,26 +22,30 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
 {
     private CharacterData $_character;
 
-
     /**
      * Constructor for the class.
      *
      * @param EntityManagerInterface $_entityManager The entity manager interface.
-     * @param RuleSet $ruleSet The rule set object.
      */
     public function __construct(
-        private readonly EntityManagerInterface $_entityManager,
-        RuleSet $ruleSet
+        private readonly EntityManagerInterface $_entityManager
     )
+    {
+
+    }
+
+    public function createCharacter(RuleSet $ruleSet): CharacterBuilderInterface
     {
         $this->_character = CharacterFactory::get();
         $this->_character->setCreationStart(new DateTime());
         $this->_character->setRuleSet($ruleSet);
         $this->_character->setName("");
         $this->_entityManager->persist($this->_character);
+
+        return $this;
     }
 
-     /**
+    /**
      * Setter method for setting the character data.
      *
      * @param CharacterData $character The character data that needs to be set.

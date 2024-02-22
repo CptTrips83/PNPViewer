@@ -84,6 +84,7 @@ class CharacterCreationController extends AbstractController
                 ]);
 
             $character = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+                ->createCharacter($ruleSet)
                 ->set("name", $data["name"])
                 ->set("user", $this->getUser())
                 ->set("nickname", $data["handle"])
