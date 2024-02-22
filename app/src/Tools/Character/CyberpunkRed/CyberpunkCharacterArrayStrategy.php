@@ -83,6 +83,12 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
                 /** @var CharacterStatCategory $characterCategory */
                 $characterCategory = $statValue->getCharacterStat()->getCategory();
 
+                if($characterCategory->getName() == "characterData"){
+                    $result[self::ARRAY_NAME_DATA][$statValue->getCharacterStat()->getName()]['value'] = $statValue->getValue();
+                    $result[self::ARRAY_NAME_DATA][$statValue->getCharacterStat()->getName()]['valueId'] = $statValue->getId();
+                    continue;
+                }
+
                 if ($characterCategory->getStatsRequired() == 1) {
                     $arrayDetails[$characterCategory->getName()] = $this->assignValues($statValue);
                 }

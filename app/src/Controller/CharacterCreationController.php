@@ -6,6 +6,7 @@ use App\Entity\CharacterClass;
 use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
+use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
 use App\Repository\CharacterStatRepository;
 use App\Tools\Character\Factory\CharacterBuilderFactory;
@@ -73,10 +74,21 @@ class CharacterCreationController extends AbstractController
         {
             $data = $form->getData();
 
+            $characterXP = $this->_entityManager->getRepository(CharacterStat::class)
+                ->findOneBy([
+                    'name' => 'characterXP'
+                ]);
+            $euroDollar = $this->_entityManager->getRepository(CharacterStat::class)
+                ->findOneBy([
+                    'name' => 'euroDollar'
+                ]);
+
             $character = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
                 ->set("name", $data["name"])
                 ->set("user", $this->getUser())
                 ->set("nickname", $data["handle"])
+                ->addStat($characterXP,0)
+                ->addStat($euroDollar, 0)
                 ->addClass($data["characterClass"], 1)
                 ->buildCharacter();
 

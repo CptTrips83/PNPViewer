@@ -22,6 +22,36 @@
                             <br>
                             <span class="mx-3">{{ data['data'].handle }}</span>
                         </p>
+                        <p class="card-text">
+                            <label for="class-{{ data['data']['characterXP']['valueId'] }}">Erfahrungspunkte</label>
+                            <br>
+                            {% if isCharacterEditable %}
+                                <input id="class-{{ data['data']['characterXP']['valueId'] }}"
+                                       data-path="{{ path('app_character_edit.stat') }}"
+                                       type="number"
+                                       min="0"
+                                       max="2147483647"
+                                       class="mx-3 input_edit_character"
+                                       value="{{ data['data']['characterXP']['value'] }}" />
+                            {% else %}
+                                <span id="class-{{ data['data']['characterXP']['valueId'] }}" class="mx-3">{{ data['data']['characterXP'] }}</span>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">
+                            <label for="class-{{ data['data']['euroDollar']['valueId'] }}">Eurodollar</label>
+                            <br>
+                            {% if isCharacterEditable %}
+                                <input id="class-{{ data['data']['euroDollar']['valueId'] }}"
+                                       data-path="{{ path('app_character_edit.stat') }}"
+                                       type="number"
+                                       min="0"
+                                       max="2147483647"
+                                       class="mx-3 input_edit_character"
+                                       value="{{ data['data']['euroDollar']['value'] }}" />
+                            {% else %}
+                                <span id="class-{{ data['data']['euroDollar']['valueId'] }}" class="mx-3">{{ data['data']['euroDollar'] }}</span>
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
                 <div id="characterDataClasses" class="card mb-2 details-page">
