@@ -7,7 +7,7 @@ let arrowPrev;
 let arrowNext;
 let pageCounter;
 // TODO Page Control
-//document.addEventListener("DOMContentLoaded", onLoadPage);
+document.addEventListener("DOMContentLoaded", onLoadPage);
 /**
  * Searches for details pages and assigns page numbers to each page.
  * If the page already has a page number class, it skips assigning a new one.
@@ -68,11 +68,11 @@ function switchPage(newPage) {
     for (let i = 0; i < pages.length; i++) {
         let element = pages[i];
         let htmlElement = element;
-        htmlElement.style.display = "none";
+        htmlElement.classList.add('d-none');
         if (isOnAllPages(element))
-            htmlElement.style.display = "flex";
+            htmlElement.classList.remove('d-none');
         if (isOnPage(element, newPage))
-            htmlElement.style.display = "flex";
+            htmlElement.classList.remove('d-none');
     }
     switchButtons(newPage);
     pageCounter.innerText = "Page " + newPage + " / " + lastPage;
