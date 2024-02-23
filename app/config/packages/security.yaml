@@ -1,4 +1,6 @@
 security:
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_RULESET, ROLE_USER]
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
@@ -39,13 +41,13 @@ security:
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/home, roles: ROLE_USER }
-        - { path: ^/show/character, roles: ROLE_USER }
-        - { path: ^/list, roles: ROLE_RULESET }
-        - { path: ^/create, roles: ROLE_RULESET }
-        - { path: ^/edit, roles: ROLE_RULESET }
-        - { path: ^/delete, roles: ROLE_RULESET }
         - { path: ^/character, roles: ROLE_USER }
-        - { path: ^/group/invitation, roles: ROLE_USER }
+        - { path: ^/character/list, roles: ROLE_RULESET }
+        - { path: ^/character/create, roles: ROLE_RULESET }
+        - { path: ^/character/edit, roles: ROLE_RULESET }
+        - { path: ^/character/delete, roles: ROLE_RULESET }
+        - { path: ^/group, roles: ROLE_USER }
+
 
 when@test:
     security:
