@@ -53,10 +53,11 @@ class PNPGroupController extends AbstractController
             PNPGroup::class,
             PNPGroupType::class
         );
+
         $this->assignGameMasterToGroup($form);
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_pnp_group_list');
+            'app_pnp_group.list');
 
         if($redirectResponse != null) {
             return $redirectResponse;
@@ -97,8 +98,8 @@ class PNPGroupController extends AbstractController
         }
     }
 
-    private function createSuccessFlashMessage(): void
+    private function createSuccessFlashMessage(string $message = 'Gruppe wurde gespeichert'): void
     {
-        $this->addFlash('success', 'PNP-Gruppe wurde gespeichert');
+        $this->addFlash('success', $message);
     }
 }

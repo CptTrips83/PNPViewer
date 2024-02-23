@@ -7,7 +7,7 @@ use App\Entity\PNPUser;
 use App\Entity\RuleSet;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +24,15 @@ class PNPGroupType extends AbstractType
             ->add('description', TextareaType::class,[
                 'label' => 'Beschreibung',
                 'required' => false
+            ])
+            ->add('maxCharacterCount', IntegerType::class,[
+                'label' => 'Maximale Anzahl von Charakteren',
+                'empty_data' => 2,
+                'data' => 2,
+                'attr' => [
+                    'min' => 2,
+                    'max' => 12
+                ]
             ])
             ->add('ruleSet', EntityType::class, [
                 'class' => RuleSet::class,
