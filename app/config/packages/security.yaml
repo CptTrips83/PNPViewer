@@ -44,7 +44,7 @@ security:
         - { path: ^/create, roles: ROLE_RULESET }
         - { path: ^/edit, roles: ROLE_RULESET }
         - { path: ^/delete, roles: ROLE_RULESET }
-        - { path: ^/character/creation, roles: ROLE_USER }
+        - { path: ^/character, roles: ROLE_USER }
         - { path: ^/group/invitation, roles: ROLE_USER }
 
 when@test:
