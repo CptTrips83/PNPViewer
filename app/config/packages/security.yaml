@@ -42,10 +42,7 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/home, roles: ROLE_USER }
         - { path: ^/character, roles: ROLE_USER }
-        - { path: ^/character/list, roles: ROLE_RULESET }
-        - { path: ^/character/create, roles: ROLE_RULESET }
-        - { path: ^/character/edit, roles: ROLE_RULESET }
-        - { path: ^/character/delete, roles: ROLE_RULESET }
+        - { path: ^/ruleset, roles: ROLE_RULESET }
         - { path: ^/group, roles: ROLE_USER }
 
 

@@ -14,7 +14,7 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <a href="{{ path('app_character_class_create')  }}">Charakter-Klasse erstellen</a>
+        <a href="{{ path('app_ruleset_class_create')  }}">Charakter-Klasse erstellen</a>
         <table class="table">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                     <td>{{ class.getLowestLevel }}</td>
                     <td>{{ class.getHighestLevel}}</td>
                     <td>
-                        <a href="{{ path('app_character_class_edit', { 'id': class.getId }) }}">Bearbeiten</a>
+                        <a href="{{ path('app_ruleset_class_edit', { 'id': class.getId }) }}">Bearbeiten</a>
                         <a href="#">Entfernen</a>
                     </td>
                 </tr>

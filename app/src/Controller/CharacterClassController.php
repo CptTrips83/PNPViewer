@@ -21,7 +21,7 @@ class CharacterClassController extends AbstractController
     use ControllerEntityManager;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/character/create/class', name: 'app_character_class_create')]
+    #[Route('/ruleset/create/class', name: 'app_ruleset_class_create')]
     public function createCharacterClass(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
@@ -35,7 +35,7 @@ class CharacterClassController extends AbstractController
         $class = $form->getData();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_class_edit',
+            'app_ruleset_class_edit',
             ['id' => $class->getId()]);
 
         if($redirectResponse != null) {
@@ -48,7 +48,7 @@ class CharacterClassController extends AbstractController
         }
     }
 
-    #[Route('/character/edit/class/{id}', name: 'app_character_class_edit')]
+    #[Route('/ruleset/edit/class/{id}', name: 'app_ruleset_class_edit')]
     public function editCharacterClass(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
@@ -65,7 +65,7 @@ class CharacterClassController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    #[Route('/character/list/class/{ruleSetId}', name: 'app_character_class_list')]
+    #[Route('/ruleset/list/class/{ruleSetId}', name: 'app_ruleset_class_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);

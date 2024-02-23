@@ -20,7 +20,7 @@ class CharacterStatController extends AbstractController
     use ControllerForm;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/character/create/stat', name: 'app_character_stat_create')]
+    #[Route('/ruleset/create/stat', name: 'app_ruleset_stat_create')]
     public function createCharacterStat(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
@@ -32,7 +32,7 @@ class CharacterStatController extends AbstractController
         );
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_stat_list',
+            'app_ruleset_stat_list',
             ['ruleSetId' => '1']);
 
         if($redirectResponse != null) {
@@ -45,7 +45,7 @@ class CharacterStatController extends AbstractController
         }
     }
 
-    #[Route('/character/edit/stat/{id}', name: 'app_character_stat_edit')]
+    #[Route('/ruleset/edit/stat/{id}', name: 'app_ruleset_stat_edit')]
     public function editCharacterStat(Request $request, int $id, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);
@@ -62,7 +62,7 @@ class CharacterStatController extends AbstractController
         $categories = $repoCategories->findAll();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_stat_list',
+            'app_ruleset_stat_list',
             ['ruleSetId' => '1']);
 
         if($redirectResponse != null) {
@@ -76,7 +76,7 @@ class CharacterStatController extends AbstractController
         }
     }
 
-    #[Route('/character/list/stat/{ruleSetId}', name: 'app_character_stat_list')]
+    #[Route('/ruleset/list/stat/{ruleSetId}', name: 'app_ruleset_stat_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);

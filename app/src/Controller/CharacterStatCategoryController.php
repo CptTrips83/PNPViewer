@@ -21,7 +21,7 @@ class CharacterStatCategoryController extends AbstractController
     use ControllerForm;
     private EntityManagerInterface $_entityManager;
 
-    #[Route('/character/create/stat/category', name: 'app_character_stat_category_create')]
+    #[Route('/ruleset/create/stat/category', name: 'app_ruleset_stat_category_create')]
     public function createCategoryForm(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
@@ -35,7 +35,7 @@ class CharacterStatCategoryController extends AbstractController
         $category = $form->getData();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_stat_category_list',
+            'app_ruleset_stat_category_list',
             ['ruleSetId' => '1']);
 
         if($redirectResponse != null) {
@@ -48,7 +48,7 @@ class CharacterStatCategoryController extends AbstractController
         }
     }
 
-    #[Route('/character/edit/stat/category/{id}', name: 'app_character_stat_category_edit')]
+    #[Route('/ruleset/edit/stat/category/{id}', name: 'app_ruleset_stat_category_edit')]
     public function editCategoryForm(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
@@ -61,7 +61,7 @@ class CharacterStatCategoryController extends AbstractController
         );
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_character_stat_category_list',
+            'app_ruleset_stat_category_list',
             ['ruleSetId' => '1']);
         if($redirectResponse != null) {
             return $redirectResponse;
@@ -73,7 +73,7 @@ class CharacterStatCategoryController extends AbstractController
         }
     }
 
-    #[Route('/character/list/stat/category/{ruleSetId}', name: 'app_character_stat_category_list')]
+    #[Route('/ruleset/list/stat/category/{ruleSetId}', name: 'app_ruleset_stat_category_list')]
     public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);

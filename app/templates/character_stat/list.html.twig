@@ -14,7 +14,7 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <a href="{{ path('app_character_stat_create')  }}">Charakter-Wert erstellen</a>
+        <a href="{{ path('app_ruleset_stat_create')  }}">Charakter-Wert erstellen</a>
         <br>
         <label>
             Kategorie Filtern
@@ -45,7 +45,7 @@
                         <td>{{ stat.getLowestValue }}</td>
                         <td>{{ stat.getHighestValue }}</td>
                         <td>
-                            <a href="{{ path('app_character_stat_edit', { 'id': stat.getId }) }}">Bearbeiten</a>
+                            <a href="{{ path('app_ruleset_stat_edit', { 'id': stat.getId }) }}">Bearbeiten</a>
                             <a href="#">Entfernen</a>
                         </td>
                     </tr>
