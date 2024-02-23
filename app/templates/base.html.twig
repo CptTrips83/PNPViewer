@@ -42,19 +42,21 @@
                                     <span class="ms-1 d-none d-sm-inline">Charaktere</span>
                                 </a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fs-5 bi-gear"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Regelwerk</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
-                                    <li><a class="dropdown-item" href="{{ path('app_character_class_list', { 'ruleSetId': '1' }) }}">Klassen</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_character_stat_category_list', { 'ruleSetId': '1' }) }}">Kategorien</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('app_character_stat_list', { 'ruleSetId': '1' }) }}">Werte</a></li>
-                                </ul>
-                            </li>
+                            {% if is_granted('ROLE_RULESET') %}
+                                <li class="dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fs-5 bi-gear"></i>
+                                        <span class="ms-1 d-none d-sm-inline">Regelwerk</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
+                                        <li><a class="dropdown-item" href="{{ path('app_character_class_list', { 'ruleSetId': '1' }) }}">Klassen</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_character_stat_category_list', { 'ruleSetId': '1' }) }}">Kategorien</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_character_stat_list', { 'ruleSetId': '1' }) }}">Werte</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
-                                <a href="{{ path('app_pnp_group_invitation.list_groups')}}" class="nav-link px-sm-0 px-2">
+                                <a href="{{ path('app_pnp_group.list')}}" class="nav-link px-sm-0 px-2">
                                     <i class="fs-5 bi-people-fill"></i>
                                     <span class="ms-1 d-none d-sm-inline">Gruppen</span>
                                 </a>

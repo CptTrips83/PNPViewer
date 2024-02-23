@@ -30,27 +30,6 @@ class PNPGroupInvitationController extends AbstractController
     }
 
     /**
-     * Retrieves a list of groups associated with the current user as a game master.
-     *
-     * @return Response The rendered HTML template containing the list of groups.
-     *
-     * @Route('/list/groups', name='.list_groups')
-     */
-    #[Route('/list/groups', name: '.list_groups')]
-    public function listInvitation(): Response
-    {
-
-        $groups = $this->_entityManager->getRepository(PNPGroup::class)
-            ->findBy([
-                'gameMaster' => $this->getUser()
-            ]);
-
-        return $this->render('pnp_group_invitation/list.html.twig',[
-            'groups' => $groups
-            ]);
-    }
-
-    /**
      * Creates an invitation for a specific user to join a group.
      *
      * @param string $pnpGroupId The ID of the group to generate the invitation for.

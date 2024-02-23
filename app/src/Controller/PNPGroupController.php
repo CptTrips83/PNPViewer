@@ -17,26 +17,36 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/group', name: 'app_pnp_group')]
 class PNPGroupController extends AbstractController
 {
     use ControllerForm;
-    use ControllerEntityManager;
 
-    #[Route('/pnp/group/list', name: 'app_pnp_group_list')]
+    public function __construct(
+        private readonly EntityManagerInterface $_entityManager
+    )
+    {
+
+    }
+
+    #[Route('/list', name: '.list')]
     public function list(): Response
     {
+        $groups = $this->_entityManager->getRepository(PNPGroup::class)
+            ->findBy([
+                'gameMaster' => $this->getUser()
+            ]);
+
         return $this->render('pnp_group/list.html.twig', [
-            'controller_name' => 'PNPGroupController',
+            'groups' => $groups,
         ]);
     }
 
-    #[Route('/pnp/group/create', name: 'app_pnp_group_create')]
+    #[Route('/create', name: '.create')]
     public function create(
-        Request $request,
-        EntityManagerInterface $entityManager
+        Request $request
     ): Response
     {
-        $this->setEntityManager($entityManager);
 
         $form = $this->processForm($this->_entityManager,
             $request,
@@ -58,7 +68,7 @@ class PNPGroupController extends AbstractController
         }
     }
 
-    #[Route('/pnp/group/edit', name: 'app_pnp_group_edit')]
+    #[Route('/edit', name: '.edit')]
     public function edit(): Response
     {
         return $this->render('pnp_group/form.html.twig', [
