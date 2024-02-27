@@ -34,6 +34,13 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
 
     }
 
+    /**
+     * Creates a character using the specified rule set.
+     *
+     * @param RuleSet $ruleSet The rule set used for character creation.
+     *
+     * @return CharacterBuilderInterface The character builder interface instance.
+     */
     public function createCharacter(RuleSet $ruleSet): CharacterBuilderInterface
     {
         $this->_character = CharacterFactory::get();
@@ -104,7 +111,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $this->_character->addCharacterClassLevel($classLevel);
 
         $this->_entityManager->persist($classLevel);
-        $this->_entityManager->flush();
+
         return $this;
     }
 
@@ -137,9 +144,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $statValue->setValue($value);
         $this->_character->addCharacterStatValue($statValue);
 
-        $this->_entityManager->persist($this->_character);
         $this->_entityManager->persist($statValue);
-        $this->_entityManager->flush();
         return $this;
     }
 
@@ -150,7 +155,6 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function buildCharacter(): CharacterData
     {
-        $this->_entityManager->persist($this->_character);
         $this->_entityManager->flush();
 
         return $this->_character;
