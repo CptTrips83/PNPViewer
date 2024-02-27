@@ -3,13 +3,10 @@
 namespace App\Tools\Character\CyberpunkRed;
 
 use App\Entity\CharacterClass;
-use App\Entity\CharacterClassLevel;
 use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
-use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
 use App\Tools\Character\Factory\CharacterFactory;
-use App\Tools\Character\Interfaces\CharacterBuilderInterface;
 use App\Tools\Character\Interfaces\CharacterEditorInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
