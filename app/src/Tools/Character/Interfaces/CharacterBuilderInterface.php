@@ -46,12 +46,6 @@ interface CharacterBuilderInterface
      * @return CharacterBuilderInterface
      */
     public function addStat(CharacterStat $stat, int $value) : CharacterBuilderInterface;
-    /**
-     * Generiert den Character
-     * @return CharacterData Der fertige Character
-     */
-    public function buildCharacter() : CharacterData;
-
 
     /**
      * Setzt das Datum für das Ende der Character Creation ind der DB

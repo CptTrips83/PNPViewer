@@ -38,9 +38,4 @@ interface CharacterEditorInterface
      * @return CharacterEditorInterface
      */
     public function setStatValue(CharacterStat $stat, int $value) : CharacterEditorInterface;
-    /**
-     * Speichert den Character
-     * @return CharacterData Der fertige Character
-     */
-    public function saveCharacter() : CharacterData;
 }
