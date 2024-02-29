@@ -9,11 +9,13 @@
             {{ message }}
         </div>
     {% endfor %}
+    <a href="{{ path('app_pnp_group.create') }}">Neue Gruppe erstellen</a>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Anzahl Mitglieder</th>
+            <th scope="col">Maximale Mitglieder</th>
             <th scope="col">Regelwerk</th>
             <th scope="col">Optionen</th>
         </tr>
@@ -26,6 +28,9 @@
             </th>
             <td>
                 {{ group.characters|length }}
+            </td>
+            <td>
+                {{ group.maxCharacterCount }}
             </td>
             <td>
                 {{ group.ruleSet }}
