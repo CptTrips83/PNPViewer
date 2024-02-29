@@ -2,16 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\CharacterStat;
 use App\Entity\PNPGroup;
 use App\Entity\PNPUser;
-use App\Form\CharacterStatType;
 use App\Form\PNPGroupType;
-use App\Traits\ControllerEntityManager;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,7 +80,6 @@ class PNPGroupController extends AbstractController
      * Edits the PNPGroup with the given ID
      *
      * @param Request $request The request object
-     * @param EntityManagerInterface $entityManager The entity manager interface
      * @param int $id The ID of the PNPGroup to edit
      *
      * @return Response The response object
@@ -92,7 +87,6 @@ class PNPGroupController extends AbstractController
     #[Route('/edit/{id}', name: '.edit')]
     public function edit(
         Request $request,
-        EntityManagerInterface $entityManager,
         int $id
     ): Response
     {
@@ -117,14 +111,12 @@ class PNPGroupController extends AbstractController
 
     /**
      * Löscht eine Gruppe aus der Datenbank und entfernt alle zugeordneten Charaktere und Einladungen
-     * @param Request $request Das HTTP Request-Objekt
      * @param EntityManagerInterface $entityManager Das Entity Manager-Objekt für den Datenbankzugriff
      * @param int $id Die ID der zu löschenden Gruppe
      * @return Response Die HTTP Response nach dem Löschen der Gruppe
      */
     #[Route('/delete/{id}', name: '.delete')]
     public function delete(
-        Request $request,
         EntityManagerInterface $entityManager,
         int $id
     ): Response
