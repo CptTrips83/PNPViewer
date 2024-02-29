@@ -29,6 +29,11 @@ class PNPGroupController extends AbstractController
 
     }
 
+    /**
+     * Returns a response to display a list of PNPGroups for the current user who is a game master.
+     *
+     * @return Response A response containing the rendered 'pnp_group/list.html.twig' template and the 'groups' variable, which holds the list of PNPGroups
+     */
     #[Route('/list', name: '.list')]
     public function list(): Response
     {
@@ -42,6 +47,12 @@ class PNPGroupController extends AbstractController
         ]);
     }
 
+    /**
+     * Creates a new PNPGroup entity.
+     * @param Request $request The request object.
+     * @return Response The response object.
+     * @Route('/create', name: '.create')
+     */
     #[Route('/create', name: '.create')]
     public function create(
         Request $request
@@ -69,17 +80,80 @@ class PNPGroupController extends AbstractController
         }
     }
 
-    #[Route('/edit', name: '.edit')]
-    public function edit(): Response
+    /**
+     * Edits the PNPGroup with the given ID
+     *
+     * @param Request $request The request object
+     * @param EntityManagerInterface $entityManager The entity manager interface
+     * @param int $id The ID of the PNPGroup to edit
+     *
+     * @return Response The response object
+     */
+    #[Route('/edit/{id}', name: '.edit')]
+    public function edit(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        int $id
+    ): Response
     {
-        return $this->render('pnp_group/form.html.twig', [
-            'controller_name' => 'PNPGroupController',
-        ]);
+        $form = $this->processForm($this->_entityManager,
+            $request,
+            PNPGroup::class,
+            PNPGroupType::class,
+            $id
+        );
+
+        $redirectResponse = $this->redirectOnFormCompletion($form,
+            'app_pnp_group.list');
+        if($redirectResponse != null) {
+            return $redirectResponse;
+        } else {
+            return $this->render('pnp_group/form.html.twig', [
+                'controller_name' => 'PNPGroupController',
+                'form' => $form->createView()
+            ]);
+        }
     }
 
     /**
-     * Weist den aktuell angemeldeten User der neuen Gruppe als GameMaster zu
-     * @param FormInterface $form Form mit den Daten der neuen PNPGroup
+     * Löscht eine Gruppe aus der Datenbank und entfernt alle zugeordneten Charaktere und Einladungen
+     * @param Request $request Das HTTP Request-Objekt
+     * @param EntityManagerInterface $entityManager Das Entity Manager-Objekt für den Datenbankzugriff
+     * @param int $id Die ID der zu löschenden Gruppe
+     * @return Response Die HTTP Response nach dem Löschen der Gruppe
+     */
+    #[Route('/delete/{id}', name: '.delete')]
+    public function delete(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        int $id
+    ): Response
+    {
+        $group = $entityManager->getRepository(PNPGroup::class)
+            ->find($id);
+
+        foreach ($group->getCharacters() as $character) {
+            $group->removeCharacter($character);
+        }
+
+        foreach ($group->getInvites() as $invite) {
+            $group->removeInvite($invite);
+            $entityManager->remove($invite);
+        }
+
+        $entityManager->remove($group);
+        $entityManager->flush();
+
+        $this->createSuccessFlashMessage("Gruppe wurde entfernt.");
+
+
+        return $this->redirectToRoute('app_pnp_group.list');
+    }
+
+    /**
+     * Assigns a game master to a group based on the submitted form data.
+     *
+     * @param FormInterface $form The form containing the submitted data.
      * @return void
      */
     public function assignGameMasterToGroup(FormInterface $form): void
@@ -98,6 +172,12 @@ class PNPGroupController extends AbstractController
         }
     }
 
+    /**
+     * Creates a success flash message.
+     *
+     * @param string $message The success message to display. Defaults to 'Gruppe wurde gespeichert'.
+     * @return void
+     */
     private function createSuccessFlashMessage(string $message = 'Gruppe wurde gespeichert'): void
     {
         $this->addFlash('success', $message);

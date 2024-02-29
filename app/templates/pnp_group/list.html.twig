@@ -40,6 +40,12 @@
                     'pnpGroupId' : group.id,
                     'pnpUserId' : '0'
                 }) }}">Einladung erstellen</a>
+                <a href="{{ path('app_pnp_group.edit', {
+                    'id' : group.id
+                })  }}">Bearbeiten</a>
+                <a href="{{ path('app_pnp_group.delete', {
+                    'id' : group.id
+                })  }}">Löschen</a>
             </td>
         </tr>
         {% endfor %}
