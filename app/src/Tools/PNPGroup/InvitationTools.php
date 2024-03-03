@@ -66,11 +66,13 @@ readonly class InvitationTools
             $this->_entityManager->getConnection()->beginTransaction();
 
             $invitationCode = self::uniqueIdReal();
+            $invitationCodeShort = self::uniqueIdInt();
 
             $groupInvitation = new PNPGroupInvite();
 
             $groupInvitation->setInviteDate(new DateTime());
             $groupInvitation->setInviteCode($invitationCode);
+            $groupInvitation->setInviteCodeShort($invitationCodeShort);
             $groupInvitation->setInviteLifeTime(new DateInterval('P2D'));
 
             $this->_entityManager->persist($groupInvitation);
@@ -84,7 +86,7 @@ readonly class InvitationTools
         } catch(Exception $exception) {
             error_log($exception->getMessage());
             $this->_entityManager->getConnection()->rollBack();
-            throw new Exception("Failed to Generate Invitation");
+            throw $exception;
         }
 
         return $invitationCode;
@@ -221,5 +223,10 @@ readonly class InvitationTools
             throw new Exception("no cryptographically secure random function available");
         }
         return substr(bin2hex($bytes), 0, $length);
+    }
+
+    public static function uniqueIdInt(int $length = 5, int $min = 11111, int $max = 99999) : int
+    {
+        return intval(substr(100000 + ((rand($min, $max))*97 + 356563) % 896723, 0, $length));
     }
 }

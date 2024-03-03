@@ -51,12 +51,14 @@ class PNPGroupInvitationController extends AbstractController
 
         $group = $this->_entityManager->getRepository(PNPGroup::class)->find($pnpGroupId);
         $user = $this->_entityManager->getRepository(PNPUser::class)->find($pnpUserId);
+
         try {
             $invitationCode = $invitationTool->createInvitation($group, $user);
             if(!$invitationCode) throw new Exception('Failed to create the invitation');
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->addFlash('error', $e->getMessage());
+            dump($e);
             return $this->redirectToRoute('app_pnp_group_invitation.error', [
                 'invitationCode' => $invitationCode
             ]);

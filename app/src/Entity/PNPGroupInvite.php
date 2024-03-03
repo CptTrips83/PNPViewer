@@ -32,6 +32,9 @@ class PNPGroupInvite
     #[ORM\JoinColumn(nullable: false)]
     private ?PNPGroup $inviteGroup = null;
 
+    #[ORM\Column]
+    private ?int $inviteCodeShort = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +96,18 @@ class PNPGroupInvite
     public function setInviteGroup(?PNPGroup $inviteGroup): static
     {
         $this->inviteGroup = $inviteGroup;
+
+        return $this;
+    }
+
+    public function getInviteCodeShort(): ?int
+    {
+        return $this->inviteCodeShort;
+    }
+
+    public function setInviteCodeShort(int $inviteCodeShort): static
+    {
+        $this->inviteCodeShort = $inviteCodeShort;
 
         return $this;
     }
