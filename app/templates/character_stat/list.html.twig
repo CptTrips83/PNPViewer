@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterStatCategoryController!{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container">
+        <h3>Charakter-Werte für Regelwerk {{ ruleSet.getName }} Version {{ ruleSet.getVersion }}</h3>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <a href="{{ path('app_ruleset_stat_create')  }}">Charakter-Wert erstellen</a>
+        <br>
+        <label>
+            Kategorie Filtern
+            <select id="statTableFilter" onchange="filterTable('statTableFilter', 'statTable', 1);">
+                <option value="">Alle Kategorien</option>
+                {% for category in categories %}
+                    <option value="{{ category.getName }}">{{ category.getName }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <table id="statTable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Beschreibung</th>
+                    <th scope="col">Kategorie</th>
+                    <th scope="col">Minimaler Wert</th>
+                    <th scope="col">Maximaler Wert</th>
+                    <th scope="col">Optionen</th>
+                </tr>
+            </thead>
+            {% for category in categories %}
+                {% for stat in category.getCharacterStats %}
+                    <tr>
+                        <th scope="row">{{ stat.getName }}</th>
+                        <td>{{ stat.getDescription }}</td>
+                        <td>{{ category.getName }}</td>
+                        <td>{{ stat.getLowestValue }}</td>
+                        <td>{{ stat.getHighestValue }}</td>
+                        <td>
+                            <a href="{{ path('app_ruleset_stat_edit', { 'id': stat.getId }) }}">Bearbeiten</a>
+                            <a href="#">Entfernen</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

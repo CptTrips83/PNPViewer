@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterStatCategoryController!{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container">
+        <h3>Charakter-Klasse für Regelwerk {{ ruleSet.getName }} Version {{ ruleSet.getVersion }}</h3>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <a href="{{ path('app_ruleset_class_create')  }}">Charakter-Klasse erstellen</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Beschreibung</th>
+                    <th scope="col">Mindestlevel</th>
+                    <th scope="col">Höchste Level</th>
+                    <th scope="col">Optionen</th>
+                </tr>
+            </thead>
+            {% for class in classes %}
+                <tr>
+                    <th scope="row">{{ class.getName }}</th>
+                    <td>{{ class.getDescription }}</td>
+                    <td>{{ class.getLowestLevel }}</td>
+                    <td>{{ class.getHighestLevel}}</td>
+                    <td>
+                        <a href="{{ path('app_ruleset_class_edit', { 'id': class.getId }) }}">Bearbeiten</a>
+                        <a href="#">Entfernen</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

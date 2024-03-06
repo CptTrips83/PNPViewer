@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">Unbekannter Benutzer</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    Eingeloggt als {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+
+            <h2 class="h3 mb-3 font-weight-normal">Login</h2>
+
+            <label for="inputUsername">Benutzername</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+            <label for="inputPassword">Passwort</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Login
+            </button>
+        </form>
+    </div>
+{% endblock %}

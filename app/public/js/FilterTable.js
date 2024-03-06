@@ -1,0 +1,24 @@
+"use strict";
+function filterTable(inputFieldId, tableId, tableFilterIndex) {
+    let input;
+    let filter;
+    let table;
+    let tr;
+    let td;
+    let i;
+    input = document.getElementById(inputFieldId);
+    filter = input.options[input.selectedIndex].value.toUpperCase();
+    table = document.getElementById(tableId);
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[tableFilterIndex];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}

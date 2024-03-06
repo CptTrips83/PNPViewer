@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CharacterStatCategoryController!{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container">
+        <h3>Character-Werte Kategorien für Regelwerk {{ ruleSet.getName }} Version {{ ruleSet.getVersion }}</h3>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <a href="{{ path('app_ruleset_stat_category_create')  }}">Charakter-Wert Kategorie erstellen</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Beschreibung</th>
+                    <th scope="col">Benötigte Werte</th>
+                    <th scope="col">Klasse</th>
+                    <th scope="col">Optionen</th>
+                </tr>
+            </thead>
+            {% for category in categories %}
+                <tr>
+                    <th scope="row">{{ category.getName }}</th>
+                    <td>{{ category.getDescription }}</td>
+                    <td>
+                        {% if category.getStatsRequired < 0 %}
+                            Alle
+                        {% else %}
+                            {{ category.getStatsRequired }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if category.getClassNeeded == null %}
+                            Alle Klassen
+                        {% else %}
+                            {{ category.getClassNeeded.getName }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_ruleset_stat_category_edit', { 'id': category.getId }) }}">Bearbeiten</a>
+                        <a href="#">Entfernen</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

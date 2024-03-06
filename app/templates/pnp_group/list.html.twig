@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PNPGroupInvitationController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <a href="{{ path('app_pnp_group.create') }}">Neue Gruppe erstellen</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Anzahl Mitglieder</th>
+            <th scope="col">Maximale Mitglieder</th>
+            <th scope="col">Regelwerk</th>
+            <th scope="col">Optionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+        <tr>
+            <th scope="row">
+                {{ group.name }}
+            </th>
+            <td>
+                {{ group.characters|length }}
+            </td>
+            <td>
+                {{ group.maxCharacterCount }}
+            </td>
+            <td>
+                {{ group.ruleSet }}
+            </td>
+            <td>
+                <a href="{{ path('app_pnp_group_invitation.generate', {
+                    'pnpGroupId' : group.id,
+                    'pnpUserId' : '0'
+                }) }}">Einladung erstellen</a>
+                <a href="{{ path('app_pnp_group.edit', {
+                    'id' : group.id
+                })  }}">Bearbeiten</a>
+                <a href="{{ path('app_pnp_group.delete', {
+                    'id' : group.id
+                })  }}">Löschen</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

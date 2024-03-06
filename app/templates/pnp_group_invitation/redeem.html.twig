@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PNPGroupInvitationController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>Einladung für {{ groupName }}</h3>
+        <h4>Verfügbare Charaktere</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Optionen</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for character in characters %}
+                    <tr>
+                        <th scope="row">
+                            {{ character.name }}
+                        </th>
+                        <td>
+                            <a href="{{ path('app_pnp_group_invitation.join',{
+                                'invitationCode' : invitationCode,
+                                'characterId' : character.id
+                            }) }}">Gruppe beitreten</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
