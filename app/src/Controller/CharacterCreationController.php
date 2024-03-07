@@ -6,7 +6,6 @@ use App\Entity\CharacterClass;
 use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
-use App\Entity\CharacterStatValue;
 use App\Entity\RuleSet;
 use App\Repository\CharacterStatRepository;
 use App\Tools\Character\Factory\CharacterBuilderFactory;
@@ -115,7 +114,6 @@ class CharacterCreationController extends AbstractController
     {
         $this->setEntityManager($entityManager);
 
-        $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
         $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
         $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
 
@@ -160,7 +158,7 @@ class CharacterCreationController extends AbstractController
             $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
                 ->setCharacter($character);
 
-            foreach ($data as $key => $characterStat)
+            foreach ($data as $characterStat)
             {
                 $characterBuilder = $characterBuilder
                     ->addStat($characterStat, 1);

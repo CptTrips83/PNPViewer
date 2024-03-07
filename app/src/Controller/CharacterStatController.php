@@ -77,7 +77,7 @@ class CharacterStatController extends AbstractController
     }
 
     #[Route('/ruleset/list/stat/{ruleSetId}', name: 'app_ruleset_stat_list')]
-    public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
+    public function listCharacterClass(int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);
 
