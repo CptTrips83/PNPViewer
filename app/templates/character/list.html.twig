@@ -41,6 +41,9 @@
                 </td>
                 <td>
                     <a href="{{ path('app_character_show_details', {'characterId': character.id}) }}">Details</a>
+                    {% if character.pnpGroup is not null %}
+                        <a href="{{ path('app_pnp_group.leave', {'characterId': character.id}) }}">Gruppe verlassen</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

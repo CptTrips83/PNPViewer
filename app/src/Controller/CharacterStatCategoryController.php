@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\CharacterClass;
 use App\Entity\CharacterStatCategory;
 use App\Entity\RuleSet;
 use App\Form\CharacterStatCategoryType;
@@ -10,7 +9,6 @@ use App\Traits\ControllerEntityManager;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +30,7 @@ class CharacterStatCategoryController extends AbstractController
             CharacterStatCategoryType::class
         );
 
-        $category = $form->getData();
+        $form->getData();
 
         $redirectResponse = $this->redirectOnFormCompletion($form,
             'app_ruleset_stat_category_list',
@@ -74,7 +72,7 @@ class CharacterStatCategoryController extends AbstractController
     }
 
     #[Route('/ruleset/list/stat/category/{ruleSetId}', name: 'app_ruleset_stat_category_list')]
-    public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
+    public function listCharacterClass(int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);
 

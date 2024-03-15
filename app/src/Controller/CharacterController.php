@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\CharacterData;
-use App\Entity\PNPGroup;
 use App\Entity\PNPUser;
 use App\Tools\Character\Factory\CharacterArrayFactory;
 use App\Traits\ControllerEntityManager;
@@ -11,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -21,7 +19,6 @@ class CharacterController extends AbstractController
 
     #[Route('/character/list', name: 'app_character_list')]
     public function list(
-        Request $request,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -37,7 +34,6 @@ class CharacterController extends AbstractController
 
     #[Route('/character/show/details/{characterId}', name: 'app_character_show_details')]
     public function details(
-        Request $request,
         int $characterId,
         EntityManagerInterface $entityManager
     ): Response
@@ -68,7 +64,6 @@ class CharacterController extends AbstractController
 
     #[Route('/character/show/details/JSON/{characterId}', name: 'app_character_show_json')]
     public function jsonData(
-        Request $request,
         int $characterId,
         EntityManagerInterface $entityManager
     ): Response
@@ -101,7 +96,7 @@ class CharacterController extends AbstractController
             if ($pnpGroup) {
                 if ($user == $pnpGroup->getGameMaster()) return true;
             }
-        } catch(Exception $e) {
+        } catch(Exception) {
             return false;
         }
 
@@ -124,6 +119,6 @@ class CharacterController extends AbstractController
             $result = array_merge($result, $gameMasterGroup->getCharacters()->toArray());
         }
 
-        return  array_unique($result, SORT_REGULAR);
+        return array_unique($result, SORT_REGULAR);
     }
 }

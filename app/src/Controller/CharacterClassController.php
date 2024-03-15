@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CharacterClass;
-use App\Entity\CharacterStat;
 use App\Entity\RuleSet;
 use App\Form\CharacterClassType;
-use App\Form\CharacterStatType;
 use App\Traits\ControllerEntityManager;
 use App\Traits\ControllerForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,7 +64,7 @@ class CharacterClassController extends AbstractController
         ]);
     }
     #[Route('/ruleset/list/class/{ruleSetId}', name: 'app_ruleset_class_list')]
-    public function listCharacterClass(Request $request, int $ruleSetId, EntityManagerInterface $entityManager) : Response
+    public function listCharacterClass(int $ruleSetId, EntityManagerInterface $entityManager) : Response
     {
         $this->setEntityManager($entityManager);
 

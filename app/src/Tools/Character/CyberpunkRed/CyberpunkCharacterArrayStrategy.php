@@ -67,11 +67,12 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
             $result[self::ARRAY_NAME_DATA]['ruleSet'] = $character->getRuleSet();
 
             foreach ($character->getCharacterClassLevels() as $classLevel) {
-                $result[self::ARRAY_NAME_CLASSES][$classLevel->getCharacterClass()->getName()]['valueId'] = $classLevel->getId();
-                $result[self::ARRAY_NAME_CLASSES][$classLevel->getCharacterClass()->getName()]['lowestLevel'] = $classLevel->getCharacterClass()->getLowestLevel();
-                $result[self::ARRAY_NAME_CLASSES][$classLevel->getCharacterClass()->getName()]['highestLevel'] = $classLevel->getCharacterClass()->getHighestLevel();
-                $result[self::ARRAY_NAME_CLASSES][$classLevel->getCharacterClass()->getName()]['classData'] = $classLevel->getCharacterClass();
-                $result[self::ARRAY_NAME_CLASSES][$classLevel->getCharacterClass()->getName()]['level'] = $classLevel->getLevel();
+                $className = $classLevel->getCharacterClass()->getName();
+                $result[self::ARRAY_NAME_CLASSES][$className]['valueId'] = $classLevel->getId();
+                $result[self::ARRAY_NAME_CLASSES][$className]['lowestLevel'] = $classLevel->getCharacterClass()->getLowestLevel();
+                $result[self::ARRAY_NAME_CLASSES][$className]['highestLevel'] = $classLevel->getCharacterClass()->getHighestLevel();
+                $result[self::ARRAY_NAME_CLASSES][$className]['classData'] = $classLevel->getCharacterClass();
+                $result[self::ARRAY_NAME_CLASSES][$className]['level'] = $classLevel->getLevel();
             }
 
             $arrayDetails = array();
@@ -82,26 +83,28 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
 
                 /** @var CharacterStatCategory $characterCategory */
                 $characterCategory = $statValue->getCharacterStat()->getCategory();
+                $characterCategoryName = $characterCategory->getName();
+                $characterStatName = $statValue->getCharacterStat()->getName();
 
                 if($characterCategory->getName() == "characterData"){
-                    $result[self::ARRAY_NAME_DATA][$statValue->getCharacterStat()->getName()]['value'] = $statValue->getValue();
-                    $result[self::ARRAY_NAME_DATA][$statValue->getCharacterStat()->getName()]['valueId'] = $statValue->getId();
+                    $result[self::ARRAY_NAME_DATA][$characterStatName]['value'] = $statValue->getValue();
+                    $result[self::ARRAY_NAME_DATA][$characterStatName]['valueId'] = $statValue->getId();
                     continue;
                 }
 
                 if ($characterCategory->getStatsRequired() == 1) {
-                    $arrayDetails[$characterCategory->getName()] = $this->assignValues($statValue);
+                    $arrayDetails[$characterCategoryName] = $this->assignValues($statValue);
                 }
 
                 if ($characterCategory->getStatsRequired() == -1 &&
-                    $characterCategory->getName() == self::ARRAY_NAME_SKILL) {
+                    $characterCategoryName == self::ARRAY_NAME_SKILL) {
                     $arraySkills
-                    [$statValue->getCharacterStat()->getName()] = $this->assignValues($statValue);
+                    [$characterStatName] = $this->assignValues($statValue);
                 } else if ($characterCategory->getStatsRequired() == -1 &&
-                    $characterCategory->getName() != self::ARRAY_NAME_SKILL) {
+                    $characterCategoryName != self::ARRAY_NAME_SKILL) {
                     $arrayPerks
                     [$characterCategory->getName()]
-                    [$statValue->getCharacterStat()->getName()] = $this->assignValues($statValue);
+                    [$characterStatName] = $this->assignValues($statValue);
                 }
             }
 
