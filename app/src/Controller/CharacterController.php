@@ -119,6 +119,6 @@ class CharacterController extends AbstractController
             $result = array_merge($result, $gameMasterGroup->getCharacters()->toArray());
         }
 
-        return  array_unique($result, SORT_REGULAR);
+        return array_unique($result, SORT_REGULAR);
     }
 }

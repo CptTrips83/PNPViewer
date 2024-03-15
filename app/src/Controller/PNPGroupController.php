@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CharacterData;
 use App\Entity\PNPGroup;
 use App\Entity\PNPUser;
 use App\Form\PNPGroupType;
@@ -140,6 +141,26 @@ class PNPGroupController extends AbstractController
 
 
         return $this->redirectToRoute('app_pnp_group.list');
+    }
+
+    #[Route('/leave/{characterId}', name: '.leave')]
+    public function leave(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        int $characterId
+    ) : Response
+    {
+        $character = $entityManager->getRepository(CharacterData::class)
+            ->find($characterId);
+
+        $group = $character->getPnpGroup();
+
+        if ($group !== null) {
+            $group->removeCharacter($character);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_character_list');
     }
 
     /**
