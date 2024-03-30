@@ -25,67 +25,71 @@
     </head>
     <body>
         <div class="container-fluid overflow-hidden">
-            {% if is_mobile() %}
-                <div class="row vh-75 overflow-auto">
-            {% else %}
-                <div class="row vh-100 overflow-auto">
-            {% endif %}
-                <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
-                    <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
-                        <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                            <span class="fs-5">P&P<span class="d-none d-sm-inline">-Viewer</span></span>
-                        </a>
-                        <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
-                            <li class="nav-item">
-                                <a href="{{ path('app_character_list')}}" class="nav-link px-sm-0 px-2">
-                                    <i class="fs-5 bi-person-fill"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Charaktere</span>
-                                </a>
-                            </li>
-                            {% if is_granted('ROLE_RULESET') %}
-                                <li class="dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fs-5 bi-gear"></i>
-                                        <span class="ms-1 d-none d-sm-inline">Regelwerk</span>
+            {% block navblock %}
+                {% if is_mobile() %}
+                    <div class="row vh-75 overflow-auto">
+                {% else %}
+                    <div class="row vh-100 overflow-auto">
+                {% endif %}
+                    <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
+                        <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
+                            <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                                <span class="fs-5">P&P<span class="d-none d-sm-inline">-Viewer</span></span>
+                            </a>
+                            <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
+                                <li class="nav-item">
+                                    <a href="{{ path('app_character_list')}}" class="nav-link px-sm-0 px-2">
+                                        <i class="fs-5 bi-person-fill"></i>
+                                        <span class="ms-1 d-none d-sm-inline">Charaktere</span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
-                                        <li><a class="dropdown-item" href="{{ path('app_ruleset_class_list', { 'ruleSetId': '1' }) }}">Klassen</a></li>
-                                        <li><a class="dropdown-item" href="{{ path('app_ruleset_stat_category_list', { 'ruleSetId': '1' }) }}">Kategorien</a></li>
-                                        <li><a class="dropdown-item" href="{{ path('app_ruleset_stat_list', { 'ruleSetId': '1' }) }}">Werte</a></li>
-                                    </ul>
                                 </li>
+                                {% if is_granted('ROLE_RULESET') %}
+                                    <li class="dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fs-5 bi-gear"></i>
+                                            <span class="ms-1 d-none d-sm-inline">Regelwerk</span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
+                                            <li><a class="dropdown-item" href="{{ path('app_ruleset_class_list', { 'ruleSetId': '1' }) }}">Klassen</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_ruleset_stat_category_list', { 'ruleSetId': '1' }) }}">Kategorien</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_ruleset_stat_list', { 'ruleSetId': '1' }) }}">Werte</a></li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a href="{{ path('app_pnp_group.list')}}" class="nav-link px-sm-0 px-2">
+                                        <i class="fs-5 bi-people-fill"></i>
+                                        <span class="ms-1 d-none d-sm-inline">Gruppen</span>
+                                    </a>
+                                </li>
+                                <!--
+                                <li>
+                                    <a href="#" class="nav-link px-sm-0 px-2">
+                                        <i class="fs-5 bi-people"></i>
+                                        <span class="ms-1 d-none d-sm-inline">Platzhalter</span> </a>
+                                </li>
+                                -->
+                            </ul>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
+                                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
+                                        <span class="d-none d-sm-inline mx-1">{{ app.user.username }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                        <!--<li><a class="dropdown-item" href="#">New project...</a></li>
+                                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>-->
+                                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                                    </ul>
+                                </div>
                             {% endif %}
-                            <li class="nav-item">
-                                <a href="{{ path('app_pnp_group.list')}}" class="nav-link px-sm-0 px-2">
-                                    <i class="fs-5 bi-people-fill"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Gruppen</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-sm-0 px-2">
-                                    <i class="fs-5 bi-people"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Platzhalter</span> </a>
-                            </li>
-                        </ul>
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
-                                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://github.com/mdo.png" alt="hugenerd" width="28" height="28" class="rounded-circle">
-                                    <span class="d-none d-sm-inline mx-1">{{ app.user.username }}</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                                    <!--<li><a class="dropdown-item" href="#">New project...</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>-->
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
-                                </ul>
-                            </div>
-                        {% endif %}
+                        </div>
                     </div>
-                </div>
+                {% endblock %}
                 <div class="col d-flex flex-column h-sm-100">
                     <main class="row overflow-auto">
                         <div class="col pt-4">
