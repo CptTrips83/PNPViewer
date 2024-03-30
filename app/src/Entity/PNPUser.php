@@ -42,6 +42,9 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
     #[ORM\OneToMany(mappedBy: 'invitedUser', targetEntity: PNPGroupInvite::class)]
     private Collection $groupInvites;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     public function __construct()
     {
         $this->gameMasterGroups = new ArrayCollection();
@@ -210,6 +213,18 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
                 $groupInvite->setInvitedUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
