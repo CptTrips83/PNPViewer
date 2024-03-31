@@ -18,7 +18,7 @@ use Throwable;
  *
  * This class is responsible for handling group invitation related operations.
  */
-#[Route('group/invitation', name: 'app_pnp_group_invitation')]
+#[Route('/group/invitation', name: 'app_pnp_group_invitation')]
 class PNPGroupInvitationController extends AbstractController
 {
 
