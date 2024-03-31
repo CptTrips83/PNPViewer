@@ -21,17 +21,16 @@ class PNPUserMailController extends AbstractController
     {
         $mail = new TemplatedEmail();
 
-        // TODO Mailing fertigstellen
-        // Unit-Test
-        // Template erstellen
-        // Landing-Page für PW-Reset
-
         $mail->to($user->getEmail())
+            ->from("pnp@rentner-coding-nordheide.de")
+            ->to($user->getEmail())
             ->subject("Pen & Paper Viewer Passwort zurücksetzen")
-            ->textTemplate('mails/user/resetpw.html.twig')
+            ->htmlTemplate('mails/user/resetpw.html.twig')
             ->context([
                 'user' => $user
             ]);
+
+        $mailer->send($mail);
 
 
 
