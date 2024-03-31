@@ -8,6 +8,7 @@ use App\Entity\CharacterData;
 use App\Entity\CharacterStat;
 use App\Entity\CharacterStatCategory;
 use App\Entity\CharacterStatValue;
+use App\Entity\PNPGroup;
 use App\Entity\PNPUser;
 use App\Entity\RuleSet;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,10 @@ class AbstractWebTest extends WebTestCase
         DatabasePrimer::prime($kernel);
 
         $this->_entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+
+        $ruleSet = $this->ruleSetCreation();
+        $this->groupCreation($ruleSet);
+        $this->userCreation();
     }
 
     protected function ruleSetCreation(
@@ -50,11 +55,21 @@ class AbstractWebTest extends WebTestCase
     protected function userCreation() : void
     {
         $user = new PNPUser();
-        $user->setUsername("john_doe");
+        $user->setUsername("test");
         $user->setPassword("password123");
         $user->setEmail("jan-peter.wittig@live.com");
 
         $this->_entityManager->persist($user);
+        $this->_entityManager->flush();
+    }
+
+    protected function groupCreation(RuleSet $ruleSet) : void
+    {
+        $group = new PNPGroup();
+        $group->setName("Test");
+        $group->setRuleSet($ruleSet);
+
+        $this->_entityManager->persist($group);
         $this->_entityManager->flush();
     }
 
