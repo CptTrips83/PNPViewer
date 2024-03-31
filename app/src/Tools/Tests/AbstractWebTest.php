@@ -30,7 +30,8 @@ class AbstractWebTest extends WebTestCase
 
         $ruleSet = $this->ruleSetCreation();
         $this->groupCreation($ruleSet);
-        $this->userCreation();
+        $user = $this->userCreation();
+        $this->characterCreation($ruleSet, $user);
     }
 
     protected function ruleSetCreation(
@@ -52,7 +53,7 @@ class AbstractWebTest extends WebTestCase
         return $ruleset;
     }
 
-    protected function userCreation() : void
+    protected function userCreation() : PNPUser
     {
         $user = new PNPUser();
         $user->setUsername("test");
@@ -61,6 +62,8 @@ class AbstractWebTest extends WebTestCase
 
         $this->_entityManager->persist($user);
         $this->_entityManager->flush();
+
+        return $user;
     }
 
     protected function groupCreation(RuleSet $ruleSet) : void
@@ -73,10 +76,14 @@ class AbstractWebTest extends WebTestCase
         $this->_entityManager->flush();
     }
 
-    protected function characterCreation(RuleSet $ruleSet) : void
+    protected function characterCreation(
+        RuleSet $ruleSet,
+        PNPUser $user
+    ) : void
     {
         $character = new CharacterData();
         $character->setName("Darius");
+        $character->setUser($user);
 
         $ruleSet->addCharacterData($character);
 
