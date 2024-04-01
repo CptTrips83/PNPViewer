@@ -20,8 +20,7 @@ class PNPUserPWResetRequest
     #[ORM\Column(length: 255)]
     private ?string $code = null;
 
-    #[ORM\OneToOne(inversedBy: 'pwResetRequest', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'pwResetRequests')]
     private ?PNPUser $user = null;
 
     public function getId(): ?int
@@ -58,10 +57,11 @@ class PNPUserPWResetRequest
         return $this->user;
     }
 
-    public function setUser(PNPUser $user): static
+    public function setUser(?PNPUser $user): static
     {
         $this->user = $user;
 
         return $this;
     }
+
 }

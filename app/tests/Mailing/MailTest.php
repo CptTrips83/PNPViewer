@@ -16,11 +16,6 @@ class MailTest extends AbstractWebTest
         $this->Initialize();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testMailIsSentAndContentIsOk(): void
     {
         $user = $this->_entityManager->getRepository(PNPUser::class)

@@ -6,23 +6,31 @@ use App\Entity\PNPUser;
 use App\Entity\PNPUserPWResetRequest;
 use App\Tools\UniqueID;
 use App\Traits\ControllerEntityManager;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/mail', name: 'app_mail')]
 class PNPResetPWMailController extends AbstractController
 {
+    const RESET_REQUEST_LIFESPAN = 3600;
+
     use ControllerEntityManager;
 
     #[Route('/user/reset/pw', name: '.user.reset.pw')]
-    function prompt(
+    function reset(
         EntityManagerInterface $entityManager,
         Request $request
     ) : Response
@@ -108,13 +116,107 @@ class PNPResetPWMailController extends AbstractController
         return $this->redirectToRoute('app_mail.user.reset.pw');
     }
 
-    #[Route('/user/reset/landing/{userId}/{resetCode}', name: '.user.reset.landing')]
-    public function landing(
+    #[Route('/user/reset/prompt/{userId}/{resetCode}', name: '.user.reset.prompt')]
+    public function prompt(
         EntityManagerInterface $entityManager,
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
         int $userId,
-        int $resetCode
-    )
+        string $resetCode
+    ) : Response
     {
+        $this->setEntityManager($entityManager);
 
+        $regForm = $this->createFormBuilder()
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'required' => true,
+                'first_options' => ['label' => 'Passwort'],
+                'second_options' => ['label' => 'Passwort wiederholen'],
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Passwort speichern'
+            ])
+            ->getForm()
+        ;
+
+        $regForm->handleRequest($request);
+
+        if($regForm->isSubmitted() && $regForm->isValid()) {
+
+            try {
+                $userData = $regForm->getData();
+                $user = $this->_entityManager->getRepository(PNPUser::class)
+                    ->findOneBy([
+                        'id' => $userId
+                    ]);
+
+                $resetRequest = $this->_entityManager->getRepository(PNPUserPWResetRequest::class)
+                    ->findOneBy([
+                        'user' => $user,
+                        'code' => $resetCode
+                    ]);
+
+                $password = $userData['password'];
+
+                $hashPassword = $passwordHasher->hashPassword(
+                    $user,
+                    $password
+                );
+                $this->processPWReset($user, $resetRequest, $hashPassword);
+                $this->removePWResetRequest($user, $resetRequest);
+
+            } catch (Exception $exception) {
+                return new Response("Error Saving new Password {$exception->getMessage()}", "400");
+            }
+
+            return $this->redirectToRoute('app_login');
+        }
+
+
+        return $this->render('registrierung/pwReset.html.twig',[
+            'regForm' => $regForm->createView()
+        ]);
+    }
+
+    /**
+     * Checks if a password reset request is valid for the given user.
+     *
+     * @param PNPUser|null $user The user attempting to reset their password.
+     * @param PNPUserPWResetRequest|null $resetRequest The password reset request object.
+     * @return bool Returns true if the reset request is valid for the given user, false otherwise.
+     * @throws Exception If the reset request has expired.
+     */
+    private function checkRequest(?PNPUser $user, ?PNPUserPWResetRequest $resetRequest) : bool
+    {
+        if((new DateTime())->getTimestamp() - $resetRequest->getCreated()->getTimestamp() > self::RESET_REQUEST_LIFESPAN)
+            throw new Exception("Resest Request is expired");
+
+        return $resetRequest?->getUser() === $user;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function processPWReset(?PNPUser $user, ?PNPUserPWResetRequest $resetRequest, string $newPassword) : void
+    {
+        if(!$user) throw new Exception("User not found");
+        if(!$resetRequest) throw new Exception("Request not found");
+        if(!$this->checkRequest($user, $resetRequest)) {
+            throw new Exception("No Request for User");
+        }
+
+        $user->setPassword($newPassword);
+
+        $this->_entityManager->persist($user);
+        $this->_entityManager->flush();
+    }
+
+    private function removePWResetRequest(PNPUser $user, PNPUserPWResetRequest $resetRequest) : void
+    {
+        $user->removePwResetRequest($resetRequest);
+        $this->_entityManager->flush();
+        $this->_entityManager->remove($resetRequest);
+        $this->_entityManager->flush();
     }
 }
