@@ -6,6 +6,7 @@ use App\Entity\CharacterData;
 use App\Entity\PNPGroup;
 use App\Entity\PNPGroupInvite;
 use App\Entity\PNPUser;
+use App\Tools\UniqueID;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -214,19 +215,11 @@ readonly class InvitationTools
      */
     public static function uniqueIdReal(int $length = 13) : string
     {
-
-        if (function_exists("random_bytes")) {
-            $bytes = random_bytes(ceil($length / 2));
-        } elseif (function_exists("openssl_random_pseudo_bytes")) {
-            $bytes = openssl_random_pseudo_bytes(ceil($length / 2));
-        } else {
-            throw new Exception("no cryptographically secure random function available");
-        }
-        return substr(bin2hex($bytes), 0, $length);
+        return UniqueID::uniqueIdReal($length);
     }
 
     public static function uniqueIdInt(int $length = 5, int $min = 11111, int $max = 99999) : int
     {
-        return intval(substr(100000 + ((rand($min, $max))*97 + 356563) % 896723, 0, $length));
+        return UniqueID::uniqueIdInt($length, $min, $max);
     }
 }
