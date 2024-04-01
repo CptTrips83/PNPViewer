@@ -3,7 +3,7 @@
     <div class="container">
         Hallo {{ user.username }},
         Hast du dein Passwort vergessen? Du kannst jetzt ein neues Passwort festlegen.
-        <a href="{{ path('app_mail.user.reset.landing',
+        <a href="{{ path('app_mail.user.reset.prompt',
             { 'userId' : user.id, 'resetCode' : resetCode }) }}">
             Passwort zurücksetzen
         </a>
