@@ -4,7 +4,9 @@
         Hallo {{ user.username }},
         Hast du dein Passwort vergessen? Du kannst jetzt ein neues Passwort festlegen.
         <a href="{{ path('app_mail.user.reset.landing',
-            { 'userId' : user.id, 'resetCode' : resetCode }) }}"
+            { 'userId' : user.id, 'resetCode' : resetCode }) }}">
+            Passwort zurücksetzen
+        </a>
         Solltest du diese E-Mail nicht angefordert haben, kannst du diese Mail ignorieren.
     </div>
 {% endblock %}
