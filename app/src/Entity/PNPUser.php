@@ -45,6 +45,9 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?PNPUserPWResetRequest $pwResetRequest = null;
+
     public function __construct()
     {
         $this->gameMasterGroups = new ArrayCollection();
@@ -225,6 +228,23 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
     public function setEmail(?string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPwResetRequest(): ?PNPUserPWResetRequest
+    {
+        return $this->pwResetRequest;
+    }
+
+    public function setPwResetRequest(PNPUserPWResetRequest $pwResetRequest): static
+    {
+        // set the owning side of the relation if necessary
+        if ($pwResetRequest->getUser() !== $this) {
+            $pwResetRequest->setUser($this);
+        }
+
+        $this->pwResetRequest = $pwResetRequest;
 
         return $this;
     }

@@ -20,7 +20,7 @@
                             {{ character.name }}
                         </th>
                         <td>
-                            <a href="{{ path('app_pnp_group_invitation.join',{
+                            <a class="invitationLink" href="{{ path('app_pnp_group_invitation.join',{
                                 'invitationCode' : invitationCode,
                                 'characterId' : character.id
                             }) }}">Gruppe beitreten</a>
