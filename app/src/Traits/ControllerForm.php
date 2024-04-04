@@ -26,16 +26,16 @@ trait ControllerForm
      *
      * @return FormInterface The processed form.
      */
-    private function processForm(EntityManagerInterface $entityManager,
-                                 Request                $request,
-                                 string                 $entityClassName,
-                                 string                 $formClassName,
-                                 int                    $id = 0) : FormInterface
-    {
+    private function processForm(
+        EntityManagerInterface $entityManager,
+        Request                $request,
+        string                 $entityClassName,
+        string                 $formClassName,
+        int                    $id = 0
+    ) : FormInterface {
         $dataObj = new $entityClassName();
 
-        if($id != 0)
-        {
+        if ($id != 0) {
             $repo = $entityManager->getRepository($entityClassName);
             $dataObj = $repo->find($id);
         }
@@ -44,8 +44,7 @@ trait ControllerForm
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $dataObj = $form->getData();
 
             $entityManager->persist($dataObj);
@@ -67,9 +66,12 @@ trait ControllerForm
      * @return Response|null Returns a Response object if the form submission is completed and valid,
      *                      or null if the form is not yet completed or invalid.
      */
-    private function redirectOnFormCompletion(FormInterface $form, string $redirect, array $parameter = []) : Response | null
-    {
-        if($form->isSubmitted() && $form->isValid()) {
+    private function redirectOnFormCompletion(
+        FormInterface $form,
+        string $redirect,
+        array $parameter = []
+    ) : Response | null {
+        if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute($redirect, $parameter);
         }
 

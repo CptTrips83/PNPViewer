@@ -27,17 +27,17 @@ class CharacterCreationController extends AbstractController
 {
     use ControllerEntityManager;
 
-    private EntityManagerInterface $_entityManager;
+    private EntityManagerInterface $entityManager;
     #[Route('/character/creation/basics/{ruleSetId}', name: 'app_character_creation_basics')]
-    public function basics(Request $request,
-                           int $ruleSetId,
-                           EntityManagerInterface $entityManager
-    ) : Response
-    {
+    public function basics(
+        Request $request,
+        int $ruleSetId,
+        EntityManagerInterface $entityManager
+    ) : Response {
         $this->setEntityManager($entityManager);
 
-        $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
-        $repoCharacterClass = $this->_entityManager->getRepository(CharacterClass::class);
+        $repoRuleSet = $this->entityManager->getRepository(RuleSet::class);
+        $repoCharacterClass = $this->entityManager->getRepository(CharacterClass::class);
 
         $ruleSet = $repoRuleSet->find($ruleSetId);
 
@@ -69,25 +69,24 @@ class CharacterCreationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $characterXP = $this->_entityManager->getRepository(CharacterStat::class)
+            $characterXP = $this->entityManager->getRepository(CharacterStat::class)
                 ->findOneBy([
                     'name' => 'characterXP'
                 ]);
-            $euroDollar = $this->_entityManager->getRepository(CharacterStat::class)
+            $euroDollar = $this->entityManager->getRepository(CharacterStat::class)
                 ->findOneBy([
                     'name' => 'euroDollar'
                 ]);
 
-            $character = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+            $character = CharacterBuilderFactory::get($this->entityManager, $ruleSet)
                 ->createCharacter($ruleSet)
                 ->set("name", $data["name"])
                 ->set("user", $this->getUser())
                 ->set("nickname", $data["handle"])
-                ->addStat($characterXP,0)
+                ->addStat($characterXP, 0)
                 ->addStat($euroDollar, 0)
                 ->addClass($data["characterClass"], 1)
                 ->buildCharacter();
@@ -96,7 +95,6 @@ class CharacterCreationController extends AbstractController
             return $this->redirectToRoute('app_character_creation_details', [
                 'characterId' => $character->getId()
             ]);
-
         }
         $route = 'character_creation/basics.html.twig';
 
@@ -107,15 +105,15 @@ class CharacterCreationController extends AbstractController
     }
 
     #[Route('/character/creation/details/{characterId}', name: 'app_character_creation_details')]
-    public function details(Request $request,
-                          int $characterId,
-                          EntityManagerInterface $entityManager
-    ): Response
-    {
+    public function details(
+        Request $request,
+        int $characterId,
+        EntityManagerInterface $entityManager
+    ): Response {
         $this->setEntityManager($entityManager);
 
-        $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
-        $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
+        $repoCharacter = $this->entityManager->getRepository(CharacterData::class);
+        $repoStatCategory = $this->entityManager->getRepository(CharacterStatCategory::class);
 
         $character = $repoCharacter->find($characterId);
         $ruleSet = $character->getRuleSet();
@@ -138,9 +136,9 @@ class CharacterCreationController extends AbstractController
         $form = $this->createFormBuilder();
 
         foreach ($categories as $category) {
-            $this->GenerateFormPartFromStatCategory(
-              $form,
-              $category
+            $this->generateFormPartFromStatCategory(
+                $form,
+                $category
             );
         }
 
@@ -151,15 +149,13 @@ class CharacterCreationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+            $characterBuilder = CharacterBuilderFactory::get($this->entityManager, $ruleSet)
                 ->setCharacter($character);
 
-            foreach ($data as $characterStat)
-            {
+            foreach ($data as $characterStat) {
                 $characterBuilder = $characterBuilder
                     ->addStat($characterStat, 1);
             }
@@ -179,16 +175,16 @@ class CharacterCreationController extends AbstractController
         ]);
     }
     #[Route('/character/creation/skills/{characterId}', name: 'app_character_creation_skills')]
-    public function skills(Request $request,
-                           int $characterId,
-                           EntityManagerInterface $entityManager
-    ) : Response
-    {
+    public function skills(
+        Request $request,
+        int $characterId,
+        EntityManagerInterface $entityManager
+    ) : Response {
         $this->setEntityManager($entityManager);
 
-        $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
-        $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
-        $repoStats = $this->_entityManager->getRepository(CharacterStat::class);
+        $repoCharacter = $this->entityManager->getRepository(CharacterData::class);
+        $repoStatCategory = $this->entityManager->getRepository(CharacterStatCategory::class);
+        $repoStats = $this->entityManager->getRepository(CharacterStat::class);
 
         $character = $repoCharacter->find($characterId);
         $ruleSet = $character->getRuleSet();
@@ -202,9 +198,8 @@ class CharacterCreationController extends AbstractController
 
         $form = $this->createFormBuilder();
 
-        foreach ($stats as $stat)
-        {
-            $form = $this->GenerateFormPartFromStat(
+        foreach ($stats as $stat) {
+            $form = $this->generateFormPartFromStat(
                 $form,
                 $stat
             );
@@ -216,12 +211,12 @@ class CharacterCreationController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+        if ($form->isSubmitted() && $form->isValid()) {
+            $characterBuilder = CharacterBuilderFactory::get($this->entityManager, $ruleSet)
                 ->setCharacter($character);
 
-            $character = $this->buildCharacterStats($form,
+            $character = $this->buildCharacterStats(
+                $form,
                 $characterBuilder,
                 $repoStats
             );
@@ -240,16 +235,16 @@ class CharacterCreationController extends AbstractController
     }
 
     #[Route('/character/creation/perks/{characterId}', name: 'app_character_creation_perks')]
-    public function perks(Request $request,
-                           int $characterId,
-                           EntityManagerInterface $entityManager
-    ) : Response
-    {
+    public function perks(
+        Request $request,
+        int $characterId,
+        EntityManagerInterface $entityManager
+    ) : Response {
         $this->setEntityManager($entityManager);
 
-        $repoCharacter = $this->_entityManager->getRepository(CharacterData::class);
-        $repoStatCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
-        $repoStats = $this->_entityManager->getRepository(CharacterStat::class);
+        $repoCharacter = $this->entityManager->getRepository(CharacterData::class);
+        $repoStatCategory = $this->entityManager->getRepository(CharacterStatCategory::class);
+        $repoStats = $this->entityManager->getRepository(CharacterStat::class);
 
         $character = $repoCharacter->find($characterId);
         $ruleSet = $character->getRuleSet();
@@ -260,14 +255,13 @@ class CharacterCreationController extends AbstractController
         $form = $this->createFormBuilder();
 
         foreach ($categories as $category) {
-            if(str_contains($category->getName(), 'perks')){
+            if (str_contains($category->getName(), 'perks')) {
                 $stats = $repoStats->findBy([
                     'category' => $category
                 ]);
 
-                foreach ($stats as $stat)
-                {
-                    $form = $this->GenerateFormPartFromStat(
+                foreach ($stats as $stat) {
+                    $form = $this->generateFormPartFromStat(
                         $form,
                         $stat
                     );
@@ -280,13 +274,13 @@ class CharacterCreationController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $characterBuilder = CharacterBuilderFactory::get($this->_entityManager, $ruleSet)
+        if ($form->isSubmitted() && $form->isValid()) {
+            $characterBuilder = CharacterBuilderFactory::get($this->entityManager, $ruleSet)
                 ->setCharacter($character)
                 ->finishCreation();
 
-            $character = $this->buildCharacterStats($form,
+            $character = $this->buildCharacterStats(
+                $form,
                 $characterBuilder,
                 $repoStats
             );
@@ -304,11 +298,10 @@ class CharacterCreationController extends AbstractController
         ]);
     }
 
-    private function GenerateFormPartFromStat(
+    private function generateFormPartFromStat(
         FormBuilderInterface $form,
         CharacterStat $stat
-    ) : FormBuilderInterface
-    {
+    ) : FormBuilderInterface {
 
         return $form->add($stat->getName(), IntegerType::class, [
             'label' => $stat->getDescription(),
@@ -318,15 +311,13 @@ class CharacterCreationController extends AbstractController
                 'max' => $stat->getHighestValue()
             ]
         ]);
-
     }
 
-    private function GenerateFormPartFromStatCategory(
+    private function generateFormPartFromStatCategory(
         FormBuilderInterface $form,
         CharacterStatCategory $category
-    ) : FormBuilderInterface
-    {
-        $repo = $this->_entityManager->getRepository(CharacterStat::class);
+    ) : FormBuilderInterface {
+        $repo = $this->entityManager->getRepository(CharacterStat::class);
 
         $queryBuilder = $repo->createQueryBuilder('c')
             ->where('c.category = :category')
@@ -352,8 +343,8 @@ class CharacterCreationController extends AbstractController
     public function buildCharacterStats(
         FormInterface $form,
         CharacterBuilderInterface $characterBuilder,
-        CharacterStatRepository $repoStats): CharacterData
-    {
+        CharacterStatRepository $repoStats
+    ): CharacterData {
         $data = $form->getData();
 
         foreach ($data as $name => $value) {

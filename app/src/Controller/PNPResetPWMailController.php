@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -30,13 +29,12 @@ class PNPResetPWMailController extends AbstractController
     use ControllerEntityManager;
 
     #[Route('/user/reset/pw', name: '.user.reset.pw')]
-    function reset(
+    public function reset(
         EntityManagerInterface $entityManager,
         Request $request
-    ) : Response
-    {
+    ) : Response {
         $form = $this->createFormBuilder()
-            ->add('email',EmailType::class, [
+            ->add('email', EmailType::class, [
                 'label' => 'E-Mail Adresse'
             ])
             ->add('pwReset', SubmitType::class, [
@@ -46,28 +44,28 @@ class PNPResetPWMailController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
             $email = $data['email'];
 
-            $user = $this->_entityManager->getRepository(PNPUser::class)
+            $user = $this->entityManager->getRepository(PNPUser::class)
                 ->findOneBy([
                     'email' => $email
                 ]);
 
-                if (!$user) {
-                    // Handle user not found error
-                    return $this->redirectToRoute('app_mail.user.reset.pw');
-                }
+            if (!$user) {
+                // Handle user not found error
+                return $this->redirectToRoute('app_mail.user.reset.pw');
+            }
 
                 $resetRequest = new PNPUserPWResetRequest();
                 $resetRequest->setCreated(new \DateTime());
                 $resetRequest->setCode(UniqueID::uniqueIdInt());
                 $resetRequest->setUser($user);
 
-                $this->_entityManager->persist($resetRequest);
-                $this->_entityManager->flush();
+                $this->entityManager->persist($resetRequest);
+                $this->entityManager->flush();
 
                 return $this->redirectToRoute(
                     'app_mail.user.reset.send',
@@ -85,14 +83,13 @@ class PNPResetPWMailController extends AbstractController
         EntityManagerInterface $entityManager,
         MailerInterface $mailer,
         int $userId
-    ): Response
-    {
+    ): Response {
         $this->setEntityManager($entityManager);
 
-        $user = $this->_entityManager->getRepository(PNPUser::class)
+        $user = $this->entityManager->getRepository(PNPUser::class)
             ->find($userId);
 
-        $resetRequest = $this->_entityManager->getRepository(PNPUserPWResetRequest::class)
+        $resetRequest = $this->entityManager->getRepository(PNPUserPWResetRequest::class)
             ->findOneBy([
                 'user' => $user
             ]);
@@ -123,8 +120,7 @@ class PNPResetPWMailController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         int $userId,
         string $resetCode
-    ) : Response
-    {
+    ) : Response {
         $this->setEntityManager($entityManager);
 
         $regForm = $this->createFormBuilder()
@@ -142,16 +138,15 @@ class PNPResetPWMailController extends AbstractController
 
         $regForm->handleRequest($request);
 
-        if($regForm->isSubmitted() && $regForm->isValid()) {
-
+        if ($regForm->isSubmitted() && $regForm->isValid()) {
             try {
                 $userData = $regForm->getData();
-                $user = $this->_entityManager->getRepository(PNPUser::class)
+                $user = $this->entityManager->getRepository(PNPUser::class)
                     ->findOneBy([
                         'id' => $userId
                     ]);
 
-                $resetRequest = $this->_entityManager->getRepository(PNPUserPWResetRequest::class)
+                $resetRequest = $this->entityManager->getRepository(PNPUserPWResetRequest::class)
                     ->findOneBy([
                         'user' => $user,
                         'code' => $resetCode
@@ -165,7 +160,6 @@ class PNPResetPWMailController extends AbstractController
                 );
                 $this->processPWReset($user, $resetRequest, $hashPassword);
                 $this->removePWResetRequest($user, $resetRequest);
-
             } catch (Exception $exception) {
                 return new Response("Error Saving new Password {$exception->getMessage()}", "400");
             }
@@ -174,7 +168,7 @@ class PNPResetPWMailController extends AbstractController
         }
 
 
-        return $this->render('registrierung/pwReset.html.twig',[
+        return $this->render('registrierung/pwReset.html.twig', [
             'regForm' => $regForm->createView()
         ]);
     }
@@ -189,8 +183,10 @@ class PNPResetPWMailController extends AbstractController
      */
     private function checkRequest(?PNPUser $user, ?PNPUserPWResetRequest $resetRequest) : bool
     {
-        if((new DateTime())->getTimestamp() - $resetRequest->getCreated()->getTimestamp() > self::RESET_REQUEST_LIFESPAN)
+        if ((new DateTime())->getTimestamp() - $resetRequest->getCreated()->getTimestamp()
+            > self::RESET_REQUEST_LIFESPAN) {
             throw new Exception("Resest Request is expired");
+        }
 
         return $resetRequest?->getUser() === $user;
     }
@@ -200,23 +196,27 @@ class PNPResetPWMailController extends AbstractController
      */
     private function processPWReset(?PNPUser $user, ?PNPUserPWResetRequest $resetRequest, string $newPassword) : void
     {
-        if(!$user) throw new Exception("User not found");
-        if(!$resetRequest) throw new Exception("Request not found");
-        if(!$this->checkRequest($user, $resetRequest)) {
+        if (!$user) {
+            throw new Exception("User not found");
+        }
+        if (!$resetRequest) {
+            throw new Exception("Request not found");
+        }
+        if (!$this->checkRequest($user, $resetRequest)) {
             throw new Exception("No Request for User");
         }
 
         $user->setPassword($newPassword);
 
-        $this->_entityManager->persist($user);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     private function removePWResetRequest(PNPUser $user, PNPUserPWResetRequest $resetRequest) : void
     {
         $user->removePwResetRequest($resetRequest);
-        $this->_entityManager->flush();
-        $this->_entityManager->remove($resetRequest);
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
+        $this->entityManager->remove($resetRequest);
+        $this->entityManager->flush();
     }
 }

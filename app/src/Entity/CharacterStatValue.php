@@ -39,7 +39,13 @@ class CharacterStatValue implements \JsonSerializable
 
     public function setValue(int $value): static
     {
-        $value = max($this->getCharacterStat()->getLowestValue(), min($this->getCharacterStat()->getHighestValue(), $value));
+        $value = max(
+            $this->getCharacterStat()->getLowestValue(),
+            min(
+                $this->getCharacterStat()->getHighestValue(),
+                $value
+            )
+        );
 
         $this->value = $value;
 

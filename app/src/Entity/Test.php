@@ -32,5 +32,4 @@ class Test
 
         return $this;
     }
-
 }

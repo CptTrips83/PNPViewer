@@ -18,9 +18,11 @@ class CharacterEditController extends AbstractController
     #[Route('/stat', name: '.stat')]
     public function editStatValue(
         Request $request,
-        EntityManagerInterface $entityManager): Response
-    {
-        if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        EntityManagerInterface $entityManager
+    ): Response {
+        if (!$request->isXmlHttpRequest()) {
+            return new Response("", "400");
+        }
 
         $valueId = $request->get("valueId");
         $newValue = $request->get("newValue");
@@ -45,9 +47,11 @@ class CharacterEditController extends AbstractController
     #[Route('/class', name: '.class')]
     public function editClassValue(
         Request $request,
-        EntityManagerInterface $entityManager): Response
-    {
-        if(!$request->isXmlHttpRequest()) return new Response("", "400");
+        EntityManagerInterface $entityManager
+    ): Response {
+        if (!$request->isXmlHttpRequest()) {
+            return new Response("", "400");
+        }
 
         $classLevelId = $request->request->get("valueId");
         $newValue = $request->request->get("newValue");

@@ -2,7 +2,6 @@
 
 namespace App\Tests\Mailing;
 
-
 use App\Entity\PNPUser;
 use App\Entity\PNPUserPWResetRequest;
 use App\Tools\Tests\AbstractWebTest;
@@ -13,12 +12,12 @@ class MailTest extends AbstractWebTest
 {
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     public function testMailIsSentAndContentIsOk(): void
     {
-        $user = $this->_entityManager->getRepository(PNPUser::class)
+        $user = $this->entityManager->getRepository(PNPUser::class)
             ->find(1);
 
         $userPWRequest = new PNPUserPWResetRequest();
@@ -26,11 +25,11 @@ class MailTest extends AbstractWebTest
         $userPWRequest->setCode("11111");
         $userPWRequest->setCreated(new DateTime());
 
-        $this->_entityManager->persist($userPWRequest);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($userPWRequest);
+        $this->entityManager->flush();
 
-        $this->_client->loginUser($user);
-        $this->_client->request('GET', '/mail/user/reset/send/1');
+        $this->client->loginUser($user);
+        $this->client->request('GET', '/mail/user/reset/send/1');
         $this->assertResponseRedirects();
 
         $this->assertEmailCount(1); // use assertQueuedEmailCount() when using Messenger

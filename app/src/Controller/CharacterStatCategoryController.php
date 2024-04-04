@@ -17,14 +17,15 @@ class CharacterStatCategoryController extends AbstractController
 {
     use ControllerEntityManager;
     use ControllerForm;
-    private EntityManagerInterface $_entityManager;
+    private EntityManagerInterface $entityManager;
 
     #[Route('/ruleset/create/stat/category', name: 'app_ruleset_stat_category_create')]
     public function createCategoryForm(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
 
-        $form = $this->processForm($this->_entityManager,
+        $form = $this->processForm(
+            $this->entityManager,
             $request,
             CharacterStatCategory::class,
             CharacterStatCategoryType::class
@@ -32,11 +33,13 @@ class CharacterStatCategoryController extends AbstractController
 
         $form->getData();
 
-        $redirectResponse = $this->redirectOnFormCompletion($form,
+        $redirectResponse = $this->redirectOnFormCompletion(
+            $form,
             'app_ruleset_stat_category_list',
-            ['ruleSetId' => '1']);
+            ['ruleSetId' => '1']
+        );
 
-        if($redirectResponse != null) {
+        if ($redirectResponse != null) {
             return $redirectResponse;
         } else {
             return $this->render('character_stat_category/form.html.twig', [
@@ -51,17 +54,20 @@ class CharacterStatCategoryController extends AbstractController
     {
         $this->setEntityManager($entityManager);
 
-        $form = $this->processForm($this->_entityManager,
+        $form = $this->processForm(
+            $this->entityManager,
             $request,
             CharacterStatCategory::class,
             CharacterStatCategoryType::class,
             $id
         );
 
-        $redirectResponse = $this->redirectOnFormCompletion($form,
+        $redirectResponse = $this->redirectOnFormCompletion(
+            $form,
             'app_ruleset_stat_category_list',
-            ['ruleSetId' => '1']);
-        if($redirectResponse != null) {
+            ['ruleSetId' => '1']
+        );
+        if ($redirectResponse != null) {
             return $redirectResponse;
         } else {
             return $this->render('character_stat_category/form.html.twig', [
@@ -76,15 +82,14 @@ class CharacterStatCategoryController extends AbstractController
     {
         $this->setEntityManager($entityManager);
 
-        $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
-        $repoCategory = $this->_entityManager->getRepository(CharacterStatCategory::class);
+        $repoRuleSet = $this->entityManager->getRepository(RuleSet::class);
+        $repoCategory = $this->entityManager->getRepository(CharacterStatCategory::class);
 
         $ruleSet = $repoRuleSet->find($ruleSetId);
 
         $categories = [];
 
-        if($ruleSet) {
-
+        if ($ruleSet) {
             $categories = $repoCategory->findBy([
                 'ruleSet' => $ruleSet
             ]);

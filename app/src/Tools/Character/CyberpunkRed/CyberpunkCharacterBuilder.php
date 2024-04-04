@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CyberpunkCharacterBuilder implements CharacterBuilderInterface
 {
-    private CharacterData $_character;
+    private CharacterData $character;
 
     /**
      * Constructor for the class.
@@ -29,9 +29,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function __construct(
         private readonly EntityManagerInterface $_entityManager
-    )
-    {
-
+    ) {
     }
 
     /**
@@ -43,11 +41,11 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function createCharacter(RuleSet $ruleSet): CharacterBuilderInterface
     {
-        $this->_character = CharacterFactory::get();
-        $this->_character->setCreationStart(new DateTime());
-        $this->_character->setRuleSet($ruleSet);
-        $this->_character->setName("");
-        $this->_entityManager->persist($this->_character);
+        $this->character = CharacterFactory::get();
+        $this->character->setCreationStart(new DateTime());
+        $this->character->setRuleSet($ruleSet);
+        $this->character->setName("");
+        $this->_entityManager->persist($this->character);
 
         return $this;
     }
@@ -60,7 +58,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function setCharacter(CharacterData $character): CharacterBuilderInterface
     {
-        $this->_character = $character;
+        $this->character = $character;
 
         return $this;
     }
@@ -76,9 +74,8 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     {
         $setter = "set".ucfirst($property);
 
-        if(method_exists($this->_character, $setter))
-        {
-            $this->_character->$setter($value);
+        if (method_exists($this->character, $setter)) {
+            $this->character->$setter($value);
         }
 
         return $this;
@@ -92,7 +89,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function setName(string $name): CharacterBuilderInterface
     {
-        $this->_character->setName($name);
+        $this->character->setName($name);
         return $this;
     }
 
@@ -108,7 +105,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
         $classLevel = new CharacterClassLevel();
         $class->addCharacterClassLevel($classLevel);
         $classLevel->setLevel($level);
-        $this->_character->addCharacterClassLevel($classLevel);
+        $this->character->addCharacterClassLevel($classLevel);
 
         $this->_entityManager->persist($classLevel);
 
@@ -126,23 +123,25 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     {
         $statValue = new CharacterStatValue();
 
-        if($stat->getCategory()->getStatsRequired() == 1 ||
+        if ($stat->getCategory()->getStatsRequired() == 1 ||
             $stat->getCategory()->getStatsRequired() == -1) {
             $repo = $this->_entityManager->getRepository(CharacterStatValue::class);
 
             $statValueTemp = $repo->findOneBy([
-                'characterData' => $this->_character,
+                'characterData' => $this->character,
                 'characterStat' => $stat
             ]);
 
-            if($statValueTemp != null) $statValue = $statValueTemp;
+            if ($statValueTemp != null) {
+                $statValue = $statValueTemp;
+            }
         }
-        if($statValue->getValue() == null) {
+        if ($statValue->getValue() == null) {
             $stat->addCharacterStatValue($statValue);
         }
 
         $statValue->setValue($value);
-        $this->_character->addCharacterStatValue($statValue);
+        $this->character->addCharacterStatValue($statValue);
 
         $this->_entityManager->persist($statValue);
         return $this;
@@ -157,7 +156,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
     {
         $this->_entityManager->flush();
 
-        return $this->_character;
+        return $this->character;
     }
 
     /**
@@ -167,7 +166,7 @@ class CyberpunkCharacterBuilder implements CharacterBuilderInterface
      */
     public function finishCreation(): CharacterBuilderInterface
     {
-        $this->_character->setCreationEnd(new DateTime());
+        $this->character->setCreationEnd(new DateTime());
         return $this;
     }
 }

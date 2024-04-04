@@ -15,22 +15,21 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class AbstractKernelTest extends KernelTestCase
 {
-    protected EntityManagerInterface $_entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    protected function Initialize() : void
+    protected function initialize() : void
     {
         $kernel = self::bootKernel();
         DatabasePrimer::prime($kernel);
 
-        $this->_entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
     }
 
     protected function ruleSetCreation(
         string $characterJSONName = "",
         string $characterBuilderName = "",
         string $characterEditorName = ""
-    ) : RuleSet
-    {
+    ) : RuleSet {
         $ruleset = new RuleSet();
         $ruleset->setName("Cyberpunk Red");
         $ruleset->setVersion("1.0");
@@ -38,8 +37,8 @@ class AbstractKernelTest extends KernelTestCase
         $ruleset->setCharacterBuilderName($characterBuilderName);
         $ruleset->setCharacterEditorName($characterEditorName);
 
-        $this->_entityManager->persist($ruleset);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($ruleset);
+        $this->entityManager->flush();
 
         return $ruleset;
     }
@@ -51,8 +50,8 @@ class AbstractKernelTest extends KernelTestCase
 
         $ruleSet->addCharacterData($character);
 
-        $this->_entityManager->persist($character);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($character);
+        $this->entityManager->flush();
 
         $statCategory = new CharacterStatCategory();
         $statCategory->setName("Skills");
@@ -60,8 +59,8 @@ class AbstractKernelTest extends KernelTestCase
 
         $ruleSet->addCharacterStatCategory($statCategory);
 
-        $this->_entityManager->persist($statCategory);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($statCategory);
+        $this->entityManager->flush();
 
         $stat1 = new CharacterStat();
         $stat1->setName("Stärke");
@@ -82,10 +81,10 @@ class AbstractKernelTest extends KernelTestCase
         $statCategory->addCharacterStat($stat2);
         $statCategory->addCharacterStat($stat3);
 
-        $this->_entityManager->persist($stat1);
-        $this->_entityManager->persist($stat2);
-        $this->_entityManager->persist($stat3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($stat1);
+        $this->entityManager->persist($stat2);
+        $this->entityManager->persist($stat3);
+        $this->entityManager->flush();
 
         $statValue1 = new CharacterStatValue();
         $stat1->addCharacterStatValue($statValue1);
@@ -102,10 +101,10 @@ class AbstractKernelTest extends KernelTestCase
         $character->addCharacterStatValue($statValue3);
         $statValue3->setValue(5);
 
-        $this->_entityManager->persist($statValue1);
-        $this->_entityManager->persist($statValue2);
-        $this->_entityManager->persist($statValue3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($statValue1);
+        $this->entityManager->persist($statValue2);
+        $this->entityManager->persist($statValue3);
+        $this->entityManager->flush();
 
         $class = new CharacterClass();
         $class->setName("Solo");
@@ -113,15 +112,15 @@ class AbstractKernelTest extends KernelTestCase
         $class->setHighestLevel(20);
         $ruleSet->addCharacterClass($class);
 
-        $this->_entityManager->persist($class);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($class);
+        $this->entityManager->flush();
 
         $classLevel = new CharacterClassLevel();
         $class->addCharacterClassLevel($classLevel);
         $character->addCharacterClassLevel($classLevel);
         $classLevel->setLevel(0);
 
-        $this->_entityManager->persist($classLevel);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($classLevel);
+        $this->entityManager->flush();
     }
 }

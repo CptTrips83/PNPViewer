@@ -17,14 +17,15 @@ class CharacterClassController extends AbstractController
 {
     use ControllerForm;
     use ControllerEntityManager;
-    private EntityManagerInterface $_entityManager;
+    private EntityManagerInterface $entityManager;
 
     #[Route('/ruleset/create/class', name: 'app_ruleset_class_create')]
     public function createCharacterClass(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->setEntityManager($entityManager);
 
-        $form = $this->processForm($this->_entityManager,
+        $form = $this->processForm(
+            $this->entityManager,
             $request,
             CharacterClass::class,
             CharacterClassType::class
@@ -32,16 +33,18 @@ class CharacterClassController extends AbstractController
 
         $class = $form->getData();
 
-        $redirectResponse = $this->redirectOnFormCompletion($form,
+        $redirectResponse = $this->redirectOnFormCompletion(
+            $form,
             'app_ruleset_class_edit',
-            ['id' => $class->getId()]);
+            ['id' => $class->getId()]
+        );
 
-        if($redirectResponse != null) {
+        if ($redirectResponse != null) {
             return $redirectResponse;
         } else {
             return $this->render('character_class/form.html.twig', [
                 'controller_name' => 'CharacterClassController',
-                'form' => $form
+                'form' => $form->createView()
             ]);
         }
     }
@@ -51,7 +54,8 @@ class CharacterClassController extends AbstractController
     {
         $this->setEntityManager($entityManager);
 
-        $form = $this->processForm($this->_entityManager,
+        $form = $this->processForm(
+            $this->entityManager,
             $request,
             CharacterClass::class,
             CharacterClassType::class,
@@ -68,15 +72,14 @@ class CharacterClassController extends AbstractController
     {
         $this->setEntityManager($entityManager);
 
-        $repoRuleSet = $this->_entityManager->getRepository(RuleSet::class);
-        $repoClass = $this->_entityManager->getRepository(CharacterClass::class);
+        $repoRuleSet = $this->entityManager->getRepository(RuleSet::class);
+        $repoClass = $this->entityManager->getRepository(CharacterClass::class);
 
         $ruleSet = $repoRuleSet->find($ruleSetId);
 
         $classes = [];
 
-        if($ruleSet) {
-
+        if ($ruleSet) {
             $classes = $repoClass->findBy([
                 'ruleSet' => $ruleSet
             ]);

@@ -22,7 +22,6 @@ class CharacterBuilderFactory
                 $ruleSet
             );
         } catch (Exception $ex) {
-
         }
         return $result;
     }

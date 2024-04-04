@@ -17,16 +17,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AbstractWebTest extends WebTestCase
 {
-    protected EntityManagerInterface $_entityManager;
-    protected KernelBrowser $_client;
+    protected EntityManagerInterface $entityManager;
+    protected KernelBrowser $client;
 
-    protected function Initialize() : void
+    protected function initialize() : void
     {
-        $this->_client = self::createClient();
-        $kernel = $this->_client->getKernel();
+        $this->client = self::createClient();
+        $kernel = $this->client->getKernel();
         DatabasePrimer::prime($kernel);
 
-        $this->_entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
 
         $ruleSet = $this->ruleSetCreation();
         $this->groupCreation($ruleSet);
@@ -38,8 +38,7 @@ class AbstractWebTest extends WebTestCase
         string $characterJSONName = "",
         string $characterBuilderName = "",
         string $characterEditorName = ""
-    ) : RuleSet
-    {
+    ) : RuleSet {
         $ruleset = new RuleSet();
         $ruleset->setName("Cyberpunk Red");
         $ruleset->setVersion("1.0");
@@ -47,8 +46,8 @@ class AbstractWebTest extends WebTestCase
         $ruleset->setCharacterBuilderName($characterBuilderName);
         $ruleset->setCharacterEditorName($characterEditorName);
 
-        $this->_entityManager->persist($ruleset);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($ruleset);
+        $this->entityManager->flush();
 
         return $ruleset;
     }
@@ -60,8 +59,8 @@ class AbstractWebTest extends WebTestCase
         $user->setPassword("password123");
         $user->setEmail("jan-peter.wittig@live.com");
 
-        $this->_entityManager->persist($user);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         return $user;
     }
@@ -72,23 +71,22 @@ class AbstractWebTest extends WebTestCase
         $group->setName("Test");
         $group->setRuleSet($ruleSet);
 
-        $this->_entityManager->persist($group);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($group);
+        $this->entityManager->flush();
     }
 
     protected function characterCreation(
         RuleSet $ruleSet,
         PNPUser $user
-    ) : void
-    {
+    ) : void {
         $character = new CharacterData();
         $character->setName("Darius");
         $character->setUser($user);
 
         $ruleSet->addCharacterData($character);
 
-        $this->_entityManager->persist($character);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($character);
+        $this->entityManager->flush();
 
         $statCategory = new CharacterStatCategory();
         $statCategory->setName("Skills");
@@ -96,8 +94,8 @@ class AbstractWebTest extends WebTestCase
 
         $ruleSet->addCharacterStatCategory($statCategory);
 
-        $this->_entityManager->persist($statCategory);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($statCategory);
+        $this->entityManager->flush();
 
         $stat1 = new CharacterStat();
         $stat1->setName("Stärke");
@@ -118,10 +116,10 @@ class AbstractWebTest extends WebTestCase
         $statCategory->addCharacterStat($stat2);
         $statCategory->addCharacterStat($stat3);
 
-        $this->_entityManager->persist($stat1);
-        $this->_entityManager->persist($stat2);
-        $this->_entityManager->persist($stat3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($stat1);
+        $this->entityManager->persist($stat2);
+        $this->entityManager->persist($stat3);
+        $this->entityManager->flush();
 
         $statValue1 = new CharacterStatValue();
         $stat1->addCharacterStatValue($statValue1);
@@ -138,10 +136,10 @@ class AbstractWebTest extends WebTestCase
         $character->addCharacterStatValue($statValue3);
         $statValue3->setValue(5);
 
-        $this->_entityManager->persist($statValue1);
-        $this->_entityManager->persist($statValue2);
-        $this->_entityManager->persist($statValue3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($statValue1);
+        $this->entityManager->persist($statValue2);
+        $this->entityManager->persist($statValue3);
+        $this->entityManager->flush();
 
         $class = new CharacterClass();
         $class->setName("Solo");
@@ -149,15 +147,15 @@ class AbstractWebTest extends WebTestCase
         $class->setHighestLevel(20);
         $ruleSet->addCharacterClass($class);
 
-        $this->_entityManager->persist($class);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($class);
+        $this->entityManager->flush();
 
         $classLevel = new CharacterClassLevel();
         $class->addCharacterClassLevel($classLevel);
         $character->addCharacterClassLevel($classLevel);
         $classLevel->setLevel(0);
 
-        $this->_entityManager->persist($classLevel);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($classLevel);
+        $this->entityManager->flush();
     }
 }

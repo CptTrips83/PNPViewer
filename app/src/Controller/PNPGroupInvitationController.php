@@ -23,10 +23,8 @@ class PNPGroupInvitationController extends AbstractController
 {
 
     public function __construct(
-         private readonly EntityManagerInterface $_entityManager
-    )
-    {
-
+        private readonly EntityManagerInterface $_entityManager
+    ) {
     }
 
     /**
@@ -43,8 +41,7 @@ class PNPGroupInvitationController extends AbstractController
     public function createInvitation(
         string $pnpGroupId,
         string $pnpUserId
-    ): Response
-    {
+    ): Response {
         $invitationCode = "";
 
         $invitationTool = new InvitationTools($this->_entityManager);
@@ -54,7 +51,9 @@ class PNPGroupInvitationController extends AbstractController
 
         try {
             $invitationCode = $invitationTool->createInvitation($group, $user);
-            if(!$invitationCode) throw new Exception('Failed to create the invitation');
+            if (!$invitationCode) {
+                throw new Exception('Failed to create the invitation');
+            }
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->addFlash('error', $e->getMessage());
@@ -82,8 +81,7 @@ class PNPGroupInvitationController extends AbstractController
     #[Route('/show/{invitationCode}', name: '.show')]
     public function showInvitation(
         string $invitationCode
-    ): Response
-    {
+    ): Response {
         $invitationTool = new InvitationTools($this->_entityManager);
         try {
             $invite = $invitationTool->getInvitationData($invitationCode);
@@ -116,15 +114,18 @@ class PNPGroupInvitationController extends AbstractController
     #[Route('/redeem/{invitationCode}', name: '.redeem')]
     public function redeemInvitation(
         string $invitationCode
-    ): Response
-    {
+    ): Response {
         $user = $this->getUser();
-        if(!$user) return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $invitationTool = new InvitationTools($this->_entityManager);
         try {
             $invite = $invitationTool->getInvitationData($invitationCode);
-            if(!$invite) throw new Exception('Invitation not found');
+            if (!$invite) {
+                throw new Exception('Invitation not found');
+            }
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->addFlash('error', $e->getMessage());
@@ -139,7 +140,7 @@ class PNPGroupInvitationController extends AbstractController
                 'ruleSet' => $invite->getInviteGroup()->getRuleSet()
             ]);
 
-        $characters = array_filter($data, function($character) {
+        $characters = array_filter($data, function ($character) {
             return $character->getPnpGroup() === null;
         });
 
@@ -163,8 +164,7 @@ class PNPGroupInvitationController extends AbstractController
     public function join(
         string $invitationCode,
         string $characterId
-    ): Response
-    {
+    ): Response {
 
         $character = $this->_entityManager->getRepository(CharacterData::class)->find($characterId);
 
@@ -194,10 +194,9 @@ class PNPGroupInvitationController extends AbstractController
     #[Route('/error/{invitationCode}', name: '.error')]
     public function error(
         string $invitationCode
-    ): Response
-    {
+    ): Response {
 
-        return $this->render('pnp_group_invitation/error.html.twig',[
+        return $this->render('pnp_group_invitation/error.html.twig', [
                 'invitationCode' => $invitationCode
             ]);
     }

@@ -18,7 +18,7 @@ class CharacterBuilderTest extends AbstractKernelTest
 {
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     public function testCreateBuilderFromFactory() : void
@@ -30,7 +30,7 @@ class CharacterBuilderTest extends AbstractKernelTest
         );
 
         $builder = CharacterBuilderFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
@@ -59,12 +59,12 @@ class CharacterBuilderTest extends AbstractKernelTest
         );
 
         $builder1 = CharacterBuilderFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
         $builder2 = CharacterBuilderFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
@@ -84,9 +84,9 @@ class CharacterBuilderTest extends AbstractKernelTest
         $characterStatCategory2->setStatsRequired(1);
         $characterStatCategory2->setRuleSet($ruleSet);
 
-        $this->_entityManager->persist($characterStatCategory);
-        $this->_entityManager->persist($characterStatCategory2);
-        $this->_entityManager->persist($characterClass);
+        $this->entityManager->persist($characterStatCategory);
+        $this->entityManager->persist($characterStatCategory2);
+        $this->entityManager->persist($characterClass);
 
         $characterStat1 = new CharacterStat();
         $characterStat1->setName("Stärke");
@@ -106,10 +106,10 @@ class CharacterBuilderTest extends AbstractKernelTest
         $characterStat3->setHighestValue(1);
         $characterStatCategory2->addCharacterStat($characterStat3);
 
-        $this->_entityManager->persist($characterStat1);
-        $this->_entityManager->persist($characterStat2);
-        $this->_entityManager->persist($characterStat3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($characterStat1);
+        $this->entityManager->persist($characterStat2);
+        $this->entityManager->persist($characterStat3);
+        $this->entityManager->flush();
 
         $character = $builder1->createCharacter($ruleSet)
             ->set("name", "Darius")

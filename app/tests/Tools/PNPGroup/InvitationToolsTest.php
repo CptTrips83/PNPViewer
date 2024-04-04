@@ -24,21 +24,22 @@ use Throwable;
  */
 class InvitationToolsTest extends AbstractKernelTest
 {
-    private RuleSet $_ruleset;
-    private PNPUser $_user;
-    private PNPGroup $_group;
+    private RuleSet $ruleset;
+    private PNPUser $user;
+    private PNPGroup $group;
 
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     /**
      * Test for uniqidReal method in InvitationTools
-     * 
+     *
      * This method generates a unique ID using either the random_bytes or openssl_random_pseudo_bytes functions,
      * or throws an Exception if they're not available. The length of the ID can be customized.
-     * The test will check that the length of the generated ID matches the provided length, and that an Exception is thrown
+     * The test will check that the length of the generated ID matches the provided length,
+     * and that an Exception is thrown
      * if no cryptographically secure function is available.
      */
     public function testUniqueIdReal()
@@ -71,36 +72,35 @@ class InvitationToolsTest extends AbstractKernelTest
     public function testInvitationCreation() : void
     {
         try {
-            $repoGroupInvitation = $this->_entityManager->getRepository(PNPGroupInvite::class);
+            $repoGroupInvitation = $this->entityManager->getRepository(PNPGroupInvite::class);
 
             $this->createMocks();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
+            $invitationTool = new InvitationTools($this->entityManager);
 
             // test Invite Creation only with PNPGroup
-            $code = $invitationTool->createInvitation($this->_group);
+            $code = $invitationTool->createInvitation($this->group);
             $this->assertNotEmpty($code);
             $this->assertIsString($code);
             $invite = $repoGroupInvitation->findOneBy([
                 'inviteCode' => $code
             ]);
             $this->assertInstanceOf(PNPGroupInvite::class, $invite);
-            $this->assertEquals($this->_group, $invite->getInviteGroup());
+            $this->assertEquals($this->group, $invite->getInviteGroup());
             $this->assertNull($invite->getInvitedUser());
             $this->assertInstanceOf(DateTimeInterface::class, $invite->getInviteDate());
 
             // test Invite Creation with PNPGroup & PNPUser
-            $code = $invitationTool->createInvitation($this->_group, $this->_user);
+            $code = $invitationTool->createInvitation($this->group, $this->user);
             $this->assertNotEmpty($code);
             $this->assertIsString($code);
             $invite = $repoGroupInvitation->findOneBy([
                 'inviteCode' => $code
             ]);
             $this->assertInstanceOf(PNPGroupInvite::class, $invite);
-            $this->assertEquals($this->_group, $invite->getInviteGroup());
-            $this->assertEquals($this->_user, $invite->getInvitedUser());
+            $this->assertEquals($this->group, $invite->getInviteGroup());
+            $this->assertEquals($this->user, $invite->getInvitedUser());
             $this->assertInstanceOf(DateTimeInterface::class, $invite->getInviteDate());
-
         } catch (Exception $exception) {
             $this->fail('Exception thrown: ' . $exception->getMessage());
         }
@@ -117,9 +117,9 @@ class InvitationToolsTest extends AbstractKernelTest
         try {
             $this->createMocks();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
+            $invitationTool = new InvitationTools($this->entityManager);
 
-            $code = $invitationTool->createInvitation($this->_group);
+            $code = $invitationTool->createInvitation($this->group);
             $invite = $invitationTool->getInvitationData($code);
 
             $this->assertInstanceOf(PNPGroupInvite::class, $invite);
@@ -141,19 +141,18 @@ class InvitationToolsTest extends AbstractKernelTest
             $this->createMocks();
 
             $character = new CharacterData();
-            $character->setUser($this->_user);
+            $character->setUser($this->user);
             $character->setName("Test");
-            $character->setRuleSet($this->_ruleset);
+            $character->setRuleSet($this->ruleset);
 
-            $this->_entityManager->persist($character);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($character);
+            $this->entityManager->flush();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
-            $code = $invitationTool->createInvitation($this->_group);
+            $invitationTool = new InvitationTools($this->entityManager);
+            $code = $invitationTool->createInvitation($this->group);
             $invitationTool->redeemInvitationCode($code, $character);
 
-            $this->assertEquals($this->_group, $character->getPnpGroup());
-
+            $this->assertEquals($this->group, $character->getPnpGroup());
         } catch (Exception $exception) {
             $this->fail('Exception thrown: ' . $exception->getMessage());
         }
@@ -171,19 +170,18 @@ class InvitationToolsTest extends AbstractKernelTest
             $this->createMocks();
 
             $character = new CharacterData();
-            $character->setUser($this->_user);
+            $character->setUser($this->user);
             $character->setName("Test");
-            $character->setRuleSet($this->_ruleset);
+            $character->setRuleSet($this->ruleset);
 
-            $this->_entityManager->persist($character);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($character);
+            $this->entityManager->flush();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
-            $code = $invitationTool->createInvitation($this->_group, $this->_user);
+            $invitationTool = new InvitationTools($this->entityManager);
+            $code = $invitationTool->createInvitation($this->group, $this->user);
             $invitationTool->redeemInvitationCode($code, $character);
 
-            $this->assertEquals($this->_group, $character->getPnpGroup());
-
+            $this->assertEquals($this->group, $character->getPnpGroup());
         } catch (Exception $exception) {
             $this->fail('Exception thrown: ' . $exception->getMessage());
         }
@@ -203,23 +201,22 @@ class InvitationToolsTest extends AbstractKernelTest
             $wrongUser = new PNPUser();
             $wrongUser->setUsername("test2");
             $wrongUser->setPassword("test2");
-            $this->_entityManager->persist($wrongUser);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($wrongUser);
+            $this->entityManager->flush();
 
             $character = new CharacterData();
             $character->setUser($wrongUser);
             $character->setName("Test");
-            $character->setRuleSet($this->_ruleset);
+            $character->setRuleSet($this->ruleset);
 
-            $this->_entityManager->persist($character);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($character);
+            $this->entityManager->flush();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
-            $code = $invitationTool->createInvitation($this->_group, $this->_user);
+            $invitationTool = new InvitationTools($this->entityManager);
+            $code = $invitationTool->createInvitation($this->group, $this->user);
             $invitationTool->redeemInvitationCode($code, $character);
 
-            $this->assertNotEquals($this->_group, $character->getPnpGroup());
-
+            $this->assertNotEquals($this->group, $character->getPnpGroup());
         } catch (Exception $exception) {
             $this->fail('Exception thrown: ' . $exception->getMessage());
         }
@@ -236,24 +233,24 @@ class InvitationToolsTest extends AbstractKernelTest
         try {
             $this->createMocks();
 
-            $repoInvites = $this->_entityManager->getRepository(PNPGroupInvite::class);
+            $repoInvites = $this->entityManager->getRepository(PNPGroupInvite::class);
 
             $wrongUser = new PNPUser();
             $wrongUser->setUsername("test2");
             $wrongUser->setPassword("test2");
-            $this->_entityManager->persist($wrongUser);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($wrongUser);
+            $this->entityManager->flush();
 
             $character = new CharacterData();
             $character->setUser($wrongUser);
             $character->setName("Test");
-            $character->setRuleSet($this->_ruleset);
+            $character->setRuleSet($this->ruleset);
 
-            $this->_entityManager->persist($character);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($character);
+            $this->entityManager->flush();
 
-            $invitationTool = new InvitationTools($this->_entityManager);
-            $code = $invitationTool->createInvitation($this->_group, $this->_user);
+            $invitationTool = new InvitationTools($this->entityManager);
+            $code = $invitationTool->createInvitation($this->group, $this->user);
 
             $invite = $repoInvites->findOneBy([
                 'inviteCode' => $code
@@ -263,8 +260,7 @@ class InvitationToolsTest extends AbstractKernelTest
 
             $invitationTool->redeemInvitationCode($code, $character);
 
-            $this->assertNotEquals($this->_group, $character->getPnpGroup());
-
+            $this->assertNotEquals($this->group, $character->getPnpGroup());
         } catch (Exception $exception) {
             $this->fail('Exception thrown: ' . $exception->getMessage());
         }
@@ -279,23 +275,23 @@ class InvitationToolsTest extends AbstractKernelTest
     private function createMocks() : void
     {
         // create mock PNPUser and PNPGroup
-        $this->_ruleset = new RuleSet();
-        $this->_ruleset->setName("Test");
-        $this->_entityManager->persist($this->_ruleset);
-        $this->_entityManager->flush();
+        $this->ruleset = new RuleSet();
+        $this->ruleset->setName("Test");
+        $this->entityManager->persist($this->ruleset);
+        $this->entityManager->flush();
 
-        $this->_user = new PNPUser();
-        $this->_user->setUsername("test");
-        $this->_user->setPassword("test");
-        $this->_entityManager->persist($this->_user);
-        $this->_entityManager->flush();
+        $this->user = new PNPUser();
+        $this->user->setUsername("test");
+        $this->user->setPassword("test");
+        $this->entityManager->persist($this->user);
+        $this->entityManager->flush();
 
-        $this->_group = new PNPGroup();
-        $this->_group->setName("test group");
-        $this->_group->setDescription("test description");
-        $this->_group->setRuleSet($this->_ruleset);
-        $this->_group->setGameMaster($this->_user);
-        $this->_entityManager->persist($this->_group);
-        $this->_entityManager->flush();
+        $this->group = new PNPGroup();
+        $this->group->setName("test group");
+        $this->group->setDescription("test description");
+        $this->group->setRuleSet($this->ruleset);
+        $this->group->setGameMaster($this->user);
+        $this->entityManager->persist($this->group);
+        $this->entityManager->flush();
     }
 }

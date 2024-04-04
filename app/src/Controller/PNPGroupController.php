@@ -21,15 +21,14 @@ class PNPGroupController extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $_entityManager
-    )
-    {
-
+    ) {
     }
 
     /**
      * Returns a response to display a list of PNPGroups for the current user who is a game master.
      *
-     * @return Response A response containing the rendered 'pnp_group/list.html.twig' template and the 'groups' variable, which holds the list of PNPGroups
+     * @return Response A response containing the rendered 'pnp_group/list.html.twig'
+     * template and the 'groups' variable, which holds the list of PNPGroups
      */
     #[Route('/list', name: '.list')]
     public function list(): Response
@@ -53,10 +52,10 @@ class PNPGroupController extends AbstractController
     #[Route('/create', name: '.create')]
     public function create(
         Request $request
-    ): Response
-    {
+    ): Response {
 
-        $form = $this->processForm($this->_entityManager,
+        $form = $this->processForm(
+            $this->_entityManager,
             $request,
             PNPGroup::class,
             PNPGroupType::class
@@ -64,10 +63,12 @@ class PNPGroupController extends AbstractController
 
         $this->assignGameMasterToGroup($form);
 
-        $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_pnp_group.list');
+        $redirectResponse = $this->redirectOnFormCompletion(
+            $form,
+            'app_pnp_group.list'
+        );
 
-        if($redirectResponse != null) {
+        if ($redirectResponse != null) {
             return $redirectResponse;
         } else {
             return $this->render('pnp_group/form.html.twig', [
@@ -89,18 +90,20 @@ class PNPGroupController extends AbstractController
     public function edit(
         Request $request,
         int $id
-    ): Response
-    {
-        $form = $this->processForm($this->_entityManager,
+    ): Response {
+        $form = $this->processForm(
+            $this->_entityManager,
             $request,
             PNPGroup::class,
             PNPGroupType::class,
             $id
         );
 
-        $redirectResponse = $this->redirectOnFormCompletion($form,
-            'app_pnp_group.list');
-        if($redirectResponse != null) {
+        $redirectResponse = $this->redirectOnFormCompletion(
+            $form,
+            'app_pnp_group.list'
+        );
+        if ($redirectResponse != null) {
             return $redirectResponse;
         } else {
             return $this->render('pnp_group/form.html.twig', [
@@ -120,8 +123,7 @@ class PNPGroupController extends AbstractController
     public function delete(
         EntityManagerInterface $entityManager,
         int $id
-    ): Response
-    {
+    ): Response {
         $group = $entityManager->getRepository(PNPGroup::class)
             ->find($id);
 
@@ -148,8 +150,7 @@ class PNPGroupController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         int $characterId
-    ) : Response
-    {
+    ) : Response {
         $character = $entityManager->getRepository(CharacterData::class)
             ->find($characterId);
 

@@ -23,7 +23,8 @@ class CharacterArrayFactory
      *
      * @param RuleSet $ruleSet The RuleSet object used to determine the CharacterArrayStrategyInterface object.
      *
-     * @return CharacterArrayStrategyInterface|null The retrieved CharacterArrayStrategyInterface object, or null if an exception occurred.
+     * @return CharacterArrayStrategyInterface|null The retrieved CharacterArrayStrategyInterface object,
+     * or null if an exception occurred.
      */
     public static function get(
         RuleSet $ruleSet
@@ -33,7 +34,6 @@ class CharacterArrayFactory
         try {
             $result = new $className();
         } catch (\Exception $ex) {
-
         }
         return $result;
     }

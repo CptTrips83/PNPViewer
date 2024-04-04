@@ -63,5 +63,4 @@ class PNPUserPWResetRequest
 
         return $this;
     }
-
 }

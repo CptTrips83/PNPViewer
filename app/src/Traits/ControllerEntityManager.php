@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 trait ControllerEntityManager
 {
-    private EntityManagerInterface $_entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * Sets the entity manager.
@@ -21,6 +21,6 @@ trait ControllerEntityManager
      */
     private function setEntityManager(EntityManagerInterface $entityManager) : void
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
     }
 }

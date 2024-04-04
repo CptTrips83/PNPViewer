@@ -22,9 +22,7 @@ readonly class InvitationTools
 {
     public function __construct(
         private EntityManagerInterface $_entityManager
-    )
-    {
-
+    ) {
     }
 
     /**
@@ -61,8 +59,7 @@ readonly class InvitationTools
     public function createInvitation(
         PNPGroup $group,
         ?PNPUser $user = null
-    ) : string
-    {
+    ) : string {
         try {
             $this->_entityManager->getConnection()->beginTransaction();
 
@@ -83,8 +80,7 @@ readonly class InvitationTools
 
             $this->_entityManager->flush();
             $this->_entityManager->getConnection()->commit();
-
-        } catch(Exception $exception) {
+        } catch (Exception $exception) {
             error_log($exception->getMessage());
             $this->_entityManager->getConnection()->rollBack();
             throw $exception;
@@ -105,8 +101,7 @@ readonly class InvitationTools
     public function redeemInvitationCode(
         string $code,
         CharacterData $character
-    ) : void
-    {
+    ) : void {
         try {
             $this->_entityManager->getConnection()->beginTransaction();
             $user = $character->getUser();
@@ -140,13 +135,15 @@ readonly class InvitationTools
     private function checkInvite(
         PNPGroupInvite | null $invite,
         PNPUser $user
-    ) : bool
-    {
+    ) : bool {
         if ($invite) {
-            if (!$this->checkInviteLifeTime($invite)) return false;
+            if (!$this->checkInviteLifeTime($invite)) {
+                return false;
+            }
             if ($invite->getInvitedUser() === null ||
-                $invite->getInvitedUser() === $user)
+                $invite->getInvitedUser() === $user) {
                 return true;
+            }
         }
         return false;
     }
@@ -186,8 +183,7 @@ readonly class InvitationTools
     private function addCharacterToGroup(
         CharacterData $character,
         PNPGroup $group
-    ) : void
-    {
+    ) : void {
         $group->addCharacter($character);
         $this->_entityManager->flush();
     }

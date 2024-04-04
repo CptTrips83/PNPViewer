@@ -20,7 +20,7 @@ class CharacterEditorTest extends AbstractKernelTest
 {
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     public function testCreateEditorFromFactory() : void
@@ -32,7 +32,7 @@ class CharacterEditorTest extends AbstractKernelTest
         );
 
         $builder = CharacterEditorFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
@@ -48,12 +48,12 @@ class CharacterEditorTest extends AbstractKernelTest
         );
 
         $builder = CharacterBuilderFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
         $editor = CharacterEditorFactory::get(
-            $this->_entityManager,
+            $this->entityManager,
             $ruleSet
         );
 
@@ -73,9 +73,9 @@ class CharacterEditorTest extends AbstractKernelTest
         $characterStatCategory2->setStatsRequired(1);
         $characterStatCategory2->setRuleSet($ruleSet);
 
-        $this->_entityManager->persist($characterStatCategory);
-        $this->_entityManager->persist($characterStatCategory2);
-        $this->_entityManager->persist($characterClass);
+        $this->entityManager->persist($characterStatCategory);
+        $this->entityManager->persist($characterStatCategory2);
+        $this->entityManager->persist($characterClass);
 
         $characterStat1 = new CharacterStat();
         $characterStat1->setName("Stärke");
@@ -95,10 +95,10 @@ class CharacterEditorTest extends AbstractKernelTest
         $characterStat3->setHighestValue(5);
         $characterStatCategory2->addCharacterStat($characterStat3);
 
-        $this->_entityManager->persist($characterStat1);
-        $this->_entityManager->persist($characterStat2);
-        $this->_entityManager->persist($characterStat3);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($characterStat1);
+        $this->entityManager->persist($characterStat2);
+        $this->entityManager->persist($characterStat3);
+        $this->entityManager->flush();
 
         $character = $builder->createCharacter($ruleSet)
             ->set("name", "Darius")
@@ -122,7 +122,7 @@ class CharacterEditorTest extends AbstractKernelTest
         $this->assertEquals(4, $character->getCharacterStatValues()[1]->getValue());
         $this->assertEquals(5, $character->getCharacterStatValues()[2]->getValue());
 
-        $repo = $this->_entityManager->getRepository(CharacterData::class);
+        $repo = $this->entityManager->getRepository(CharacterData::class);
 
         $testCharacter = $repo->findOneBy(['name' => 'Darius']);
 

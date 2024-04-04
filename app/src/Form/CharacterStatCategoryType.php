@@ -22,7 +22,7 @@ class CharacterStatCategoryType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Name'
             ])
-            ->add('description', TextareaType::class , [
+            ->add('description', TextareaType::class, [
                 'label' => 'Anzeige',
                 'required' => false
             ])

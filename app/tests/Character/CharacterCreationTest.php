@@ -10,12 +10,12 @@ class CharacterCreationTest extends AbstractKernelTest
 {
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     public function getCharacterFromDB() : CharacterData
     {
-        $repo = $this->_entityManager->getRepository(CharacterData::class);
+        $repo = $this->entityManager->getRepository(CharacterData::class);
 
         return $repo->findOneBy([
            "name" => "Darius"
@@ -46,8 +46,7 @@ class CharacterCreationTest extends AbstractKernelTest
         $this->characterCreation($ruleSet);
         $character = $this->getCharacterFromDB();
 
-        foreach ($character->getCharacterStatValues() as $statValue)
-        {
+        foreach ($character->getCharacterStatValues() as $statValue) {
             $result = ($statValue->getValue() >= $statValue->getCharacterStat()->getLowestValue()
                     && $statValue->getValue() <= $statValue->getCharacterStat()->getHighestValue());
 
@@ -63,8 +62,7 @@ class CharacterCreationTest extends AbstractKernelTest
 
         $this->assertEquals("Solo", $character->getCharacterClassLevels()[0]->getCharacterClass()->getName());
 
-        foreach ($character->getCharacterClassLevels() as $classLevel)
-        {
+        foreach ($character->getCharacterClassLevels() as $classLevel) {
             $result = ($classLevel->getLevel() >= $classLevel->getCharacterClass()->getLowestLevel()
                 && $classLevel->getLevel() <= $classLevel->getCharacterClass()->getHighestLevel());
 
@@ -74,7 +72,8 @@ class CharacterCreationTest extends AbstractKernelTest
 
     public function testCharacterJSON()
     {
-        $ruleSet = $this->ruleSetCreation('App\Tools\Character\CyberpunkRed\CyberpunkCharacterArrayStrategy',
+        $ruleSet = $this->ruleSetCreation(
+            'App\Tools\Character\CyberpunkRed\CyberpunkCharacterArrayStrategy',
             'App\Tools\Character\CyberpunkRed\CyberpunkCharacterBuilder'
         );
         $this->characterCreation($ruleSet);
