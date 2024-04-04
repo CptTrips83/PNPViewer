@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/app/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/dama/doctrine-test-bundle" />
@@ -119,6 +120,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/polyfill-intl-icu" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/property-access" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/property-info" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/squizlabs/php_codesniffer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
