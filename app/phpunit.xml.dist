@@ -23,7 +23,7 @@
             <directory>tests</directory>
         </testsuite>
         <testsuite name="Project Character Entity Test Suite">
-            <directory>tests\Character</directory>
+            <directory>tests/Character</directory>
         </testsuite>
     </testsuites>
 
