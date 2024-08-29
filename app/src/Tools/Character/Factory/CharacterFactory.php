@@ -10,12 +10,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class CharacterFactory
 {
 
-    public static function get(RuleSet $ruleSet = null) : CharacterData | null {
+    public static function get(RuleSet $ruleSet = null) : CharacterData | null
+    {
         $result = null;
         try {
             $result = new CharacterData();
         } catch (\Exception $ex) {
-
         }
         return $result;
     }

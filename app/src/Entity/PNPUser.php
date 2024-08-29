@@ -42,11 +42,18 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
     #[ORM\OneToMany(mappedBy: 'invitedUser', targetEntity: PNPGroupInvite::class)]
     private Collection $groupInvites;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PNPUserPWResetRequest::class)]
+    private Collection $pwResetRequests;
+
     public function __construct()
     {
         $this->gameMasterGroups = new ArrayCollection();
         $this->characters = new ArrayCollection();
         $this->groupInvites = new ArrayCollection();
+        $this->pwResetRequests = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -208,6 +215,48 @@ class PNPUser implements UserInterface, PasswordAuthenticatedUserInterface, Json
             // set the owning side to null (unless already changed)
             if ($groupInvite->getInvitedUser() === $this) {
                 $groupInvite->setInvitedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PNPUserPWResetRequest>
+     */
+    public function getPwResetRequests(): Collection
+    {
+        return $this->pwResetRequests;
+    }
+
+    public function addPwResetRequest(PNPUserPWResetRequest $pwResetRequest): static
+    {
+        if (!$this->pwResetRequests->contains($pwResetRequest)) {
+            $this->pwResetRequests->add($pwResetRequest);
+            $pwResetRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePwResetRequest(PNPUserPWResetRequest $pwResetRequest): static
+    {
+        if ($this->pwResetRequests->removeElement($pwResetRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($pwResetRequest->getUser() === $this) {
+                $pwResetRequest->setUser(null);
             }
         }
 

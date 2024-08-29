@@ -19,7 +19,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="AllTests">
             <directory>tests</directory>
         </testsuite>
         <testsuite name="Project Character Entity Test Suite">

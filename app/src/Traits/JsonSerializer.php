@@ -9,7 +9,7 @@ trait JsonSerializer
         $result = array();
 
         foreach (get_object_vars($this) as $key => $data) {
-            if(!is_object($data)) {
+            if (!is_object($data)) {
                 $result[$key] = $data;
             }
         }

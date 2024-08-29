@@ -54,12 +54,13 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
      */
     public function generateJSON(CharacterData | null $character): array
     {
-        if($character === null)  throw new Exception('CharacterData is null in CyberpunkCharacterArrayStrategy::generateJSON');
+        if ($character === null) {
+            throw new Exception('CharacterData is null in CyberpunkCharacterArrayStrategy::generateJSON');
+        }
 
         $result = array();
 
         try {
-
             $result[self::ARRAY_NAME_DATA]['id'] = $character->getId();
             $result[self::ARRAY_NAME_DATA]['name'] = $character->getName();
             $result[self::ARRAY_NAME_DATA]['handle'] = $character->getNickname();
@@ -68,11 +69,16 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
 
             foreach ($character->getCharacterClassLevels() as $classLevel) {
                 $className = $classLevel->getCharacterClass()->getName();
-                $result[self::ARRAY_NAME_CLASSES][$className]['valueId'] = $classLevel->getId();
-                $result[self::ARRAY_NAME_CLASSES][$className]['lowestLevel'] = $classLevel->getCharacterClass()->getLowestLevel();
-                $result[self::ARRAY_NAME_CLASSES][$className]['highestLevel'] = $classLevel->getCharacterClass()->getHighestLevel();
-                $result[self::ARRAY_NAME_CLASSES][$className]['classData'] = $classLevel->getCharacterClass();
-                $result[self::ARRAY_NAME_CLASSES][$className]['level'] = $classLevel->getLevel();
+                $result[self::ARRAY_NAME_CLASSES][$className]['valueId']
+                    = $classLevel->getId();
+                $result[self::ARRAY_NAME_CLASSES][$className]['lowestLevel']
+                    = $classLevel->getCharacterClass()->getLowestLevel();
+                $result[self::ARRAY_NAME_CLASSES][$className]['highestLevel']
+                    = $classLevel->getCharacterClass()->getHighestLevel();
+                $result[self::ARRAY_NAME_CLASSES][$className]['classData']
+                    = $classLevel->getCharacterClass();
+                $result[self::ARRAY_NAME_CLASSES][$className]['level']
+                    = $classLevel->getLevel();
             }
 
             $arrayDetails = array();
@@ -86,7 +92,7 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
                 $characterCategoryName = $characterCategory->getName();
                 $characterStatName = $statValue->getCharacterStat()->getName();
 
-                if($characterCategory->getName() == "characterData"){
+                if ($characterCategory->getName() == "characterData") {
                     $result[self::ARRAY_NAME_DATA][$characterStatName]['value'] = $statValue->getValue();
                     $result[self::ARRAY_NAME_DATA][$characterStatName]['valueId'] = $statValue->getId();
                     continue;
@@ -100,7 +106,7 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
                     $characterCategoryName == self::ARRAY_NAME_SKILL) {
                     $arraySkills
                     [$characterStatName] = $this->assignValues($statValue);
-                } else if ($characterCategory->getStatsRequired() == -1 &&
+                } elseif ($characterCategory->getStatsRequired() == -1 &&
                     $characterCategoryName != self::ARRAY_NAME_SKILL) {
                     $arrayPerks
                     [$characterCategory->getName()]
@@ -128,7 +134,9 @@ class CyberpunkCharacterArrayStrategy implements CharacterArrayStrategyInterface
      */
     private function assignValues(CharacterStatValue | null $sourceObject) : array
     {
-        if($sourceObject === null) throw new Exception('CharacterStatValue is null in CyberpunkCharacterArrayStrategy::assignValues');
+        if ($sourceObject === null) {
+            throw new Exception('CharacterStatValue is null in CyberpunkCharacterArrayStrategy::assignValues');
+        }
 
         $targetArray = array();
 

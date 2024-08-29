@@ -2,7 +2,6 @@
 
 namespace App\Tools\Tests;
 
-
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -17,7 +16,8 @@ class DatabasePrimer
         }
 
         // Get the entity manager from the service container
-        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
+        $entityManager = $kernel->getContainer()
+            ->get('doctrine.orm.entity_manager', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
 
         // Run the schema update tool using our entity metadata
         $metadatas = $entityManager->getMetadataFactory()->getAllMetadata();

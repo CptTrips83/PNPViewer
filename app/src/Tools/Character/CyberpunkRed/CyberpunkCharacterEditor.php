@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CyberpunkCharacterEditor implements CharacterEditorInterface
 {
-    private CharacterData $_character;
+    private CharacterData $character;
 
 
     /**
@@ -30,13 +30,12 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
     public function __construct(
         private readonly EntityManagerInterface $_entityManager,
         RuleSet $ruleSet
-    )
-    {
-        $this->_character = CharacterFactory::get();
-        $this->_character->setCreationStart(new DateTime());
-        $this->_character->setRuleSet($ruleSet);
-        $this->_character->setName("");
-        $this->_entityManager->persist($this->_character);
+    ) {
+        $this->character = CharacterFactory::get();
+        $this->character->setCreationStart(new DateTime());
+        $this->character->setRuleSet($ruleSet);
+        $this->character->setName("");
+        $this->_entityManager->persist($this->character);
     }
 
     /**
@@ -47,7 +46,7 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
      */
     public function setCharacter(CharacterData $character): CharacterEditorInterface
     {
-        $this->_character = $character;
+        $this->character = $character;
         return $this;
     }
 
@@ -62,9 +61,8 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
     {
         $setter = "set".ucfirst($property);
 
-        if(method_exists($this->_character, $setter))
-        {
-            $this->_character->$setter($value);
+        if (method_exists($this->character, $setter)) {
+            $this->character->$setter($value);
         }
 
         return $this;
@@ -81,15 +79,14 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
     {
         $classLevel = null;
 
-        foreach ($this->_character->getCharacterClassLevels() as $data)
-        {
-            if($data->getCharacterClass() === $class) {
+        foreach ($this->character->getCharacterClassLevels() as $data) {
+            if ($data->getCharacterClass() === $class) {
                 $classLevel = $data;
                 break;
             }
         }
 
-        if($classLevel != null){
+        if ($classLevel != null) {
             $classLevel->setLevel($level);
             $this->_entityManager->persist($classLevel);
         }
@@ -110,15 +107,14 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
     {
         $statValue = null;
 
-        foreach ($this->_character->getCharacterStatValues() as $data)
-        {
-            if($data->getCharacterStat() === $stat) {
+        foreach ($this->character->getCharacterStatValues() as $data) {
+            if ($data->getCharacterStat() === $stat) {
                 $statValue = $data;
                 break;
             }
         }
 
-        if($statValue != null) {
+        if ($statValue != null) {
             $statValue->setValue($value);
             $this->_entityManager->persist($statValue);
         }
@@ -134,6 +130,6 @@ class CyberpunkCharacterEditor implements CharacterEditorInterface
     public function saveCharacter(): CharacterData
     {
         $this->_entityManager->flush();
-        return $this->_character;
+        return $this->character;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Tests;
+
 use App\Entity\Test;
 use App\Tools\Tests\AbstractKernelTest;
 use App\Tools\Tests\DatabasePrimer;
@@ -11,7 +13,7 @@ class FooBarTest extends AbstractKernelTest
 {
     protected function setUp(): void
     {
-        $this->Initialize();
+        $this->initialize();
     }
 
     public function testSomething()
@@ -20,10 +22,10 @@ class FooBarTest extends AbstractKernelTest
         $test = new Test();
 
         $test->setName("Test");
-        $this->_entityManager->persist($test);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($test);
+        $this->entityManager->flush();
 
-        $repo = $this->_entityManager->getRepository(Test::class);
+        $repo = $this->entityManager->getRepository(Test::class);
 
         $test2 = $repo->findOneBy(["name" => "Test"]);
 

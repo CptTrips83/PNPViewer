@@ -18,14 +18,14 @@ class PNPGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextareaType::class,[
+            ->add('name', TextareaType::class, [
                 'label' => 'Name'
             ])
-            ->add('description', TextareaType::class,[
+            ->add('description', TextareaType::class, [
                 'label' => 'Beschreibung',
                 'required' => false
             ])
-            ->add('maxCharacterCount', IntegerType::class,[
+            ->add('maxCharacterCount', IntegerType::class, [
                 'label' => 'Maximale Anzahl von Charakteren',
                 'empty_data' => 2,
                 'data' => 2,

@@ -20,8 +20,7 @@ class CharacterController extends AbstractController
     #[Route('/character/list', name: 'app_character_list')]
     public function list(
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $this->setEntityManager($entityManager);
 
         $characters = $this->getAvailableCharacters();
@@ -36,15 +35,14 @@ class CharacterController extends AbstractController
     public function details(
         int $characterId,
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $this->setEntityManager($entityManager);
 
         $repoCharacter = $entityManager->getRepository(CharacterData::class);
 
         $character = $repoCharacter->find($characterId);
 
-        if($character->getCreationEnd() == null) {
+        if ($character->getCreationEnd() == null) {
             return $this->redirectToRoute('app_character_creation_details', [
                 'characterId' => $character->getId()
             ]);
@@ -66,8 +64,7 @@ class CharacterController extends AbstractController
     public function jsonData(
         int $characterId,
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $this->setEntityManager($entityManager);
 
         $repoCharacter = $entityManager->getRepository(CharacterData::class);
@@ -92,11 +89,15 @@ class CharacterController extends AbstractController
         $pnpGroup = $character->getPnpGroup();
 
         try {
-            if ($user == $character->getUser()) return true;
-            if ($pnpGroup) {
-                if ($user == $pnpGroup->getGameMaster()) return true;
+            if ($user == $character->getUser()) {
+                return true;
             }
-        } catch(Exception) {
+            if ($pnpGroup) {
+                if ($user == $pnpGroup->getGameMaster()) {
+                    return true;
+                }
+            }
+        } catch (Exception) {
             return false;
         }
 

@@ -21,7 +21,6 @@ class CharacterEditorFactory
                 $ruleSet
             );
         } catch (\Exception $ex) {
-
         }
         return $result;
     }

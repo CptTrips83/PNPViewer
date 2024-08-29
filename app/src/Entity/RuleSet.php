@@ -14,7 +14,7 @@ use JsonSerializable;
  * @property $getCharacterClassName
  */
 #[ORM\Entity(repositoryClass: RuleSetRepository::class)]
-class RuleSet  implements JsonSerializable
+class RuleSet implements JsonSerializable
 {
     use JsonSerializer;
 

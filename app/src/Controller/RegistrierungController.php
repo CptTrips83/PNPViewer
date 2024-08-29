@@ -20,11 +20,11 @@ class RegistrierungController extends AbstractController
     use ControllerEntityManager;
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request,
-                             UserPasswordHasherInterface $passwordHasher,
-                             EntityManagerInterface $entityManager
-    ): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager
+    ): Response {
         $this->setEntityManager($entityManager);
 
         $regForm = $this->createFormBuilder()
@@ -43,7 +43,7 @@ class RegistrierungController extends AbstractController
 
         $regForm->handleRequest($request);
 
-        if($regForm->isSubmitted() && $regForm->isValid()) {
+        if ($regForm->isSubmitted() && $regForm->isValid()) {
             $userData = $regForm->getData();
 
             $newUser = new PNPUser();

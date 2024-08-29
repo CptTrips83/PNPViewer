@@ -45,7 +45,6 @@ security:
         - { path: ^/ruleset, roles: ROLE_RULESET }
         - { path: ^/group, roles: ROLE_USER }
 
-
 when@test:
     security:
         password_hashers:
